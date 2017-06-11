@@ -17,7 +17,7 @@
 
 <body ng-app="App">
 
-	<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+	<nav class="navbar navbar-default navbar-fixed-top" role="navigation" ng-controller="GlobalController as globalController" ng-cloak>
 		<div class="containerNavbar">
 
 			<div class="navbar-header">
@@ -40,11 +40,14 @@
 				</ul>
 			</div>
 
-			<div id="navbar-right" class="collapse navbar-collapse" th:if="${user == null}">
+			<div id="navbar-right" class="collapse navbar-collapse" ng-if="globalController.user == null">
 				<ul class="nav navbar-nav navbar-right">
 					<li><a ui-sref="about"><span class="glyphicon glyphicon-user"></span> About</a></li>
 					<li><a ui-sref="contact"><span class="glyphicon glyphicon-log-in"></span> Contact</a></li>
 				</ul>
+			</div>
+			<div ng-if="globalController.user">
+				hello {{globalController.user.nickname}}
 			</div>
 		</div><!--/.containerNavbar-collapse -->
 	</nav>
@@ -57,7 +60,7 @@
 	<!-- /.container -->
 
 	<!-- Footer -->
-	<footer th:fragment="footer" class="footer">
+	<footer class="footer">
 		<div class="containerFooter">
 			<p class="text-muted">
 				Copyright © 2017 - Applicazioni Internet - Politecnico di Torino<br />
@@ -82,7 +85,9 @@
 	<script src="services/MinPathProvider.js"></script>
 	<script src="services/MongoRestClient.js"></script>
 	<script src="services/GeocodingService.js"></script>
+	<script src="services/CurrentUserService.js"></script>
 	<!-- controllers -->
+	<script src="controllers/GlobalController.js"></script>
 	<script src="controllers/MainCtrl.js"></script>
 	<script src="controllers/BestPathCtrl.js"></script>
 	<!-- constants -->
