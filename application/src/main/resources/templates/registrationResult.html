@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Registration result</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="/webjars/jquery/jquery.min.js"></script>
+<link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="/css/style.css"></link>
+</head>
+<body>
+
+		<div class="container">
+			<div th:insert="../fragments/header :: header" ></div>
+		<div class="hero-unit">
+			<div class="page-header">
+				<div th:if="${param.error == null}">
+					<h1>Your registration has been successful</h1>
+					<p th:text="${'You can now login with your password associated to ' + param.email}"></p>
+					<p>
+						<a href="/login" th:href="@{/login}"
+							class="btn btn-large btn-success">Login</a>
+					</p>
+				</div>
+				<div th:if="${param.error != null}">
+					<h1 th:text="${'Error: ' + param.error}">Error</h1>
+					<p>Try to sign up again</p>
+					<p>
+						<a href="/registration" th:href="@{/registration}"
+							class="btn btn-large btn-success">Sign up</a>
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div th:insert="../fragments/footer :: footer" ></div>
+
+</body>
+</html>

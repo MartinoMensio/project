@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title th:text="${topic.value} + ' chat'">Chat</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="/webjars/jquery/jquery.min.js"></script>
+<link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="/css/style.css"></link>
+<!-- specific for websockets -->
+<script src="/webjars/sockjs-client/sockjs.min.js"></script>
+<script src="/webjars/stomp-websocket/stomp.min.js"></script>
+</head>
+<body>
+
+	<div class="container">
+		<div th:insert="../fragments/header :: header"></div>
+		
+		<div class="hero-unit">
+			<div class="page-header">
+				<h1 th:text="${topic.value}"></h1>
+			</div>
+			<p class="lead">
+				Here is the <b th:text="${topic.value}"></b> chat page!
+			</p>
+		</div>
+		
+		<div class="row" id="row-room">
+				<div class="panel panel-primary" id="panel-room">
+					<div class="panel-heading">
+						<span class="glyphicon glyphicon-comment"></span> Chat
+					</div>
+					<div class="panel-body">
+						<ul class="chat">
+							<li th:each="chatMessage : ${lastMessages}" class="clearfix" th:classappend="${chatMessage.userId == user.id} ? right : left">
+								<span
+								class="chat-img" th:classappend="${chatMessage.userId == user.id} ? pull-right : pull-left "> 
+									<img th:if="${chatMessage.userImageUrl == null}" src="http://placehold.it/50/55C1E7/fff&text=U" alt="User Avatar" class="img-circle" />
+									<img th:if="${chatMessage.userImageUrl != null}" src="" th:src="${chatMessage.userImageUrl}" style="max-height: 50px; max-width: 50px;" class="img-circle"/>
+								</span>
+								<div class="chat-body clearfix">
+									<div class="header" th:if="${chatMessage.userId == user.id}">
+										<small class=" text-muted" th:inline="text">
+											<span class="glyphicon glyphicon-time">
+											</span>[[${#calendars.format(chatMessage.sendingTime)}]]
+										</small>
+										<strong class="pull-right primary-font" th:text="${chatMessage.userNickname}"></strong>
+									</div>
+									<div class="header" th:if="${chatMessage.userId != user.id}">
+										<strong class="primary-font"
+											th:text="${chatMessage.userNickname}">
+										</strong>
+										<small class="pull-right text-muted" th:inline="text">
+											<span
+											class="glyphicon glyphicon-time">
+											</span>[[${#calendars.format(chatMessage.sendingTime)}]]
+										</small>
+									</div>
+									<p th:text="${chatMessage.text}" th:classappend="${chatMessage.userId == user.id} ? align-right"></p>
+									<img alt="" src="" th:src="${chatMessage.imageUrl}" style="max-width: 300px; max-height: 300px;">
+								</div>
+							</li>
+
+						</ul>
+					</div>
+					<div class="panel-footer">
+						<img alt="" src="" id="img-preview" style="max-width: 300px; max-height: 300px;">
+						<form id="sendForm" class="input-group" autocomplete="off">
+							<input id="chat-image" type="file" accept="image/*" style="display:none;" />
+							<input id="chat-text" type="text" class="form-control input-sm" placeholder="Type your message here..." />
+							<span class="input-group-btn">
+								<span id="fake-attach" class="glyphicon glyphicon-folder-open btn btn-info btn-sm"></span>
+							</span>
+							<span class="input-group-btn">
+							<button type="submit" class="btn btn-warning btn-sm" id="btn-chat">Send</button>
+							</span>
+						</form>
+					</div>
+				</div>
+		</div>
+		
+	</div>
+
+	<div th:insert="../fragments/footer :: footer"></div>
+
+	<script th:inline="javascript">
+		/*<![CDATA[*/
+		var csrfToken = /*[[${csrfToken}]]*/'';
+		var roomId = /*[[${topic.value}]]*/'';
+		var userId = /*[[${user.id}]]*/'';
+		/*]]>*/
+
+		$(function() {
+			// connect as soon as the page is ready
+			connect();
+		});
+	</script>
+
+	<script type="text/javascript" src="/image.js"></script>
+	<script type="text/javascript" src="/chat.js"></script>
+</body>
+</html>

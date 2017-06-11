@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+</head>
+<body>
+	<!-- /*  generic header */-->
+	<div th:fragment="header">
+		
+		<nav class="navbar navbar-default navbar-fixed-top">	
+			<div class="containerNavbar">
+			
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed"
+						data-toggle="collapse" data-target=".navbar-collapse" aria-expanded="false"
+						aria-controls="navbar">
+						<span class="sr-only">Toggle navigation</span> <span
+							class="icon-bar"></span> <span class="icon-bar"></span> <span
+							class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="/"><span class="logoChat">Chat</span>
+						<span class="logoTo">To</span></a>
+				</div>
+				
+				<div id="navbar-left" class="collapse navbar-collapse">
+					<ul class="nav navbar-nav">
+						<li><a href="/">Home</a></li>
+						<li><a href="/about">About</a></li>
+						<li><a href="/contact">Contact</a></li>
+						<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Chats<span class="caret"></span></a>
+							<ul class="dropdown-menu">
+								<!-- list the topics -->
+								<li th:each="topic : ${topics}"><a href="#" th:href="${'/room/' + topic.value}" th:text="${topic.value}"></a></li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+				
+				<div id="navbar-right" class="collapse navbar-collapse" th:if="${user == null}">
+					<ul class="nav navbar-nav navbar-right">		
+						<li><a href="registration"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+      					<li><a href="login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+					</ul>
+				</div>
+				
+				<div id="navbar-right" class="collapse navbar-collapse" th:if="${user != null}">
+					<ul class="nav navbar-nav navbar-right">		
+						<li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <span class="glyphicon glyphicon-user"></span> 
+                        <strong>Account</strong>
+                        <span class="glyphicon glyphicon-chevron-down"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <div class="navbar-login">
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <p class="text-center">
+                                            <span th:if="${user.profile == null || user.profile.image == null }" class="glyphicon glyphicon-user icon-size"></span>
+                                        	<img th:if="${user.profile != null && user.profile.image != null }" src="" th:src="${user.profile.image.url}" style="max-height: 87px; max-width: 87px" />
+                                        </p>
+                                    </div>
+                                    <div class="col-lg-8">
+                                        <p class="text-left"><strong th:text="${user.nickname}">Mario Rossi</strong></p>
+                                        <p class="text-left small" th:text="${user.email}">mario.rossi@gmail.com</p>
+                                        <p class="text-left">
+                                            <a href="../profile" class="btn btn-primary btn-block btn-sm">View your profile</a>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <div class="navbar-login navbar-login-session">
+                                <div class="row">
+                                    <div class="col-lg-12">
+								        <form th:action="@{/logout}" method="post">
+                                            <button type="submit" class="btn btn-danger btn-block">Logout</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+					</ul>
+				</div>
+			   
+		  </div><!--/.containerNavbar-collapse --> 
+		</nav>
+		
+	</div>
+
+</body>
+</html>
