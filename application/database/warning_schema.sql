@@ -23,8 +23,8 @@ create table if not exists warning_types (
 
 create table if not exists user_warning_infos ( --USER già presenti, vanno aggiunti solo i nuovi campi alla vecchia tabella?
   id bigint not null,
-  nickname varchar(30) not null,
-  password varchar(200) not null,
+  nickname varchar(30) not null, -- redundant? probably this should be removed
+  password varchar(200) not null, -- redundant?
   points integer -- create ad hoc value from 1.0 to 5.0
   primary key (id)
   foreign key (user_id) references users(id)
