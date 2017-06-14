@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RestController;
 import it.polito.ai.project.business.services.authentication.CurrentUserService;
 import it.polito.ai.project.repo.entities.User;
 import it.polito.ai.project.rest.resources.UserResource;
-import it.polito.ai.project.web.exceptions.NotFoundException;
 
 @RestController
 public class Me {
@@ -21,7 +20,7 @@ public class Me {
 		if (currentUser != null) {
 			return new UserResource(currentUser);
 		} else {
-			throw new NotFoundException();
+			return null;
 		}
 	}
 
