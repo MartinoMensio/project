@@ -1,0 +1,31 @@
+<div class="hero-unit">
+    <div class="page-header">
+        <!--<p th:if="${loginError}" class="alert alert-danger">Wrong email or password</p>-->
+        <h1>Login</h1>
+    </div>
+    <p class="lead">Complete Email and Password field</p>
+    <div class="container-signup">
+        <p>Remember that you must be registered in order to login</p>
+    </div>
+    <div class="login-form">
+        <form class="form-horizontal" ng-submit="ctrl.submit()">
+            <div class="form-group">
+                <label for="email" class="col-sm-3 control-label">Email</label>
+                <div class="col-sm-7">
+                    <input type="email" class="form-control" id="email" name="email" autofocus="autofocus" placeholder="Email" ng-model="ctrl.user.email">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="password" class="col-sm-3 control-label">Password</label>
+                <div class="col-sm-7">
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Password" ng-model="ctrl.user.password">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-3 col-sm-10">
+                    <button type="submit" class="btn btn-large btn-success">Sign in</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
