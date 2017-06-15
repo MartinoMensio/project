@@ -1,0 +1,120 @@
+<div class="hero-unit">
+	<div class="page-header">
+		<h1>Your Profile</h1>
+	</div>
+	<p class="lead">Here there are listed all the informations about your account</p>
+</div>
+
+<div class="row" id="row-profile">
+	<!-- <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-3 col-lg-offset-3 toppad">  -->
+	<div class="panel panel-info" id="panel-info-profile">
+		<div class="panel-heading">
+			<h3 class="panel-title">{{global.user.nickname}}</h3>
+		</div>
+		<div class="panel-body" id="panel-body-profile">
+			<div class="row">
+				<div class="col-md-3 col-lg-3 " align="center">
+
+					<span th:if="${user.profile == null || user.profile.image == null }" class="glyphicon glyphicon-user icon-size img-responsive"></span>
+					<img th:if="${user.profile != null && user.profile.image != null }" src="" th:src="${user.profile.image.url}" class="img-responsive"
+					/>
+
+					<form action="#" th:action="@{/setProfileImage}" method="post" enctype="multipart/form-data" id="sendForm">
+						<input id="chat-image" type="file" name="file" accept="image/*" style="display:none;" />
+						<span>
+										<span id="fake-attach" data-toggle="tooltip" class="btn btn-sm btn-info">
+											<i class="glyphicon glyphicon-folder-open"></i> Load file
+										</span>
+						</span>
+						<div style="display: none;" id="preview">
+							<p>Preview</p>
+							<img id="img-preview" src="" class="img-responsive" />
+						</div>
+						<button id="submit" type="submit" class="btn btn-primary" style="display: none;">Save</button>
+					</form>
+				</div>
+				<div class=" col-md-9 col-lg-9 ">
+					<table class="table table-user-information">
+						<tbody>
+							<tr>
+								<td>Date of Birth:</td>
+								<td>{{ctrl.userDetails.dateOfBirth}}</td>
+							</tr>
+							<tr>
+								<td>Gender:</td>
+								<td>{{ctrl.userDetails.sex}}</td>
+							</tr>
+							<tr>
+								<td>Email:</td>
+								<td>{{global.user.email}}</td>
+							</tr>
+							<tr>
+								<td>Education level:</td>
+								<td>{{ctrl.userDetails.educationLevel}}</td>
+							</tr>
+							<tr>
+								<td>Job:</td>
+								<td>{{ctrl.userDetails.employment}}</td>
+							</tr>
+							<tr>
+								<td>Private Car Ownership:</td>
+								<td>{{ctrl.userDetails.privateCarOwnership}}c</td>
+							</tr>
+							<tr th:if="${(profileInfo.carFuel != null)}">
+								<td>Car Fuel:</td>
+								<td th:text="${profileInfo.carFuel.value}">n.a.</td>
+							</tr>
+							<tr th:if="${(profileInfo.carRegistrationYear != null)}">
+								<td>Car year:</td>
+								<td th:text="${profileInfo.carRegistrationYear}">n.a.</td>
+							</tr>
+							<tr>
+								<td>Car sharing usage:</td>
+								<td th:text="${profileInfo.carSharingUsage}">n.a.</td>
+							</tr>
+							<tr th:if="${(profileInfo.carSharingService != null)}">
+								<td>Car sharing service:</td>
+								<td th:text="${profileInfo.carSharingService.name}">n.a.</td>
+							</tr>
+							<tr>
+								<td>Public Transport usage:</td>
+								<td th:text="${profileInfo.publicTransportUsage}">n.a.</td>
+							</tr>
+							<tr th:if="${(profileInfo.habitualTravelDocument != null)}">
+								<td>Habitual travel document:</td>
+								<td th:text="${profileInfo.habitualTravelDocument.name}">n.a.</td>
+							</tr>
+							<tr>
+								<td>Bike Usage:</td>
+								<td th:text="${profileInfo.bikeUsage}">n.a.</td>
+							</tr>
+							<tr th:if="${(profileInfo.privateBikeUsage != null)}">
+								<td>Private Bike Usage:</td>
+								<td th:text="${profileInfo.privateBikeUsage}">n.a.</td>
+							</tr>
+							<tr th:if="${(profileInfo.bikeSharingUsage != null)}">
+								<td>Bike Sharing Usage:</td>
+								<td th:text="${profileInfo.bikeSharingUsage}">n.a.</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div class="panel-footer" id="panel-footer-profile">
+			<span class="pull-right"> 
+							<a href="updateProfile" data-toggle="tooltip" type="button" class="btn btn-sm btn-info">
+								<i class="glyphicon glyphicon-edit"></i>Edit profile
+							</a>
+						</span>
+			<span class="pull-right"> 
+							<a href="changePassword" data-toggle="tooltip" type="button" class="btn btn-sm btn-warning">
+								<i class="glyphicon glyphicon-edit"></i>Change password
+							</a>
+						</span>
+		</div>
+	</div>
+</div>
+
+</div>
+<!-- close container -->
