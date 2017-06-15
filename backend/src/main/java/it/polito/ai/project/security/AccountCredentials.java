@@ -1,5 +1,10 @@
 package it.polito.ai.project.security;
 
+/**
+ * 
+ * Simple POJO class for login requests
+ *
+ */
 public class AccountCredentials {
 
 	private String email;

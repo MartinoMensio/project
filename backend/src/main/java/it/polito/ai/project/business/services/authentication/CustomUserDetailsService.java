@@ -30,7 +30,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 		List<GrantedAuthority> auth = AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_USER");
 		// The admin has also role admin
 		if (email.equals("admin")) {
-			auth = AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_ADMIN");
+			auth.addAll(AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_ADMIN"));
 		}
 		String password = user.getPassword();
 		return new org.springframework.security.core.userdetails.User(email, password, auth);

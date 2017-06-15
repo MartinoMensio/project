@@ -38,11 +38,11 @@
 						<tbody>
 							<tr>
 								<td>Date of Birth:</td>
-								<td>{{ctrl.userDetails.dateOfBirth}}</td>
+								<td>{{global.user.dateOfBirth}}</td>
 							</tr>
 							<tr>
 								<td>Gender:</td>
-								<td>{{ctrl.userDetails.sex}}</td>
+								<td>{{global.user.sex}}</td>
 							</tr>
 							<tr>
 								<td>Email:</td>
@@ -50,51 +50,51 @@
 							</tr>
 							<tr>
 								<td>Education level:</td>
-								<td>{{ctrl.userDetails.educationLevel}}</td>
+								<td>{{global.user.educationLevel.value}}</td>
 							</tr>
 							<tr>
 								<td>Job:</td>
-								<td>{{ctrl.userDetails.employment}}</td>
+								<td>{{global.user.employment.value}}</td>
 							</tr>
 							<tr>
 								<td>Private Car Ownership:</td>
-								<td>{{ctrl.userDetails.privateCarOwnership}}c</td>
+								<td>{{global.user.privateCarOwnership}}</td>
 							</tr>
-							<tr th:if="${(profileInfo.carFuel != null)}">
+							<tr>
 								<td>Car Fuel:</td>
-								<td th:text="${profileInfo.carFuel.value}">n.a.</td>
+								<td>{{global.user.carFuel.value}}</td>
 							</tr>
-							<tr th:if="${(profileInfo.carRegistrationYear != null)}">
+							<tr>
 								<td>Car year:</td>
-								<td th:text="${profileInfo.carRegistrationYear}">n.a.</td>
+								<td>{{global.user.carRegistrationYear}}</td>
 							</tr>
 							<tr>
 								<td>Car sharing usage:</td>
-								<td th:text="${profileInfo.carSharingUsage}">n.a.</td>
+								<td>{{global.user.carSharingUsage}}</td>
 							</tr>
-							<tr th:if="${(profileInfo.carSharingService != null)}">
+							<tr>
 								<td>Car sharing service:</td>
-								<td th:text="${profileInfo.carSharingService.name}">n.a.</td>
+								<td>{{global.user.carSharingService.name}}</td>
 							</tr>
 							<tr>
 								<td>Public Transport usage:</td>
-								<td th:text="${profileInfo.publicTransportUsage}">n.a.</td>
+								<td>{{global.user.publicTransportUsage}}</td>
 							</tr>
-							<tr th:if="${(profileInfo.habitualTravelDocument != null)}">
+							<tr>
 								<td>Habitual travel document:</td>
-								<td th:text="${profileInfo.habitualTravelDocument.name}">n.a.</td>
+								<td>{{global.user.habitualTravelDocument.name}}</td>
 							</tr>
 							<tr>
 								<td>Bike Usage:</td>
-								<td th:text="${profileInfo.bikeUsage}">n.a.</td>
+								<td>{{global.user.bikeUsage}}</td>
 							</tr>
-							<tr th:if="${(profileInfo.privateBikeUsage != null)}">
+							<tr>
 								<td>Private Bike Usage:</td>
-								<td th:text="${profileInfo.privateBikeUsage}">n.a.</td>
+								<td>{{global.user.privateBikeUsage}}</td>
 							</tr>
-							<tr th:if="${(profileInfo.bikeSharingUsage != null)}">
+							<tr>
 								<td>Bike Sharing Usage:</td>
-								<td th:text="${profileInfo.bikeSharingUsage}">n.a.</td>
+								<td>{{global.user.bikeSharingUsage}}</td>
 							</tr>
 						</tbody>
 					</table>

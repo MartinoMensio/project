@@ -7,15 +7,16 @@ app.factory('UserService', ['$http', '$q', '$localStorage', function ($http, $q,
     return {
         getCurrentUser: function () {
             var deferred = $q.defer();
-            $http.get(endpoint + '/api/me').then(function (result) {
-                if (result.data === "") {
-                    // API called successfully but no user authenticated
-                    deferred.reject({ reason: "not authenticated" });
-                }
-                deferred.resolve(result.data);
-            }, function (result) {
-                deferred.reject(result);
-            });
+            if (!$localStorage.token) {
+                // no token is stored: this means that user is not logged in
+                deferred.reject("not logged in");
+            } else {
+                $http.get(endpoint + '/api/profile').then(function (result) {
+                    deferred.resolve(result.data);
+                }, function (result) {
+                    deferred.reject(result);
+                });
+            }
             return deferred.promise;
         },
         login: function (user) {
@@ -36,15 +37,6 @@ app.factory('UserService', ['$http', '$q', '$localStorage', function ($http, $q,
             var deferred = $q.defer();
             $localStorage.token = null;
             deferred.resolve("logged out");
-            return deferred.promise;
-        },
-        getUserDetails: function() {
-            var deferred = $q.defer();
-            $http.get(endpoint + '/api/me/details').then(function (result) {
-                deferred.resolve(result.data);
-            }, function (result) {
-                deferred.reject(result);
-            });
             return deferred.promise;
         }
     }

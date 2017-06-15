@@ -73,13 +73,7 @@ app.config(['$locationProvider', '$urlRouterProvider', '$stateProvider', '$httpP
             url: '/profile',
             templateUrl: 'templates/profile.html',
             controller: 'ProfileCtrl',
-            controllerAs: 'ctrl',
-            resolve: {
-                // get the current user
-                userDetails: ['UserService', function(UserService) {
-                    return UserService.getUserDetails();
-                }]
-            }
+            controllerAs: 'ctrl'
         })
 
     // configure html5 to get links working on jsfiddle
