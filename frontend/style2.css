@@ -180,3 +180,8 @@ body {
 	  width:400px;
 	  margin:auto;
   }
+
+  #navbar-principal{
+	  padding-left: 30px;
+	  padding-right: 30px;
+}
