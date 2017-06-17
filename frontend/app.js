@@ -61,6 +61,13 @@ app.config(['$locationProvider', '$urlRouterProvider', '$stateProvider', '$httpP
             controller: 'BestPathCtrl',
             controllerAs: 'ctrl'
         })
+        // Chat page
+        .state('page.chat', {
+            url: '/chat',
+            templateUrl: 'templates/chat.html',
+            //controller: 'chatCtrl',
+           // controllerAs: 'ctrl'
+        })
         // login page
         .state('page.login', {
             url: '/login',
