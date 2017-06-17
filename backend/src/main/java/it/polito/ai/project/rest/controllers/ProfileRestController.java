@@ -64,7 +64,7 @@ public class ProfileRestController {
 	}
 
 	@RequestMapping(path = "/api/profile", method = RequestMethod.PUT)
-	public ResultInfoResource updateProfile(@Valid @RequestBody ProfileForm profileFormTest, BindingResult result) {
+	public ProfileResource updateProfile(@Valid @RequestBody ProfileForm profileFormTest, BindingResult result) {
 		if (!result.getFieldValue("carRegistrationYear").equals("") && result.hasErrors()) {
 			throw new ClientErrorException("wrong fields in the request");
 		}
@@ -80,13 +80,12 @@ public class ProfileRestController {
 
 		// Save the user profile data
 		try {
-			accountingService.updateUserProfileInfo(currentUserService.getCurrentUser().getEmail(), userProfile,
+			User updatedUser = accountingService.updateUserProfileInfo(currentUserService.getCurrentUser().getEmail(), userProfile,
 					profileFormTest.getNickname());
+			return new ProfileResource(updatedUser);
 		} catch (Exception e) {
 			throw new ClientErrorException("update failed");
 		}
-
-		return new ResultInfoResource(200, "profile updated");
 	}
 
 	private UserProfile profileFormToUserProfile(ProfileForm profileForm) {

@@ -82,6 +82,34 @@ app.config(['$locationProvider', '$urlRouterProvider', '$stateProvider', '$httpP
             controller: 'ProfileCtrl',
             controllerAs: 'ctrl'
         })
+        // change password
+        .state('page.changePassword', {
+            url: '/changePassword',
+            templateUrl: 'templates/changePassword.html',
+            controller: 'ChangePasswordCtrl',
+            controllerAs: 'ctrl'
+        })
+        // edit profile
+        .state('page.editProfile', {
+            url: '/editProfile',
+            templateUrl: 'templates/editProfile.html',
+            controller: 'EditProfileCtrl',
+            controllerAs: 'ctrl',
+            resolve: {
+                // get needed values for the form
+                profileAttributes: ['$q', 'UserService', function($q, UserService) {
+                    var promises = {
+                        carSharingServices: UserService.getCarSharingServices(),
+                        educationLevels: UserService.getEducationLevels(),
+                        employments: UserService.getEmployments(),
+                        fuels: UserService.getFuels(),
+                        travelDocuments: UserService.travelDocuments()
+                    };
+                    // return a promise that depends on all the promises stated before
+                    return $q.all(promises);
+                }]
+            }
+        })
 
     // configure html5 to get links working on jsfiddle
     //$locationProvider.html5Mode(true);

@@ -60,11 +60,11 @@
 								<td>Private Car Ownership:</td>
 								<td>{{global.user.privateCarOwnership}}</td>
 							</tr>
-							<tr>
+							<tr ng-if="global.user.privateCarOwnership">
 								<td>Car Fuel:</td>
 								<td>{{global.user.carFuel.value}}</td>
 							</tr>
-							<tr>
+							<tr ng-if="global.user.privateCarOwnership">
 								<td>Car year:</td>
 								<td>{{global.user.carRegistrationYear}}</td>
 							</tr>
@@ -72,7 +72,7 @@
 								<td>Car sharing usage:</td>
 								<td>{{global.user.carSharingUsage}}</td>
 							</tr>
-							<tr>
+							<tr ng-if="global.user.carSharingUsage">
 								<td>Car sharing service:</td>
 								<td>{{global.user.carSharingService.name}}</td>
 							</tr>
@@ -80,7 +80,7 @@
 								<td>Public Transport usage:</td>
 								<td>{{global.user.publicTransportUsage}}</td>
 							</tr>
-							<tr>
+							<tr ng-if="global.user.publicTransportUsage">
 								<td>Habitual travel document:</td>
 								<td>{{global.user.habitualTravelDocument.name}}</td>
 							</tr>
@@ -88,11 +88,11 @@
 								<td>Bike Usage:</td>
 								<td>{{global.user.bikeUsage}}</td>
 							</tr>
-							<tr>
+							<tr ng-if="global.user.bikeUsage">
 								<td>Private Bike Usage:</td>
 								<td>{{global.user.privateBikeUsage}}</td>
 							</tr>
-							<tr>
+							<tr ng-if="global.user.bikeUsage">
 								<td>Bike Sharing Usage:</td>
 								<td>{{global.user.bikeSharingUsage}}</td>
 							</tr>
@@ -103,12 +103,12 @@
 		</div>
 		<div class="panel-footer" id="panel-footer-profile">
 			<span class="pull-right"> 
-							<a href="updateProfile" data-toggle="tooltip" type="button" class="btn btn-sm btn-info">
+							<a ui-sref="page.editProfile" data-toggle="tooltip" type="button" class="btn btn-sm btn-info">
 								<i class="glyphicon glyphicon-edit"></i>Edit profile
 							</a>
 						</span>
 			<span class="pull-right"> 
-							<a href="changePassword" data-toggle="tooltip" type="button" class="btn btn-sm btn-warning">
+							<a ui-sref="page.changePassword" data-toggle="tooltip" type="button" class="btn btn-sm btn-warning">
 								<i class="glyphicon glyphicon-edit"></i>Change password
 							</a>
 						</span>
