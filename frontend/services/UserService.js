@@ -5,6 +5,7 @@ app.factory('UserService', ['$http', '$q', '$localStorage', function ($http, $q,
     var endpoint = "http://localhost:8888";
 
     return {
+        endpoint: endpoint,
         getCurrentUser: function () {
             var deferred = $q.defer();
             if (!$localStorage.token) {
