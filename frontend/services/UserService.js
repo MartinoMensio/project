@@ -33,6 +33,18 @@ app.factory('UserService', ['$http', '$q', '$localStorage', function ($http, $q,
             });
             return deferred.promise;
         },
+        signup: function(registration) {
+            var deferred = $q.defer();
+            // send registration data
+            $http.post(endpoint + '/api/signup', registration).then(function (result) {
+                // post succeeded
+                deferred.resolve("ok");
+            }, function (error) {
+                // post failed
+                deferred.reject(error);
+            });
+            return deferred.promise;
+        },
         logout: function () {
             var deferred = $q.defer();
             $localStorage.token = null;

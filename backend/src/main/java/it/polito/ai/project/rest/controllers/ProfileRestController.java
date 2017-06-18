@@ -3,10 +3,12 @@ package it.polito.ai.project.rest.controllers;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import it.polito.ai.project.business.services.accounting.AccountingService;
@@ -18,6 +20,7 @@ import it.polito.ai.project.rest.resources.ProfileResource;
 import it.polito.ai.project.rest.resources.ResultInfoResource;
 import it.polito.ai.project.web.controller.forms.PasswordForm;
 import it.polito.ai.project.web.controller.forms.ProfileForm;
+import it.polito.ai.project.web.controller.forms.RegistrationForm;
 import it.polito.ai.project.web.exceptions.ClientErrorException;
 
 @RestController
@@ -29,41 +32,37 @@ public class ProfileRestController {
 	@Autowired
 	AccountingService accountingService;
 
-	@RequestMapping(path = "/api/profile", method = RequestMethod.GET)
+	@GetMapping("/api/profile")
 	public ProfileResource getProfile() {
 		User currentUser = currentUserService.getCurrentUser();
 		return new ProfileResource(currentUser);
 	}
 
-	@RequestMapping(path = "/api/profile/password", method = RequestMethod.PUT)
+	@PutMapping("/api/profile/password")
 	public ResultInfoResource changePassword(@Valid @RequestBody PasswordForm passwordForm, BindingResult result) {
 		if (result.hasErrors()) {
 			throw new ClientErrorException("wrong fields in the request");
 		}
-		
+
 		String userEmail = currentUserService.getCurrentUser().getEmail();
 		ResultInfo res = null;
-		
+
 		// Request the service to update the password
 		try {
-			res = accountingService.changePassword(userEmail, 
-							passwordForm.getOldPassword(), 
-							passwordForm.getNewPassword(), 
-							passwordForm.getConfirmedPassword());
-		}
-		catch (Exception e) {
+			res = accountingService.changePassword(userEmail, passwordForm.getOldPassword(),
+					passwordForm.getNewPassword(), passwordForm.getConfirmedPassword());
+		} catch (Exception e) {
 			throw new ClientErrorException("change password failed");
 		}
-		
+
 		if (res == ResultInfo.PASSWORD_CHANGE_OK) {
 			return new ResultInfoResource(200, "password changed");
-		}
-		else {
+		} else {
 			throw new ClientErrorException();
 		}
 	}
 
-	@RequestMapping(path = "/api/profile", method = RequestMethod.PUT)
+	@PutMapping("/api/profile")
 	public ProfileResource updateProfile(@Valid @RequestBody ProfileForm profileFormTest, BindingResult result) {
 		if (!result.getFieldValue("carRegistrationYear").equals("") && result.hasErrors()) {
 			throw new ClientErrorException("wrong fields in the request");
@@ -80,12 +79,34 @@ public class ProfileRestController {
 
 		// Save the user profile data
 		try {
-			User updatedUser = accountingService.updateUserProfileInfo(currentUserService.getCurrentUser().getEmail(), userProfile,
-					profileFormTest.getNickname());
+			User updatedUser = accountingService.updateUserProfileInfo(currentUserService.getCurrentUser().getEmail(),
+					userProfile, profileFormTest.getNickname());
 			return new ProfileResource(updatedUser);
 		} catch (Exception e) {
 			throw new ClientErrorException("update failed");
 		}
+	}
+
+	@PostMapping("/api/signup")
+	public ResultInfoResource signup(@Valid @RequestBody RegistrationForm registrationForm, BindingResult result) {
+		/*
+		 * Validate received data.
+		 */
+		if (result.hasErrors()) {
+			throw new ClientErrorException("the data provided contains some errors");
+		}
+
+		try {
+			accountingService.addNewUser(registrationForm.getEmail(), registrationForm.getNickname(),
+					registrationForm.getPassword());
+		} catch (DataIntegrityViolationException e) {
+			throw new ClientErrorException("An account already exists associated to this email");
+		} catch (Exception e) {
+			throw new ClientErrorException();
+		}
+
+		return new ResultInfoResource(200,
+				"the account is created and an email has been sent to the provided address. Confirm the email address");
 	}
 
 	private UserProfile profileFormToUserProfile(ProfileForm profileForm) {

@@ -75,6 +75,13 @@ app.config(['$locationProvider', '$urlRouterProvider', '$stateProvider', '$httpP
             controller: 'LoginCtrl',
             controllerAs: 'ctrl'
         })
+        // signup page
+        .state('page.signup', {
+            url: '/signup',
+            templateUrl: 'templates/signup.html',
+            controller: 'SignupCtrl',
+            controllerAs: 'ctrl'
+        })
         // profile
         .state('page.profile', {
             url: '/profile',
@@ -109,7 +116,7 @@ app.config(['$locationProvider', '$urlRouterProvider', '$stateProvider', '$httpP
                     return $q.all(promises);
                 }]
             }
-        })
+        });
 
     // configure html5 to get links working on jsfiddle
     //$locationProvider.html5Mode(true);
