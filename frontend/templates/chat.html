@@ -5,23 +5,25 @@
 				Chat
 			</div>
 			<div class="panel-body">
-				<ul class="chat">
+				<ul class="chat" ng-repeat="msg in ctrl.messages">
+          <message username="{{msg.username}}" timestamp="{{msg.timestamp}}" text="{{msg.text}}" side="{{msg.side}}"></message>
+          <!--
           <message username="Alessio" timestamp="12.37 17/06/2017" text="Provaaaaaaaaaaaaaaaa" side="left"></message>
           <message username="Alessio" timestamp="12.37 17/06/2017" text="Provaaaaaaaaaaaaaaaa222" side="right"></message>
           <message username="Alessio" timestamp="12.37 17/06/2017" text="Provaaaaaaaaaaaaaaaa222" side="left"></message>
           <message username="Alessio" timestamp="12.37 17/06/2017" text="Provaaaaaaaaaaaaaaaa" side="left"></message>
           <message username="Alessio" timestamp="12.37 17/06/2017" text="Provaaaaaaaaaaaaaaaa222" side="right"></message>
-          <message username="Alessio" timestamp="12.37 17/06/2017" text="Provaaaaaaaaaaaaaaaa222" side="left"></message>
+          <message username="Alessio" timestamp="12.37 17/06/2017" text="Provaaaaaaaaaaaaaaaa222" side="left"></message> -->
 				</ul>
 			</div>
 			<div class="panel-footer">
 				<div class="sendForm">
           <div class="message_input_wrapper">
-            <input class="message_input" placeholder="Type your message here..." />
+            <input class="message_input" ng-model="ctrl.msg_text" placeholder="Type your message here..." ng-keyup="$event.keyCode == 13 ? ctrl.sendMessage() : null"/>
           </div>
           <div class="chat_buttons">
             <button class="btn btn-warning" data-toggle="modal" data-target="#myModal">Attach</button>
-            <button class="btn btn-success">Send</button>
+            <button class="btn btn-success" ng-click="ctrl.sendMessage()">Send</button>
               <!--<div class="icon"></div>
               <div class="text">Attach</div>
               <div class="icon"></div>
