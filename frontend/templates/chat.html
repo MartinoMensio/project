@@ -1,10 +1,10 @@
-<div class="container-fluid">
+<div class="container-fluid" id="container-chat">
 	<!-- <div class="row" id="row-room"> -->
 		<div class="panel panel-default" id="panel-room">
 			<div class="panel-heading text-center">
 				Chat
 			</div>
-			<div class="panel-body">
+			<div class="panel-body" scroll-glue force-glue>
 				<ul class="chat" ng-repeat="msg in ctrl.messages">
           <message username="{{msg.username}}" timestamp="{{msg.timestamp}}" text="{{msg.text}}" side="{{msg.side}}"></message>
           <!--
@@ -21,7 +21,7 @@
           <div class="message_input_wrapper">
             <input class="message_input" ng-model="ctrl.msg_text" placeholder="Type your message here..." ng-keyup="$event.keyCode == 13 ? ctrl.sendMessage() : null"/>
           </div>
-          
+
           <div class="chat_buttons clearfix">
             <button class="add_button text" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-plus"></span></button>
             <button class="send_button text" ng-click="ctrl.sendMessage()"><span class="glyphicon glyphicon-send"></span></button>
@@ -60,7 +60,7 @@
                           </div>
                         </div>
 
-                        
+
 
                         <div class="form-group">
                           <label for="address">Indirizzo:</label>
@@ -80,7 +80,7 @@
 
                 </div>
               </div>
-            
+
           </div>
 				</div>
 			</div>

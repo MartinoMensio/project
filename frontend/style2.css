@@ -185,3 +185,21 @@ body {
 	  padding-left: 30px;
 	  padding-right: 30px;
 }
+
+
+#container-login {
+	margin-top: 40px;
+	width: 50%;
+}
+
+#container-bestpath {
+	margin-top: 80px;
+}
+
+#container-busLineList {
+	margin-top: 80px;
+}
+
+#container-chat {
+	margin-top: 80px;
+}

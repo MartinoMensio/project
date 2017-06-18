@@ -1,4 +1,4 @@
-var app = angular.module('App', ['ngRoute', 'ngResource', 'ui-leaflet', 'ui.router', 'ngStorage'])
+var app = angular.module('App', ['ngRoute', 'ngResource', 'ui-leaflet', 'ui.router', 'ngStorage', 'luegg.directives'])
 
 app.config(['$locationProvider', '$urlRouterProvider', '$stateProvider', '$httpProvider', function ($locationProvider, $urlRouterProvider, $stateProvider, $httpProvider) {
     // If the URL does not correspond to anything then redirect to '/'
