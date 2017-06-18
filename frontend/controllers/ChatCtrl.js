@@ -49,10 +49,9 @@ app.controller('ChatCtrl', ['$scope', '$uibModal', function ($scope, $uibModal) 
             /*ariaLabelledBy: 'modal-title',
             ariaDescribedBy: 'modal-body',*/
             templateUrl: 'templates/modals/newWarningModal.html',
-            /*controller: 'ModalInstanceCtrl',
-            controllerAs: '$ctrl',*/
+            controller: 'NewWarningModalCtrl',
+            controllerAs: 'ctrl',
             size: 'lg'
-            /*appendTo: parentElem,*/
             /*resolve: {
                 items: function () {
                 return $ctrl.items;

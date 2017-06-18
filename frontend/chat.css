@@ -161,3 +161,8 @@
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
     background-color: #555;
 }
+
+/* change the default margin of the modal from the top */
+.modal-dialog {
+    margin: 90px auto;
+}
