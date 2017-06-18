@@ -3,6 +3,7 @@ var app = angular.module('App');
 app.controller('ChatCtrl', ['$scope', '$uibModal', function ($scope, $uibModal) {
     this.messages = [];
     this.msg_text = "";
+    this.template = "templates/popovers/popoverTemplate.html";
 
     var ms1 = {
         username: "Alessio",

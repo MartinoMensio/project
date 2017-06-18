@@ -17,9 +17,9 @@
         </div>
 
         <div class="chat_buttons clearfix">
-          <button class="add_button text" ng-click="ctrl.openNewWarningModal()"><span class="glyphicon glyphicon-plus"></span></button>
+          <!--<button class="add_button text" ng-click="ctrl.openNewWarningModal()"><span class="glyphicon glyphicon-plus"></span></button> -->
+          <button class="add_button text" popover-placement="top" uib-popover-template="ctrl.template" type="button"><span class="glyphicon glyphicon-plus"></span></button>
           <button class="send_button text" ng-click="ctrl.sendMessage()"><span class="glyphicon glyphicon-send"></span></button>
-          <!--<button popover-placement="top" uib-popover-html="'<b>HTML</b>, <i>inline</i>''" type="button">Popover</button> -->
         </div>
       </div>
     </div>
