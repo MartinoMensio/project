@@ -4,7 +4,7 @@
 			<div class="panel-heading text-center">
 				Chat
 			</div>
-			<div class="panel-body">
+			<div class="panel-body" scroll-glue force-glue>
 				<ul class="chat" ng-repeat="msg in ctrl.messages">
           <message username="{{msg.username}}" timestamp="{{msg.timestamp}}" text="{{msg.text}}" side="{{msg.side}}"></message>
           <!--
