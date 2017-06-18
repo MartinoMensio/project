@@ -17,17 +17,24 @@
 				</ul>
 			</div>
 			<div class="panel-footer">
-				<div class="sendForm">
+				<div class="bottom_wrapper clearfix">
           <div class="message_input_wrapper">
             <input class="message_input" ng-model="ctrl.msg_text" placeholder="Type your message here..." ng-keyup="$event.keyCode == 13 ? ctrl.sendMessage() : null"/>
           </div>
-          <div class="chat_buttons">
-            <button class="btn btn-warning" data-toggle="modal" data-target="#myModal">Attach</button>
-            <button class="btn btn-success" ng-click="ctrl.sendMessage()">Send</button>
+          
+          <div class="chat_buttons clearfix">
+            <button class="add_button text" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-plus"></span></button>
+            <button class="send_button text" ng-click="ctrl.sendMessage()"><span class="glyphicon glyphicon-send"></span></button>
               <!--<div class="icon"></div>
               <div class="text">Attach</div>
               <div class="icon"></div>
               <div class="text">Send</div>-->
+
+
+
+
+
+
 
               <!-- Modal -->
               <div id="myModal" class="modal fade" role="dialog">

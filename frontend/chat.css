@@ -62,12 +62,20 @@
     background-color: #f8f8f8;
 }
 
+.bottom_wrapper {
+    position: relative;
+    width: 100%;
+    background-color: #fff;
+    padding: 10px 10px;
+    bottom: 0;
+}
+
 .message_input_wrapper {
     display: inline-block;
     height: 50px;
     border-radius: 6px;
     border: 1px solid #bcbdc0;
-    width: calc(100% - 320px);
+    width: 90%;
     position: relative;
     padding: 0 20px;
 }
@@ -83,20 +91,22 @@
 }
 
 .chat_buttons {
-    display: inline-block;
+    float: right;
+    position: relative;
+    text-align: center;
 }
 
 .add_button {
-    width: 140px;
+    width: 50px;
     height: 50px;
+    margin-right: 10px;
     display: inline-block;
-    border-radius: 6px;
+    border-radius: 50%;
     background-color: #ffe066;
     border: 2px solid #ffe066;
     color: #fff;
-    cursor: pointer;
     transition: all 0.2s linear;
-    text-align: center;
+    
 }
 
 .add_button:hover {
@@ -108,20 +118,18 @@
     font-weight: 300;
     display: inline-block;
     line-height: 48px;
+    text-align: center;
 }
 
 .send_button {
-    width: 140px;
+    width: 50px;
     height: 50px;
-    margin-right: 10px;
     display: inline-block;
-    border-radius: 6px;
+    border-radius: 50%;
     background-color: #a3d063;
     border: 2px solid #a3d063;
     color: #fff;
-    cursor: pointer;
     transition: all 0.2s linear;
-    text-align: center;
 }
 
 .send_button:hover {
@@ -131,8 +139,9 @@
 .send_button .text {
     font-size: 18px;
     font-weight: 300;
-    display: inline-block;
+    display: inline;
     line-height: 48px;
+    text-align: center;
 }
 
 ::-webkit-scrollbar-track
