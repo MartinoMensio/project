@@ -98,3 +98,36 @@ create table if not exists user_profiles (
   foreign key (habitual_travel_document_id) references travel_documents(id),
   foreign key (image_id) references images(id)
 );
+
+create table if not exists alerts (
+  id bigint not null,
+  alert_type_id bigint not null,
+  user_id bigint not null,
+  rating FLOAT(5),
+  address varchar(200) not null,
+  lat double precision not null,
+  lng double precision not null,
+  activation_date DATE not null,
+  last_view_time TIME not null,
+  comment varchar(2000),
+  primary key (id),
+  foreign key (alert_type_id) references alert_types(id), -- Warning has a type
+  foreign key (user_id) references users(id) -- User creates a warning
+);
+
+create table if not exists alert_types (
+  id bigint not null,
+  name varchar(30) not null,
+  image BYTEA not null, --fixed image
+  primary key (id)
+);
+
+create table if not exists ratings (
+	id bigint not null,
+	user_id bigint not null,
+	alert_id bigint not null,
+	vote integer not null, -- from 1.0 to 5.0
+	primary key (id)
+	foreign key (user_id) references users(id)
+	foreign key (alert_id) references alerts(id)
+);
