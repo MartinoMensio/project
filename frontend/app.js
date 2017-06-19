@@ -83,10 +83,10 @@ app.config(['$locationProvider', '$urlRouterProvider', '$stateProvider', '$httpP
             controllerAs: 'ctrl'
         })
 		// Alert page
-        .state('page.alert', {
+        .state('page.alerts', {
             url: '/alert',
             templateUrl: 'templates/alert.html',
-            controller: 'AlertCtrl',
+            controller: 'AlertsCtrl',
             controllerAs: 'ctrl'
         })
         // login page
