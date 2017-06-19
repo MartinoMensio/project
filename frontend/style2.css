@@ -203,3 +203,8 @@ body {
 #container-chat {
 	margin-top: 80px;
 }
+
+#container-signup {
+	margin-top: 40px;
+	width: 50%;
+}
