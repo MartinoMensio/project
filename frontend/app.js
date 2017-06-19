@@ -1,4 +1,4 @@
-var app = angular.module('App', ['ngRoute', 'ngResource', 'ui-leaflet', 'ui.router', 'ngStorage', 'luegg.directives', 'ui.bootstrap'])
+var app = angular.module('App', ['ngRoute', 'ngResource', 'ui-leaflet', 'ui.router', 'ngStorage', 'luegg.directives', 'ui.bootstrap', 'ui.router.state.events'])
 
 app.config(['$locationProvider', '$urlRouterProvider', '$stateProvider', '$httpProvider', function ($locationProvider, $urlRouterProvider, $stateProvider, $httpProvider) {
     // If the URL does not correspond to anything then redirect to '/'
@@ -11,15 +11,15 @@ app.config(['$locationProvider', '$urlRouterProvider', '$stateProvider', '$httpP
     $stateProvider
         // main abstract state for global things (page template + header)
         .state('page', {
-            templateUrl : 'templates/page.html',
+            templateUrl: 'templates/page.html',
             controller: 'PageCtrl',
             controllerAs: 'global',
             abstract: true,
             // those object/promises will be provided to the controllers
             resolve: {
                 // get the current user
-                user: ['UserService', function(UserService) {
-                    return UserService.getCurrentUser().catch(function(error) {
+                user: ['UserService', function (UserService) {
+                    return UserService.getCurrentUser().catch(function (error) {
                         return null;
                     })
                 }]
@@ -30,16 +30,16 @@ app.config(['$locationProvider', '$urlRouterProvider', '$stateProvider', '$httpP
             url: '/',
             templateUrl: 'templates/home.html'
         })
-		// About page state
+        // About page state
         .state('page.about', {
             url: '/about',
             templateUrl: 'templates/about.html'
         })
-		// Contact page state
-		.state('page.contact', {
-			url: '/contact',
-			templateUrl: 'templates/contact.html'
-		})
+        // Contact page state
+        .state('page.contact', {
+            url: '/contact',
+            templateUrl: 'templates/contact.html'
+        })
         // Bus lines list page
         .state('page.busLines', {
             url: '/busLines',
@@ -70,19 +70,19 @@ app.config(['$locationProvider', '$urlRouterProvider', '$stateProvider', '$httpP
             // these objects/promises will be provided to the controllers
             resolve: {
                 // get chat topics
-                topics: ['ChatService', function(ChatService) {
+                topics: ['ChatService', function (ChatService) {
                     return ChatService.getTopics();
                 }]
             }
         })
         // Chat page
         .state('page.chat', {
-            url: '/{topicId}',
+            url: '/chat/{topicId}',
             templateUrl: 'templates/chat.html',
             controller: 'ChatCtrl',
             controllerAs: 'ctrl'
         })
-		// Alert page
+        // Alert page
         .state('page.alerts', {
             url: '/alert',
             templateUrl: 'templates/alert.html',
@@ -125,7 +125,7 @@ app.config(['$locationProvider', '$urlRouterProvider', '$stateProvider', '$httpP
             controllerAs: 'ctrl',
             resolve: {
                 // get needed values for the form
-                profileAttributes: ['$q', 'UserService', function($q, UserService) {
+                profileAttributes: ['$q', 'UserService', function ($q, UserService) {
                     var promises = {
                         carSharingServices: UserService.getCarSharingServices(),
                         educationLevels: UserService.getEducationLevels(),
@@ -143,10 +143,29 @@ app.config(['$locationProvider', '$urlRouterProvider', '$stateProvider', '$httpP
     //$locationProvider.html5Mode(true);
 }]);
 
-// TODO vedere se serve definire direttive custom o se ce la caviamo con quelle esistenti
-app.directive('myDirective', function () {
-    /*
-  return {
-  };
-  */
-});
+app.run(['$rootScope', '$state', function ($rootScope, $state) {
+    // check the status of the user
+    $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
+        var user = $rootScope.user;
+        // if the user is not logged in, continue without problems
+        if (!user) {
+            return;
+        }
+        switch (user.status.value) {
+            // incomplete profile, send to edit profile
+            case "INCOMPLETE":
+                console.log('incomplete profile');
+                if (toState.name != 'page.editProfile') {
+                    // TODO show warning
+                    event.preventDefault();
+                    $state.go('page.editProfile');
+                }
+                break;
+            // user needs to confirm email
+            case "NOT_CONFIRMED":
+                // TODO
+                console.log('user not confirmed mail');
+                break;
+        }
+    });
+}]);

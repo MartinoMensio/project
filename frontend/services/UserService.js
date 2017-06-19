@@ -1,6 +1,6 @@
 var app = angular.module('App');
 
-app.factory('UserService', ['$http', '$q', '$localStorage', function ($http, $q, $localStorage) {
+app.factory('UserService', ['$http', '$q', '$localStorage', '$rootScope', function ($http, $q, $localStorage, $rootScope) {
 
     var endpoint = "http://localhost:8888";
 
@@ -13,6 +13,7 @@ app.factory('UserService', ['$http', '$q', '$localStorage', function ($http, $q,
                 deferred.reject("not logged in");
             } else {
                 $http.get(endpoint + '/api/profile').then(function (result) {
+                    $rootScope.user = result.data;
                     deferred.resolve(result.data);
                 }, function (result) {
                     deferred.reject(result);
@@ -49,6 +50,7 @@ app.factory('UserService', ['$http', '$q', '$localStorage', function ($http, $q,
         logout: function () {
             var deferred = $q.defer();
             $localStorage.token = null;
+            $rootScope.user = null;
             deferred.resolve("logged out");
             return deferred.promise;
         },
