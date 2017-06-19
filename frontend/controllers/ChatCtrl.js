@@ -44,4 +44,19 @@ app.controller('ChatCtrl', ['$scope', '$uibModal', 'ChatService', function ($sco
         });
     };
 
+    this.openAddPictureModal = function () {
+        var modalInstance = $uibModal.open({
+            templateUrl: 'templates/modals/addPictureModal.html',
+            controller: 'AddPictureModalCtrl',
+            controllerAs: 'ctrl',
+            size: 'lg'
+        });
+
+        modalInstance.result.then(function (selectedItem) {
+            $ctrl.selected = selectedItem;
+            },function () {
+            $log.info('Modal dismissed at: ' + new Date());
+        });
+    };
+
 }]);
