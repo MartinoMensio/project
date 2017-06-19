@@ -61,9 +61,23 @@ app.config(['$locationProvider', '$urlRouterProvider', '$stateProvider', '$httpP
             controller: 'BestPathCtrl',
             controllerAs: 'ctrl'
         })
+        // Chats page
+        .state('page.chatTopics', {
+            url: '/chatTopics',
+            templateUrl: 'templates/chatTopics.html',
+            controller: 'ChatTopicsCtrl',
+            controllerAs: 'ctrl',
+            // these objects/promises will be provided to the controllers
+            resolve: {
+                // get chat topics
+                topics: ['ChatService', function(ChatService) {
+                    return ChatService.getTopics();
+                }]
+            }
+        })
         // Chat page
         .state('page.chat', {
-            url: '/chat',
+            url: '/{topicId}',
             templateUrl: 'templates/chat.html',
             controller: 'ChatCtrl',
             controllerAs: 'ctrl'

@@ -1,0 +1,16 @@
+<div class="container" id="container-login">
+
+	<div class="hero-unit">
+	    <div class="page-header">
+	        <h1>Chat</h1>
+	    </div>
+	    <p class="lead">Here there is the list of all availble chat topics</p>
+	    <div class="container-signup">
+	        <p>Please select one topic for entering into a chat</p>
+	    </div>
+	</div>
+
+    <div ng-repeat="topic in ctrl.chatTopics">
+        <a ui-sref="page.chat({topicId: '{{topic.id}}' }">{{topic.name}}</a>
+    </div>
+</div>

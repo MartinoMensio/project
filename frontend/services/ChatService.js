@@ -9,7 +9,10 @@
 
 var app = angular.module('App');
 
-app.factory('ChatService', ['$http', function ($http) {
+app.factory('ChatService', ['$http', '$q', function ($http, $q) {
+    var endpoint = "http://localhost:8888/";
+    
+    //var topics = [];
     var messages = [];     // the list of messages
 
     var ms1 = {
@@ -38,6 +41,35 @@ app.factory('ChatService', ['$http', function ($http) {
 
     // service interface definition
     return {
+        /* Returns the list of all available topics
+         * Parameters:
+         *  - void
+         * Return
+         *  - a promise that contains the list of topics
+         * */
+        getTopics: function() {
+            var deferred = $q.defer();
+
+            $http.get(endpoint + 'rest/topics').then(function (result) {
+                // get secceded
+                deferred.resolve(result.data);
+            }, function (error) {
+                // get failed
+                deferred.reject(error);
+            });
+
+            return deferred.promise;
+
+            /*
+            var topic = {
+                id: 1,
+                name: "Traffic"
+            };
+
+            topics.push(topic);
+            return topics;*/
+        },
+
         /* Returns the list of all the stored messages
          * At the beginning it should contain the last 10 messages
          * Parameters:

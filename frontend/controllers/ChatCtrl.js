@@ -1,6 +1,6 @@
 var app = angular.module('App');
 
-app.controller('ChatCtrl', ['$scope', '$uibModal', 'ChatService', function ($scope, $uibModal, chatService) {
+app.controller('ChatCtrl', ['$scope', '$uibModal', '$stateParams', 'ChatService', function ($scope, $uibModal, $stateParams, chatService) {
     this.messages = chatService.getMessages();
     this.msg_text = "";
     this.template = "templates/popovers/popoverTemplate.html";
