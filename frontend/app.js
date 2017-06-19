@@ -68,6 +68,13 @@ app.config(['$locationProvider', '$urlRouterProvider', '$stateProvider', '$httpP
             controller: 'ChatCtrl',
             controllerAs: 'ctrl'
         })
+		// Alert page
+        .state('page.alert', {
+            url: '/alert',
+            templateUrl: 'templates/alert.html',
+            controller: 'AlertCtrl',
+            controllerAs: 'ctrl'
+        })
         // login page
         .state('page.login', {
             url: '/login',
