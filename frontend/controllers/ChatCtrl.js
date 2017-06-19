@@ -1,32 +1,9 @@
 var app = angular.module('App');
 
-app.controller('ChatCtrl', ['$scope', '$uibModal', function ($scope, $uibModal) {
-    this.messages = [];
+app.controller('ChatCtrl', ['$scope', '$uibModal', 'ChatService', function ($scope, $uibModal, chatService) {
+    this.messages = chatService.getMessages();
     this.msg_text = "";
     this.template = "templates/popovers/popoverTemplate.html";
-
-    var ms1 = {
-        username: "Alessio",
-        timestamp: new Date(),
-        text: "blablavla",
-        side: "right"
-    }
-    var ms2 = {
-        username: "Alessio",
-        timestamp: new Date(),
-        text: "blablavla",
-        side: "left"
-    }
-    var ms3 = {
-        username: "Alessio",
-        timestamp: new Date(),
-        text: "blablavla",
-        side: "right"
-    }
-
-    this.messages.push(ms1);
-    this.messages.push(ms2);
-    this.messages.push(ms3);
 
     this.sendMessage = function() {
         if (this.msg_text != "") {
@@ -37,7 +14,7 @@ app.controller('ChatCtrl', ['$scope', '$uibModal', function ($scope, $uibModal) 
                 side: "right"
             };
 
-            this.messages.push(newMsg);
+            chatService.sendMessage(newMsg);
             this.msg_text = "";
         }
     }
