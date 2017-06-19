@@ -18,12 +18,12 @@ public class Rating {
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="alert_id")
 	private Alert alert;
-	private float vote;
+	private int vote;
 	
-	public float getVote() {
+	public int getVote() {
 		return vote;
 	}
-	public void setVote(float vote) {
+	public void setVote(int vote) {
 		this.vote = vote;
 	}
 	public Alert getAlert() {

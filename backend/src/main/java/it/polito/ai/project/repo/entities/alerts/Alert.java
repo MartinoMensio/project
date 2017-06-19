@@ -1,6 +1,5 @@
 package it.polito.ai.project.repo.entities.alerts;
 
-import java.time.LocalTime;
 import java.util.Date;
 
 import javax.persistence.CascadeType;
@@ -27,7 +26,7 @@ public class Alert {
 	private double lat;
 	private double lng;
 	private Date activationDate;
-	private LocalTime lastViewTime; // TODO LocalTime è appropriato?
+	private Date lastViewTime;
 	private String comment;
 
 	public float getRating() {
@@ -60,7 +59,7 @@ public class Alert {
 
 	public void setLng(double lng) {
 		this.lng = lng;
-	}
+	}// TODO LocalTime è appropriato?
 
 	public Date getActivationDate() {
 		return activationDate;
@@ -70,11 +69,11 @@ public class Alert {
 		this.activationDate = activationDate;
 	}
 
-	public LocalTime getLastViewTime() {
+	public Date getLastViewTime() {
 		return lastViewTime;
 	}
 
-	public void setLastViewTime(LocalTime lastViewTime) {
+	public void setLastViewTime(Date lastViewTime) {
 		this.lastViewTime = lastViewTime;
 	}
 
