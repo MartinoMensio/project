@@ -16,12 +16,12 @@
                 <li ui-sref-active="active"> <a ui-sref="page.busLines"><span class="glyphicon glyphicon-search"></span> LINES</a> </li>
                 <li ui-sref-active="active"> <a ui-sref="page.bestPath"><span class="glyphicon glyphicon-transfer"></span> COMPUTE PATH</a> </li>
 				<li ui-sref-active="active"> <a ui-sref="page.chat"><span class="glyphicon glyphicon-comment"></span> CHAT</a></li>
-			  	<li ui-sref-active="active"> <a href="#pricing"><span class="glyphicon glyphicon-alert"></span> ALERTS</a></li>
+			  	<li ui-sref-active="active"> <a ui-sref="page.alert"><span class="glyphicon glyphicon-alert"></span> ALERTS</a></li>
             </ul>
 			<div ng-if="!global.user">
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a ui-sref="page.signup"><span class="glyphicon glyphicon-user"></span> SIGNUP</a></li>
-                    <li><a ui-sref="page.login"><span class="glyphicon glyphicon-log-in"></span> LOGIN</a></li>
+                    <li ui-sref-active="active"><a ui-sref="page.signup"><span class="glyphicon glyphicon-user"></span> SIGNUP</a></li>
+                    <li ui-sref-active="active"><a ui-sref="page.login"><span class="glyphicon glyphicon-log-in"></span> LOGIN</a></li>
                 </ul>
             </div>
             <div ng-if="global.user">
