@@ -6,9 +6,9 @@
 			<form name="searchForm">
 				<div class="form-group">
 					<label for="sourceStr">Source</label>
-					<input ng-model="ctrl.sourceStr" ng-model-options="{ debounce: 1000 }" ng-change="ctrl.geocodeSrc()" class="form-control" id="sourceStr" placeholder="from where?" required />
+					<input ng-model="ctrl.sourceStr" ng-model-options="{ debounce: 500 }" ng-change="ctrl.geocodeSrc()" class="form-control" id="sourceStr" placeholder="from where?" required />
 					<label for="destinationStr">Destination</label>
-					<input ng-model="ctrl.destinationStr" ng-model-options="{ debounce: 1000 }" ng-change="ctrl.geocodeDst()" class="form-control" id="destinationStr" placeholder="to where?" required />
+					<input ng-model="ctrl.destinationStr" ng-model-options="{ debounce: 500 }" ng-change="ctrl.geocodeDst()" class="form-control" id="destinationStr" placeholder="to where?" required />
 				</div>
 
 				<div class="form-group" id="button-form-group">
