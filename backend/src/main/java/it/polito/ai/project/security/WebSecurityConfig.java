@@ -30,7 +30,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		.authorizeRequests()
 		.antMatchers(HttpMethod.OPTIONS,"/**").permitAll()
 			// the permitted URLs without authentication
-			.antMatchers("/api/login", "/api/signup"," /rest/**", "/api/me").permitAll()
+			.antMatchers("/api/login", "/api/signup","/rest/**", "/api/me").permitAll()
 			// all the other URLs require authentication
 			.antMatchers("/**").authenticated()
 		.and()
