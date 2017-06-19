@@ -215,3 +215,26 @@ body {
 	left: 0;
 	width: 100%;
 }
+ 
+.rating { 
+  unicode-bidi: bidi-override; 
+  direction: rtl; 
+  font-size: 30px; 
+} 
+.rating > span { 
+  display: inline-block; 
+  position: relative; 
+  width: 1.1em; 
+} 
+.rating > span:hover:before, 
+.rating > span:hover ~ span:before { 
+  content: "\f005"; 
+     color: #e3cf7a; 
+} 
+ 
+.rating span.star { 
+    font-family: FontAwesome; 
+    font-weight: normal; 
+    font-style: normal; 
+    display: inline-block; 
+} 
