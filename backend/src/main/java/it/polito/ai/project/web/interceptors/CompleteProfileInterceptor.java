@@ -21,8 +21,10 @@ public class CompleteProfileInterceptor implements HandlerInterceptor {
 		User user = currentUserService.getCurrentUser();
 		if (user != null) {
 			if (user.getStatus().getValue().equals("INCOMPLETE")) {
-				response.sendRedirect("/updateProfile");
-				return false;
+				// TODO send HTTP error telling the client that the profile is incomplete
+				//response.sendRedirect("/updateProfile");
+				//return false;
+				return true;
 			}
 			else {
 				return true;
