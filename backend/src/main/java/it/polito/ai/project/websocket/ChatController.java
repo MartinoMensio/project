@@ -57,7 +57,7 @@ public class ChatController {
 				// create an object to be shown to the client
 				ChatMessage chatMessage = new ChatMessageImpl(messageEntity);
 				// send the message to the topic
-				messagingTemplate.convertAndSend("/topic/" + topic.getValue(), chatMessage);
+				messagingTemplate.convertAndSend("/topic/" + topic.getId(), chatMessage);
 			} else {
 				// inexistent topic
 				System.err.println("Inexistent topic " + topicId);
