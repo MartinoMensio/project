@@ -43,6 +43,7 @@ public class ProfileResource {
 		if (userProfile != null) {
 			this.sex = userProfile.getSex();
 			this.dateOfBirth = userProfile.getDateOfBirth();
+			this.educationLevel = userProfile.getEducationLevel();
 			this.employment = userProfile.getEmployment();
 			this.privateCarOwnership = userProfile.getPrivateCarOwnership();
 			this.carRegistrationYear = userProfile.getCarRegistrationYear();
