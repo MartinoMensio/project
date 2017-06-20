@@ -1,40 +1,46 @@
-<div class="container" id="container-login">
+<div class="container" id="container-login" style="text-align:center;">
 
-	<div class="hero-unit">
-	    <div class="page-header">
+	<div class="hero-unit" style="text-align:center">
+	    <div class="page-header" >
 	        <h1>Login</h1>
 	    </div>
-	    <p class="lead">Complete Email and Password field</p>
+	    <p class="lead" style="margin-top:35px;">Complete Email and Password field</p>
 	    <div class="container-signup">
 	        <p>Remember that you must be registered in order to login</p>
 	    </div>
 	</div>
 
-    <div class="login-form">
-        <form name="loginForm" novalidate
-		 	class="form-horizontal" ng-submit="ctrl.submit()">
-            <div class="form-group" ng-class="{'has-error': loginForm.email.$invalid}">
-                <label for="email" class="col-sm-3 control-label">Email</label>
-                <div class="col-sm-7">
-                    <input type="email" class="form-control" id="email" name="email" autofocus="autofocus" placeholder="Email" required ng-model="ctrl.user.email">
-					<span class="help-block"
-     					ng-show="loginForm.email.$error.required">Required</span>
+
+
+    <div class="login-form" style="margin-top:20px;">
+        <form name="loginForm" novalidate class="form-horizontal" ng-submit="ctrl.submit()">
+
+		   <div class="form-group">
+				<div class="col-sm-offset-3 col-sm-6"  ng-class="{'has-error': loginForm.email.$invalid}">
+					<div class="input-group margin-bottom-sm" style="margin-bottom:15px;">
+					  <span class="input-group-addon"><i class="fa fa-envelope-o fa-fw"></i></span>
+					  <input type="email" class="form-control" id="email" name="email" autofocus="autofocus" placeholder="Email" required ng-model="ctrl.user.email">
+					</div>
+                </div>
+				<div class="col-sm-offset-3 col-sm-6" ng-class="{'has-error': loginForm.password.$invalid}">
+					<div class="input-group">
+					  <span class="input-group-addon"><i class="fa fa-key fa-fw"></i></span>
+					  <input type="password" class="form-control" id="password" name="password" autofocus="autofocus" placeholder="Password" required ng-model="ctrl.user.password">
+					</div>
                 </div>
             </div>
-            <div class="form-group" ng-class="{'has-error': loginForm.password.$invalid}">
-                <label for="password" class="col-sm-3 control-label">Password</label>
-                <div class="col-sm-7">
-                    <input type="password" class="form-control" id="password" name="password" placeholder="Password" required ng-model="ctrl.user.password">
-					<span class="help-block"
-     					ng-show="loginForm.password.$error.required">Required</span>
-                </div>
+
+            <div class="form-group" >
+
             </div>
-            <div class="form-group">
-                <div class="col-sm-offset-3 col-sm-10">
-                    <button type="submit" class="btn btn-large btn-success" ng-disabled="!loginForm.$valid">Sign in</button>
+
+            <div class="form-group" style="padding-bottom:80px; ">
+                <div class="col-sm-offset-3 col-sm-6">
+                    <button type="submit" class="btn btn-large btn-success">Sign in</button>
+					<!-- ng-disabled="!loginForm.$valid" -->
                 </div>
             </div>
         </form>
     </div>
-	
+
 </div>
