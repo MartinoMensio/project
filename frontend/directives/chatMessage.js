@@ -3,6 +3,7 @@ var app = angular.module('App');
 app.directive('message', function() {
     return {
         scope: {
+            imgUrl: '@',
             username: '@',
             timestamp: '@',
             text: '@',

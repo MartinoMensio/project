@@ -7,7 +7,7 @@
     </div>
     <div class="panel-body" scroll-glue force-glue>
       <ul class="chat" ng-repeat="msg in ctrl.messages | orderBy:'sendingTime'">
-        <message username="{{msg.userNickname}}" timestamp="{{msg.sendingTime}}" text="{{msg.text}}" side="{{global.user.id == msg.userId ? 'right' : 'left'}}"></message>
+        <message username="{{msg.userNickname}}" imgUrl="{{msg.userImageUrl}}" timestamp="{{msg.sendingTime}}" text="{{msg.text}}" side="{{global.user.id == msg.userId ? 'right' : 'left'}}"></message>
       </ul>
     </div>
     <div class="panel-footer">
