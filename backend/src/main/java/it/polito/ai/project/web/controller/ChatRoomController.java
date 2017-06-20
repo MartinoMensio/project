@@ -21,7 +21,7 @@ public class ChatRoomController extends AbstractPageWithHeaderController{
 	@RequestMapping(value = "/{topicId}", method = RequestMethod.GET)
 	public String showLogin(ModelMap model, @PathVariable String topicId, CsrfToken csrfToken) {
 		super.attachData(model);
-		Topic topic = chatService.getTopicByName(topicId);
+		Topic topic = chatService.getTopicById(topicId);
 		if (topic != null) {
 			model.put("topic", topic);
 			model.put("csrfToken", csrfToken);

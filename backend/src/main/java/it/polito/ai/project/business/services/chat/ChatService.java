@@ -26,7 +26,7 @@ public interface ChatService {
 	 */
 	public Set<Topic> getTopics();
 	
-	public Topic getTopicByName(String name);
+	public Topic getTopicById(String id);
 	
 	public void saveMessage(Message message);
 	

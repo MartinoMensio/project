@@ -59,7 +59,15 @@ public class TokenAuthenticationService {
 
 	static Authentication getAuthentication(HttpServletRequest request) {
 		// get the Authorization header
-		String token = request.getHeader(HEADER_STRING);
+		String token = null;
+		String param = request.getParameter("jwt");
+	    if(param != null) {
+	    	// websocket authentication with query string (can't set header)
+	    	token = param;
+	    } else {
+	    	// authentication using Authorization header
+	    	 token = request.getHeader(HEADER_STRING);
+	    }
 		if (token != null) {
 			// parse the token
 			Claims claims = Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token.replace(TOKEN_PREFIX, ""))
