@@ -1,16 +1,22 @@
 var app = angular.module('App');
 
 app.controller('ChatCtrl', ['$scope', '$uibModal', '$stateParams', '$localStorage', 'ChatService', function ($scope, $uibModal, $stateParams, $localStorage, chatService) {
-    this.messages = chatService.getMessages();
-
-    var connectHeaders = {};
-    var chatEndpoint = "http://localhost:8888/chat";
-    var jwtParam = "?jwt=Bearer " + $localStorage.token;
-    var topicId = 1; // TODO get topic id from the app state
-
     this.template = "templates/popovers/popoverTemplate.html";
-
+    
+    this.messages = [];
     this.msg_text = "";
+
+    var topicId = $stateParams.topicId; // get the topic id from the app state
+
+    
+    // Define the callback that is called when a new message is received
+    var addMessage = (message) => {
+        this.messages.push(message);
+        $scope.$apply();
+    }
+
+    // Register the topic and the callback
+    chatService.connect(topicId, addMessage);
     
 
     this.sendMessage = function() {
@@ -22,27 +28,18 @@ app.controller('ChatCtrl', ['$scope', '$uibModal', '$stateParams', '$localStorag
                 side: "right"
             };
 
-            chatService.sendMessage(newMsg);
+            chatService.sendMessage(topicId, newMsg);
             this.msg_text = "";
         }
     }
 
 
     this.openNewWarningModal = function (size, parentSelector) {
-        //var parentElem = parentSelector ? angular.element($document[0].querySelector('.modal-demo ' + parentSelector)) : undefined;
-        
         var modalInstance = $uibModal.open({
-            /*ariaLabelledBy: 'modal-title',
-            ariaDescribedBy: 'modal-body',*/
             templateUrl: 'templates/modals/newWarningModal.html',
             controller: 'NewWarningModalCtrl',
             controllerAs: 'ctrl',
             size: 'lg'
-            /*resolve: {
-                items: function () {
-                return $ctrl.items;
-                }
-            }*/
         });
 
         modalInstance.result.then(function (selectedItem) {
