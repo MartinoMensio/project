@@ -9,34 +9,59 @@
 
 var app = angular.module('App');
 
-app.factory('ChatService', ['$http', '$q', function ($http, $q) {
-    var endpoint = "http://localhost:8888/";
+app.factory('ChatService', ['$http', '$q', '$localStorage', '$stomp', '$log', function ($http, $q, $localStorage, $stomp, $log) {
+    var webEndpoint = "http://localhost:8888/";
+
+    var connectHeaders = {};
+    var chatEndpoint = "http://localhost:8888/chat";
+    var jwtParam = "?jwt=Bearer " + $localStorage.token;
+    var roomEndpoint = "/app/";
+    var topicId = 1; // TODO get topic id from the app state
     
-    //var topics = [];
     var messages = [];     // the list of messages
 
-    var ms1 = {
-        username: "Alessio",
-        timestamp: new Date(),
-        text: "blablavla",
-        side: "right"
-    }
-    var ms2 = {
-        username: "Alessio",
-        timestamp: new Date(),
-        text: "blablavla",
-        side: "left"
-    }
-    var ms3 = {
-        username: "Alessio",
-        timestamp: new Date(),
-        text: "blablavla",
-        side: "right"
-    }
+    // Configuring the WebSocket
+    $stomp.setDebug(function (args) {
+      $log.debug(args)
+    });
 
-    messages.push(ms1);
-    messages.push(ms2);
-    messages.push(ms3);
+    $stomp.connect(chatEndpoint + jwtParam, connectHeaders).then(function (frame) {
+        // frame = CONNECTED headers
+        var subscription = $stomp.subscribe('/topic/' + topicId, function (message, headers, res) {
+                // Parse the message and add it to the list of messages 
+                var receivedMsg = {
+                    username: message.userNickname,
+                    timestamp: message.sendingTime,
+                    text: message.text,
+                    side: "left"
+                }
+
+                messages.push(receivedMsg);
+            },
+            { }
+        );
+
+        // Unsubscribe
+        //subscription.unsubscribe()
+
+        // Send message
+        /*$stomp.send('/dest', {
+          message: 'body'
+        }, {
+          priority: 9,
+          custom: 42 // Custom Headers
+        })*/
+
+        // Disconnect
+        /*$stomp.disconnect().then(function () {
+          $log.info('disconnected')
+        })*/
+    });
+
+
+
+
+
 
 
     // service interface definition
@@ -50,7 +75,7 @@ app.factory('ChatService', ['$http', '$q', function ($http, $q) {
         getTopics: function() {
             var deferred = $q.defer();
 
-            $http.get(endpoint + 'api/open/topics').then(function (result) {
+            $http.get(webEndpoint + 'api/open/topics').then(function (result) {
                 // get secceded
                 deferred.resolve(result.data);
             }, function (error) {
@@ -59,15 +84,6 @@ app.factory('ChatService', ['$http', '$q', function ($http, $q) {
             });
 
             return deferred.promise;
-
-            /*
-            var topic = {
-                id: 1,
-                name: "Traffic"
-            };
-
-            topics.push(topic);
-            return topics;*/
         },
 
         /* Returns the list of all the stored messages
@@ -84,13 +100,25 @@ app.factory('ChatService', ['$http', '$q', function ($http, $q) {
         /* Sends a message to the server adding it to the list of messages
          * Parameters:
          *  - message: an object that represents the message
+         *      message = {
+                    username: string,
+                    timestamp: date,
+                    text: string,
+                    side: right | left
+                };
          * Return
          *  - void
         */
         sendMessage: function(message) {
-            messages.push(message);
+            //messages.push(message);
 
             // TODO use HTTP for sending the message to the server
+            $stomp.send(roomEndpoint + topicId, {
+                    content : message.text,
+                    image: ""
+                },
+                {}
+            );
         }
     }
 }]);

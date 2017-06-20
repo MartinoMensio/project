@@ -1,6 +1,6 @@
 var app = angular.module('App');
 
-app.controller('ChatCtrl', ['$scope', '$uibModal', '$stateParams', '$localStorage', '$stomp', '$log', 'ChatService', function ($scope, $uibModal, $stateParams, $localStorage, $stomp, $log, chatService) {
+app.controller('ChatCtrl', ['$scope', '$uibModal', '$stateParams', '$localStorage', 'ChatService', function ($scope, $uibModal, $stateParams, $localStorage, chatService) {
     this.messages = chatService.getMessages();
 
     var connectHeaders = {};
@@ -12,46 +12,6 @@ app.controller('ChatCtrl', ['$scope', '$uibModal', '$stateParams', '$localStorag
 
     this.msg_text = "";
     
-
-
-    $stomp.setDebug(function (args) {
-      $log.debug(args)
-    })
-
-    $stomp.connect(chatEndpoint + jwtParam, connectHeaders).then(function (frame) {
-        // frame = CONNECTED headers
-        var subscription = $stomp.subscribe('/topic/' + topicId, function (payload, headers, res) {
-                //$scope.payload = payload
-                console.log("Chat connected");
-            },
-            { }
-        );
-
-        // Unsubscribe
-        //subscription.unsubscribe()
-
-        // Send message
-        /*$stomp.send('/dest', {
-          message: 'body'
-        }, {
-          priority: 9,
-          custom: 42 // Custom Headers
-        })*/
-
-        // Disconnect
-        /*$stomp.disconnect().then(function () {
-          $log.info('disconnected')
-        })*/
-    })
-
-
-
-
-
-
-
-
-
 
     this.sendMessage = function() {
         if (this.msg_text != "") {
