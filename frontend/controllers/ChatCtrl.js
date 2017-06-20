@@ -8,7 +8,13 @@ app.controller('ChatCtrl', ['$scope', '$uibModal', '$stateParams', '$localStorag
 
     var topicId = $stateParams.topicId; // get the topic id from the app state
 
-    
+
+    // Retrieve the last messages from the topic
+    chatService.getLastMessages(topicId).then((result) => {
+        this.messages = result;
+    });
+
+
     // Define the callback that is called when a new message is received
     var addMessage = (message) => {
         this.messages.push(message);

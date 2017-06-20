@@ -45,6 +45,26 @@ app.factory('ChatService', ['$http', '$q', '$localStorage', '$stomp', '$log', fu
             return deferred.promise;
         },
 
+        /* Returns the list of the last messages about the specified topic
+         * Parameters:
+         *  - the topic id
+         * Return
+         *  - a promise that contains the list of messages
+        */
+        getLastMessages: function(topicId) {
+            var deferred = $q.defer();
+
+            $http.get(webEndpoint + 'api/messages/' + topicId).then(function (result) {
+                // get secceded
+                deferred.resolve(result.data.content);
+            }, function (error) {
+                // get failed
+                deferred.reject(error);
+            });
+
+            return deferred.promise;
+        },
+
         /* Registers a callback that is called whenever a new message
          * on the specified topic is received.
          * Parameters:
@@ -58,15 +78,7 @@ app.factory('ChatService', ['$http', '$q', '$localStorage', '$stomp', '$log', fu
 
             $stomp.connect(chatEndpoint + jwtParam, connectHeaders).then(function (frame) {
                 var subscription = $stomp.subscribe('/topic/' + topicId, function (message, headers, res) {
-                        // Parse the message and add it to the list of messages 
-                        var receivedMsg = {
-                            username: message.userNickname,
-                            timestamp: message.sendingTime,
-                            text: message.text,
-                            side: "left"
-                        }
-
-                        callback(receivedMsg);
+                        callback(message);
                     },
                     { }
                 );
