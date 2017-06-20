@@ -6,8 +6,9 @@
 <div class="modal-body">
     <form class="form-inline">
         <div class="form-group">
-            <label for="image">Select a picture:</label>
-            <input type="file" class="file" id="image">
+            <img ng-if="ctrl.image" ng-src="{{ctrl.image}}" />
+            <button class="btn btn-primary" ng-click="ctrl.openFileSelector()">Select a picture</button>
+            <input ng-model="ctrl.imageFile" type="file" accept="image/*" style="display:none;" />
         </div>
     </form>
 </div>
