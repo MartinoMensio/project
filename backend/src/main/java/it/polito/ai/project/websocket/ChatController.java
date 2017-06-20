@@ -36,7 +36,7 @@ public class ChatController {
 	public void handleMessage(SimpMessageHeaderAccessor hs, @DestinationVariable String topicId, WebSocketMessage webSocketMessage) throws Exception {
 		User sender = currentUserService.getCurrentUser();
 		if (sender != null) {
-			Topic topic = chatService.getTopicByName(topicId);
+			Topic topic = chatService.getTopicById(topicId);
 			if (topic != null) {
 				Image image = null;
 				if (webSocketMessage.getImage() != null && !webSocketMessage.getImage().equals("")) {
