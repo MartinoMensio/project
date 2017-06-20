@@ -15,7 +15,7 @@ public class WebSocketConfig extends AbstractSecurityWebSocketMessageBrokerConfi
 	@Override
 	public void registerStompEndpoints(StompEndpointRegistry registry) {
 		// the interceptor is used to bind HttpSession to the WebSocket session (copying attributes like sessionId)
-		registry.addEndpoint("/chat").withSockJS();
+		registry.addEndpoint("/chat").setAllowedOrigins("*").withSockJS();
 	}
 	
 	@Override

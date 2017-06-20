@@ -4,7 +4,7 @@ app.controller('ChatCtrl', ['$scope', '$uibModal', '$stateParams', '$localStorag
     this.messages = chatService.getMessages();
 
     var connectHeaders = {};
-    var chatEndpoint = "/chat";
+    var chatEndpoint = "http://localhost:8888/chat";
     var jwtParam = "?jwt=Bearer " + $localStorage.token;
     var topicId = 1; // TODO get topic id from the app state
 
