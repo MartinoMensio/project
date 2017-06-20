@@ -6,6 +6,7 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import it.polito.ai.project.business.services.emailVerification.EmailVerifier;
 import it.polito.ai.project.repo.UsersRepository;
 import it.polito.ai.project.repo.entities.User;
 import it.polito.ai.project.repo.entities.UserProfile;
@@ -13,12 +14,16 @@ import it.polito.ai.project.repo.entities.UserProfile;
 @Service
 @Transactional
 public class AccountingServiceImpl implements AccountingService {
+	
 	@Autowired
 	private UsersRepository usersRepository;
+	
+	private EmailVerifier emailVerifier = new EmailVerifier();
 	
 	@Override
 	public User addNewUser(String mail, String nickname, String password) {
 		usersRepository.saveUserWithEncPwd(nickname, mail, password);
+		emailVerifier.sendVerificationMail(mail, nickname);
 		return usersRepository.findByEmail(mail);
 	}
 
