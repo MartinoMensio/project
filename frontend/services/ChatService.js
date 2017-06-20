@@ -50,7 +50,7 @@ app.factory('ChatService', ['$http', '$q', function ($http, $q) {
         getTopics: function() {
             var deferred = $q.defer();
 
-            $http.get(endpoint + 'rest/topics').then(function (result) {
+            $http.get(endpoint + 'api/open/topics').then(function (result) {
                 // get secceded
                 deferred.resolve(result.data);
             }, function (error) {
