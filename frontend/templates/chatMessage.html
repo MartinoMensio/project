@@ -6,7 +6,7 @@
         <div>
             <strong class="primary-font {{username_pos}}">{{username}}</strong>
             <small class="text-muted {{timestamp_pos}}">
-                <span class="glyphicon glyphicon-time"></span>{{timestamp}}
+                <span class="glyphicon glyphicon-time"></span>{{timestamp | date:'yyyy-MM-dd HH:mm:ss'}}
             </small>
         </div>
         <div>
