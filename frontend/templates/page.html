@@ -41,10 +41,8 @@
                                     <div class="row">
                                         <div class="col-lg-4">
                                             <p class="text-center">
-                                                <!-- TODO if ${user.profile == null || user.profile.image == null } -->
-                                                <span ng-if="true" class="glyphicon glyphicon-user icon-size"></span>
-                                                <!-- TODO if ${user.profile != null && user.profile.image != null } -->
-                                                <img ng-if="false" src="" ng-src="{{user.profile.image.url}}" style="max-height: 87px; max-width: 87px" />
+                                                <span ng-if="!global.user.imageUrl" class="glyphicon glyphicon-user icon-size"></span>
+                                                <img ng-if="global.user.imageUrl" http-src="{{global.user.imageUrl}}" style="max-height: 87px; max-width: 87px" />
                                             </p>
                                         </div>
                                         <div class="col-lg-8">

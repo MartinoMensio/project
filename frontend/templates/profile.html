@@ -15,23 +15,10 @@
 			<div class="row">
 				<div class="col-md-3 col-lg-3 " align="center">
 
-					<span th:if="${user.profile == null || user.profile.image == null }" class="glyphicon glyphicon-user icon-size img-responsive"></span>
-					<img th:if="${user.profile != null && user.profile.image != null }" src="" th:src="${user.profile.image.url}" class="img-responsive"
-					/>
+					<span ng-if="!global.user.imageUrl" class="glyphicon glyphicon-user icon-size"></span>
+					<img ng-if="global.user.imageUrl" http-src="{{global.user.imageUrl}}" style="max-height: 87px; max-width: 87px" />
 
-					<form action="#" th:action="@{/setProfileImage}" method="post" enctype="multipart/form-data" id="sendForm">
-						<input id="chat-image" type="file" name="file" accept="image/*" style="display:none;" />
-						<span>
-										<span id="fake-attach" data-toggle="tooltip" class="btn btn-sm btn-info">
-											<i class="glyphicon glyphicon-folder-open"></i> Load file
-										</span>
-						</span>
-						<div style="display: none;" id="preview">
-							<p>Preview</p>
-							<img id="img-preview" src="" class="img-responsive" />
-						</div>
-						<button id="submit" type="submit" class="btn btn-primary" style="display: none;">Save</button>
-					</form>
+					<button class="add_button text" ng-click="ctrl.openAddPictureModal()"><span class="glyphicon glyphicon-plus"></span></button>
 				</div>
 				<div class=" col-md-9 col-lg-9 ">
 					<table class="table table-user-information">

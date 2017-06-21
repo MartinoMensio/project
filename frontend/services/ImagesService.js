@@ -1,6 +1,9 @@
 var app = angular.module('App');
 
-app.factory('ImagesService', ['$q', function ($q) {
+app.factory('ImagesService', ['$q', '$http', function ($q, $http) {
+
+    var endpoint = 'http://localhost:8888/api';
+
     function previewFile(file) {
         var deferred = $q.defer();
 
@@ -24,7 +27,18 @@ app.factory('ImagesService', ['$q', function ($q) {
         }
         return deferred.promise;
     }
+
+    function updateUserImage(image) {
+        var deferred = $q.defer();
+        $http.put(endpoint + '/profile/image', image).then(function (result) {
+            deferred.resolve({ imageUrl: result.data });
+        }, function (error) {
+            deferred.reject(error);
+        });
+        return deferred.promise;
+    }
     return {
-        previewFile: previewFile
+        previewFile: previewFile,
+        updateUserImage: updateUserImage
     };
 }]);
