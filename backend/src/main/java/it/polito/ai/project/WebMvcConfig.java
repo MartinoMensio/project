@@ -23,7 +23,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
   public void addInterceptors(InterceptorRegistry registry) {
 	  registry.addInterceptor(completeProfileInterceptor)
 	  			.addPathPatterns("/**")
-	  			.excludePathPatterns("/updateProfile");
+	  			.excludePathPatterns("/api/profile");
   }
   
   @Override
