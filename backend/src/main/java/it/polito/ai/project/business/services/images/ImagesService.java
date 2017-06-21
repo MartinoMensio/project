@@ -7,5 +7,7 @@ public interface ImagesService {
 	
 	public Image getImage(long id);
 	
-	public Image saveUserImage(UserProfile userProfile, byte[] imageBytes);
+	public Image saveUserImage(UserProfile userProfile, Image image);
+	
+	public Image getImageFromString(String imageString);
 }

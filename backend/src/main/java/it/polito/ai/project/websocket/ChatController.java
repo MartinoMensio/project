@@ -1,6 +1,5 @@
 package it.polito.ai.project.websocket;
 
-import java.util.Base64;
 import java.util.Calendar;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +13,7 @@ import it.polito.ai.project.business.services.authentication.CurrentUserService;
 import it.polito.ai.project.business.services.chat.ChatMessage;
 import it.polito.ai.project.business.services.chat.ChatMessageImpl;
 import it.polito.ai.project.business.services.chat.ChatService;
+import it.polito.ai.project.business.services.images.ImagesService;
 import it.polito.ai.project.repo.entities.Image;
 import it.polito.ai.project.repo.entities.Message;
 import it.polito.ai.project.repo.entities.Topic;
@@ -31,6 +31,9 @@ public class ChatController {
 
 	@Autowired
 	ChatService chatService;
+	
+	@Autowired
+	ImagesService imagesService;
 
 	@MessageMapping("/{topicId}")
 	public void handleMessage(SimpMessageHeaderAccessor hs, @DestinationVariable String topicId, WebSocketMessage webSocketMessage) throws Exception {
@@ -38,17 +41,7 @@ public class ChatController {
 		if (sender != null) {
 			Topic topic = chatService.getTopicById(topicId);
 			if (topic != null) {
-				Image image = null;
-				if (webSocketMessage.getImage() != null && !webSocketMessage.getImage().equals("")) {
-					String imageDataWithPrefix = webSocketMessage.getImage();
-					// check MIME type
-					if (imageDataWithPrefix.startsWith("data:image/")) {
-						// get the string after "data:image/png;base64," prefix
-						String imageData = imageDataWithPrefix.substring(imageDataWithPrefix.indexOf(",")+1);
-						byte[] imageBytes = Base64.getDecoder().decode(imageData);
-						image = new Image(imageBytes);
-					}
-				}
+				Image image = imagesService.getImageFromString(webSocketMessage.getImage());
 				
 				// create the message entity
 				Message messageEntity = new Message(sender, webSocketMessage.getContent(), Calendar.getInstance(), topic, image);

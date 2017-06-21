@@ -5,6 +5,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.mvc.ControllerLinkBuilder;
+
+import it.polito.ai.project.rest.controllers.ImagesController;
+
 @Entity(name = "images")
 public class Image {
 
@@ -38,7 +43,11 @@ public class Image {
 	
 	public String getUrl() {
 		if (id != null) {
-			return "/images/" + id;
+			Link selfLink = ControllerLinkBuilder
+					.linkTo(ControllerLinkBuilder.methodOn(ImagesController.class).getImageResource(id))
+					.withSelfRel();
+			Link rawLink = new Link(selfLink.getHref() + "/raw", "raw");
+			return rawLink.getHref();
 		} else {
 			return null;
 		}
