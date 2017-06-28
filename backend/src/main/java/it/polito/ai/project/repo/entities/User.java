@@ -22,6 +22,8 @@ public class User {
 	private Status status;
 	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL, optional=true)
 	private UserProfile profile;
+	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL, optional=true)
+	private VerificationToken verificationToken;
 	
 	public User() {
 	}
@@ -77,4 +79,13 @@ public class User {
 		profile.setUser(this);
 		profile.setId(this.id);
 	}
+
+	public VerificationToken getVerificationToken() {
+		return verificationToken;
+	}
+
+	public void setVerificationToken(VerificationToken verificationToken) {
+		this.verificationToken = verificationToken;
+	}
+	
 }

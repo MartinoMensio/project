@@ -1,6 +1,12 @@
 package it.polito.ai.project.rest.controllers;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicLong;
+
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -9,11 +15,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import it.polito.ai.project.business.services.accounting.AccountingService;
 import it.polito.ai.project.business.services.accounting.ResultInfo;
 import it.polito.ai.project.business.services.authentication.CurrentUserService;
+import it.polito.ai.project.business.services.emailVerification.EmailVerificationService;
 import it.polito.ai.project.repo.entities.User;
 import it.polito.ai.project.repo.entities.UserProfile;
 import it.polito.ai.project.rest.resources.ProfileResource;
@@ -27,10 +35,15 @@ import it.polito.ai.project.web.exceptions.ClientErrorException;
 public class ProfileRestController {
 
 	@Autowired
-	CurrentUserService currentUserService;
+	private CurrentUserService currentUserService;
 
 	@Autowired
-	AccountingService accountingService;
+	private AccountingService accountingService;
+	
+	@Autowired
+	private EmailVerificationService emailVerificationService;
+	
+	private Map<String, AtomicLong> wrongTrials = new HashMap<>();
 
 	@GetMapping("/api/profile")
 	public ProfileResource getProfile() {
@@ -107,6 +120,26 @@ public class ProfileRestController {
 
 		return new ResultInfoResource(200,
 				"the account is created and an email has been sent to the provided address. Confirm the email address");
+	}
+	
+	@GetMapping("/api/confirmEmail")
+	public ResultInfoResource confirmEmail(@RequestParam @NotNull @Size(min=1) String email, @RequestParam @NotNull @Size(min=1) String token) {
+		
+		boolean verificationResult = emailVerificationService.verifyMail(email, token);
+		if (!verificationResult) {
+			// avoid bruteforce attack
+			wrongTrials.putIfAbsent(email, new AtomicLong(0));
+			long attempts = wrongTrials.get(email).incrementAndGet();
+			try {
+				// sleep quadratically in the number of attempts
+				Thread.sleep(attempts * attempts * 1000);
+			} catch (InterruptedException e) {
+				Thread.currentThread().interrupt();
+				return null;
+			}
+			throw new ClientErrorException("verification failed");
+		}
+		return new ResultInfoResource(200, "verified");
 	}
 
 	private UserProfile profileFormToUserProfile(ProfileForm profileForm) {

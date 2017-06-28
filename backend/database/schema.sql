@@ -131,3 +131,10 @@ create table if not exists ratings (
 	foreign key (user_id) references users(id),
 	foreign key (alert_id) references alerts(id)
 );
+
+create table if not exists verification_tokens (
+  id bigint not null,
+  token text not null,
+  primary key (id),
+  foreign key (id) references users(id)
+);
