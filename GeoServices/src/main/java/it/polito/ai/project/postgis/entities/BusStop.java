@@ -1,7 +1,7 @@
 package it.polito.ai.project.postgis.entities;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,7 +19,7 @@ public class BusStop {
 	@Column(name="lng")
 	private double longitude;
 	@ManyToMany(mappedBy="stops")
-	private Set<BusLine> lines = new HashSet<BusLine>();
+	private List<BusLine> lines = new ArrayList<BusLine>();
 	
 	public String getId() {
 		return id;
@@ -37,7 +37,7 @@ public class BusStop {
 		return longitude;
 	}
 	
-	public Set<BusLine> getLines() {
+	public List<BusLine> getLines() {
 		return lines;
 	}
 
