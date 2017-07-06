@@ -3,7 +3,7 @@
 # create the postgis database
 echo "entering postgis folder"
 pushd postgis
-source postgis_create.sh
+bash postgis_create.sh || exit 1
 popd
 echo "postgis done"
 # create the mongo database
@@ -15,7 +15,7 @@ read -p "Are you sure you want to recreate mongo data? It will take some hours (
 echo
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
-    source create.sh
+    bash create.sh || exit 1
 fi
 popd
 echo "mongo done"
