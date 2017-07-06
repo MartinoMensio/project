@@ -31,7 +31,7 @@ public class Dijsktra {
 
 		// initialize the adjacencies of the source (distances of the directly
 		// linked nodes)
-		for (Edge edge : graph.getEdges(sourceId)) {
+		for (Edge edge : graph.getEdges(sourceId).values()) {
 			if (distance.get(edge.getIdDestination()) > edge.getCost()) {
 				// check the initialization because multiple edges with same src
 				// and dst are possible in case the stops are in the range of
@@ -62,7 +62,7 @@ public class Dijsktra {
 			openSet.remove(min);
 
 			// iterate on the neighbors to recompute distances
-			for (Edge edge : graph.getEdges(min)) {
+			for (Edge edge : graph.getEdges(min).values()) {
 
 				int newPath = distance.get(min) + edge.getCost();
 				if (distance.get(edge.getIdDestination()) > newPath) {
