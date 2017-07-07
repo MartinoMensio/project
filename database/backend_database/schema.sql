@@ -116,6 +116,7 @@ create table if not exists alerts (
   lng double precision not null,
   activation_date TIMESTAMP not null,
   last_view_time TIMESTAMP not null,
+  active boolean not null,-- active/not-active warning 
   comment varchar(2000),
   primary key (id),
   foreign key (alert_type_id) references alert_types(id), -- Warning has a type

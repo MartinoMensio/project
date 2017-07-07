@@ -27,6 +27,7 @@ public class Alert {
 	private double lng;
 	private Date activationDate;
 	private Date lastViewTime;
+	private Boolean active;
 	private String comment;
 
 	public float getRating() {
@@ -83,6 +84,14 @@ public class Alert {
 
 	public void setComment(String comment) {
 		this.comment = comment;
+	}
+
+	public Boolean getActive() {
+		return active;
+	}
+
+	public void setActive(Boolean active) {
+		this.active = active;
 	}
 
 }
