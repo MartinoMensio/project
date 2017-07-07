@@ -135,6 +135,7 @@ create table if not exists ratings (
 create table if not exists verification_tokens (
   id bigint not null,
   token text not null,
+  expiration timestamp not null,
   primary key (id),
   foreign key (id) references users(id)
 );

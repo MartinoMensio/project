@@ -114,8 +114,6 @@ public class ProfileRestController {
 					registrationForm.getPassword());
 		} catch (DataIntegrityViolationException e) {
 			throw new ClientErrorException("An account already exists associated to this email");
-		} catch (Exception e) {
-			throw new ClientErrorException();
 		}
 
 		return new ResultInfoResource(200,
@@ -132,6 +130,7 @@ public class ProfileRestController {
 			long attempts = wrongTrials.get(email).incrementAndGet();
 			try {
 				// sleep quadratically in the number of attempts
+				// TODO evaluate if this is needed
 				Thread.sleep(attempts * attempts * 1000);
 			} catch (InterruptedException e) {
 				Thread.currentThread().interrupt();

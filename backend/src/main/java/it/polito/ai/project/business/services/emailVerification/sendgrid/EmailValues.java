@@ -1,4 +1,4 @@
-package it.polito.ai.project.business.services.emailVerification;
+package it.polito.ai.project.business.services.emailVerification.sendgrid;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
