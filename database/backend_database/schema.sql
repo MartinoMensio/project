@@ -62,7 +62,7 @@ create table if not exists images (
 create table if not exists messages (
   id BIGSERIAL,
   sender_id bigint not null,
-  text varchar(2000) not null,
+  text text not null,
   sending_time timestamp not null,
   topic_id bigint not null,
   image_id bigint,
