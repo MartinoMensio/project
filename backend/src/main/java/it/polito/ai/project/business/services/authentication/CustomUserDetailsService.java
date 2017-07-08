@@ -39,7 +39,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 		}
 		String password = user.getPassword();
 		// check if user confirmed the email
-		Status notConfirmedStatus = statusRepository.findAll().stream().filter(s -> s.getValue().equals("NOT_VERIFIED")).findFirst().get();
+		Status notConfirmedStatus = statusRepository.findByValue("NOT_VERIFIED").stream().findFirst().get();
 		boolean enabled = !user.getStatus().getId().equals(notConfirmedStatus.getId());
 		return new org.springframework.security.core.userdetails.User(email, password, enabled, true, true, true, auth);
 	}

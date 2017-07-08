@@ -87,7 +87,7 @@ public class EmailVerificationServiceImpl implements EmailVerificationService {
 			}
 			if (verificationToken.getToken().equals(token)) {
 				// the user that verifies the email changes status from NOT_VERIFIED to INCOMPLETE
-				Status incompleteStatus = statusRepository.findAll().stream().filter(s -> s.getValue().equals("INCOMPLETE")).findFirst().get();
+				Status incompleteStatus = statusRepository.findByValue("INCOMPLETE").stream().findFirst().get();
 				user.setStatus(incompleteStatus);
 				return true;
 			}

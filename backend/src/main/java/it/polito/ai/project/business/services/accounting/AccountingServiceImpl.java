@@ -40,10 +40,11 @@ public class AccountingServiceImpl implements AccountingService {
 		user.setNickname(nickname);
 		user.setProfile(userProfile);
 		
-		// the profile is now complete, so change user status
-		Status completeStatus = statusRepository.findAll().stream().filter(s -> s.getValue().equals("COMPLETE")).findFirst().get();
-		user.setStatus(completeStatus);
-		
+		if (!user.getStatus().getValue().equals("COMPLETE")) {
+			// the profile is now complete, so change user status
+			Status completeStatus = statusRepository.findByValue("COMPLETE").stream().findFirst().get();
+			user.setStatus(completeStatus);
+		}
 		// save the user
 		usersRepository.save(user);
 		
