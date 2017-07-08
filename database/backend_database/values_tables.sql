@@ -23,6 +23,7 @@ INSERT INTO travel_documents (id, name, cost) values (1, 'GIORNALIERO', 5.00);
 INSERT INTO travel_documents (id, name, cost) values (2, 'CORSA SINGOLA', 1.50);
 INSERT INTO travel_documents (id, name, cost) values (3, 'CARNET 5', 6.50);
 INSERT INTO travel_documents (id, name, cost) values (4, 'CARNET 15', 17.50);
-INSERT INTO status (id, value) values (1, 'INCOMPLETE'); -- TODO add NOT_VERIFIED status
-INSERT INTO status (id, value) values (2, 'ENABLED');
-INSERT INTO status (id, value) values (3, 'BANNED');
+INSERT INTO status (id, value) values (1, 'INCOMPLETE');
+INSERT INTO status (id, value) values (2, 'COMPLETE');
+INSERT INTO status (id, value) values (3, 'BANNED'); -- not used
+INSERT INTO status (id, value) values (4, 'NOT_VERIFIED');

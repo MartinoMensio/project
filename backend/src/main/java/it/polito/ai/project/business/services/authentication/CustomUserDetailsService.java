@@ -10,7 +10,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import it.polito.ai.project.repo.StatusRepository;
 import it.polito.ai.project.repo.UsersRepository;
+import it.polito.ai.project.repo.entities.Status;
 import it.polito.ai.project.repo.entities.User;
 
 @Service
@@ -18,6 +20,9 @@ public class CustomUserDetailsService implements UserDetailsService {
 	
 	@Autowired
 	private UsersRepository userRepository;
+	
+	@Autowired
+	private StatusRepository statusRepository;
 
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -33,7 +38,10 @@ public class CustomUserDetailsService implements UserDetailsService {
 			auth.addAll(AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_ADMIN"));
 		}
 		String password = user.getPassword();
-		return new org.springframework.security.core.userdetails.User(email, password, auth);
+		// check if user confirmed the email
+		Status notConfirmedStatus = statusRepository.findAll().stream().filter(s -> s.getValue().equals("NOT_VERIFIED")).findFirst().get();
+		boolean enabled = !user.getStatus().getId().equals(notConfirmedStatus.getId());
+		return new org.springframework.security.core.userdetails.User(email, password, enabled, true, true, true, auth);
 	}
 
 }

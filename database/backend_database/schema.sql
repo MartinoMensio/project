@@ -41,7 +41,7 @@ create table if not exists users (
   nickname varchar(30) not null,
   email varchar(200) not null unique,
   password varchar(200) not null,
-  status_id bigint DEFAULT 1,
+  status_id bigint DEFAULT 4, -- new users don't have yet completed the verification of email
   primary key (id),
   foreign key (status_id) references status(id)
 );

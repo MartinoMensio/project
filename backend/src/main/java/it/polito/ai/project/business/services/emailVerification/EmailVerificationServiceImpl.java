@@ -17,8 +17,10 @@ import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import it.polito.ai.project.business.services.emailVerification.sendgrid.EmailRequest;
+import it.polito.ai.project.repo.StatusRepository;
 import it.polito.ai.project.repo.UsersRepository;
 import it.polito.ai.project.repo.VerificationTokensRepository;
+import it.polito.ai.project.repo.entities.Status;
 import it.polito.ai.project.repo.entities.User;
 import it.polito.ai.project.repo.entities.VerificationToken;
 import it.polito.ai.project.rest.controllers.ProfileRestController;
@@ -34,6 +36,9 @@ public class EmailVerificationServiceImpl implements EmailVerificationService {
 	
 	@Autowired
 	private UsersRepository users;
+	
+	@Autowired
+	private StatusRepository statusRepository;
 
 	@Autowired
 	private VerificationTokensRepository tokens;
@@ -81,8 +86,9 @@ public class EmailVerificationServiceImpl implements EmailVerificationService {
 				throw new ClientErrorException("verification token expired");
 			}
 			if (verificationToken.getToken().equals(token)) {
-				// TODO enable user (status from NOT_VERIFIED to INCOMPLETE)
-				users.enableUser(email);
+				// the user that verifies the email changes status from NOT_VERIFIED to INCOMPLETE
+				Status incompleteStatus = statusRepository.findAll().stream().filter(s -> s.getValue().equals("INCOMPLETE")).findFirst().get();
+				user.setStatus(incompleteStatus);
 				return true;
 			}
 			return false;

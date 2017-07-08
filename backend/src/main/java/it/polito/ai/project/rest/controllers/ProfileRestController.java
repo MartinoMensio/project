@@ -48,6 +48,7 @@ public class ProfileRestController {
 	@GetMapping("/api/profile")
 	public ProfileResource getProfile() {
 		User currentUser = currentUserService.getCurrentUser();
+		// TODO consider if token was ok, but database deleted user so currentUser is null??
 		return new ProfileResource(currentUser);
 	}
 

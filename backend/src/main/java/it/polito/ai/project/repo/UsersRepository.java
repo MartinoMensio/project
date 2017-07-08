@@ -17,13 +17,6 @@ public interface UsersRepository extends PagingAndSortingRepository<User, Long> 
 	
 	User findByEmail(String email);
 	
-	// TODO distinguish correctly between NOT_VERIFIED:missing mail confirmation, and INCOMPLETE:please fill personal data
-	@Modifying
-	@Query(value = "UPDATE users "
-			+ "SET status_id = 2"
-			+ "WHERE email = :email", nativeQuery = true)
-	public int enableUser(@Param("email") String email);
-	
 	@Modifying
 	@Query(value = "UPDATE users "
 			+ "SET password = crypt(:pwd, gen_salt('bf')) "
