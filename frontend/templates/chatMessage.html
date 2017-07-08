@@ -1,6 +1,6 @@
 <li class="clearfix {{li_pos}}">
     <span class="chat-img {{pull}}"> 
-        <img src="{{imgUrl == null ? 'user-girl.png' : imgUrl}}" alt="User Avatar" class="img-circle" width="50px"/>
+        <img http-src="{{userImageUrl == null ? 'user-neutral.png' : userImageUrl}}" alt="User Avatar" class="img-circle" width="50px"/>
     </span>
     <div class="message">
         <div>
@@ -13,5 +13,6 @@
         <p class="{{pull}}">{{text}}</p>
             <img alt="" src="" style="max-width: 300px; max-height: 300px;">
         </div>
+        <!-- TODO display image of message if available -->
     </div>
 </li>

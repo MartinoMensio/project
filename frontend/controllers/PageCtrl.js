@@ -1,7 +1,26 @@
 var app = angular.module('App');
 
 app.controller('PageCtrl', ['UserService', '$state', 'user', '$rootScope', function (UserService, $state, user, $rootScope) {
-	
+
+	this.user = user;
+
+	// set a fallback avatar image
+	if (!user.imageUrl) {
+		if (user.sex === 'M') {
+			user.localImageUrl = 'user-boy.png';
+		} else if (user.sex == 'F') {
+			user.localImageUrl = 'user-girl.png';
+		} else {
+			user.localImageUrl = 'user-neutral.png';
+		}
+	}
+
+	this.logout = () => {
+		UserService.logout().then(() => {
+			$state.go('page.home', null, { reload: true });
+		});
+	};
+
 	// the error event is emitted when some error are found and need to be displayed
 	$rootScope.$on('error', (event, error) => {
 		console.log(error);
@@ -20,14 +39,7 @@ app.controller('PageCtrl', ['UserService', '$state', 'user', '$rootScope', funct
 			class: "alert-success",
 			value: message
 		};
-	})
-
-	this.user = user;
-	this.logout = () => {
-		UserService.logout().then(() => {
-			$state.go('page.home', null, { reload: true });
-		});
-	};
+	});
 
 	this.hideMessage = () => {
 		this.message = null;
