@@ -1,6 +1,6 @@
 var app = angular.module('App');
 
-app.factory('AuthenticationInterceptor', ['$q', '$state', '$localStorage', '$injector', function ($q, $state, $localStorage, $injector) {
+app.factory('AuthenticationInterceptor', ['$q', '$state', '$localStorage', '$injector', '$rootScope', function ($q, $state, $localStorage, $injector, $rootScope) {
     return {
         'request': function (config) {
             // manually inject the service to avoid circular dependency
@@ -15,6 +15,7 @@ app.factory('AuthenticationInterceptor', ['$q', '$state', '$localStorage', '$inj
             return config;
         },
         'responseError': function (response) {
+            $rootScope.$emit('error', response.data || {message: "Communication error while contacting " + response.config.url});
             if (response.status === 401 || response.status === 403) {
                 $state.go('page.login');
             }

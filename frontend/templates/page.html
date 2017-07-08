@@ -74,6 +74,10 @@
 
 </nav>
 
+<div ng-if="global.message" class="alert" ng-class="global.message.class" style="position:fixed;z-index:5000;width:100%">
+    <strong>{{global.message.value}}</strong>
+    <button ng-click="global.hideMessage()" class="btn btn-warn">X</button>
+</div>
 
 <!-- Page Content -->
     <div ui-view></div>
