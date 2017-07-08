@@ -5,6 +5,7 @@ app.controller('ChatCtrl', ['$scope', '$uibModal', '$stateParams', '$localStorag
     
     this.messages = [];
     this.msg_text = "";
+    this.msg_image = null;
 
     var topicId = $stateParams.topicId; // get the topic id from the app state
 
@@ -25,17 +26,16 @@ app.controller('ChatCtrl', ['$scope', '$uibModal', '$stateParams', '$localStorag
     chatService.connect(topicId, addMessage);
     
 
-    this.sendMessage = function() {
+    this.sendMessage = ()=> {
         if (this.msg_text != "") {
             var newMsg = {
-                username: "Alessio",
-                timestamp: new Date(),
                 text: this.msg_text,
-                side: "right"
+                image: this.msg_image
             };
 
             chatService.sendMessage(topicId, newMsg);
             this.msg_text = "";
+            this.msg_image = null;
         }
     }
 
@@ -55,7 +55,7 @@ app.controller('ChatCtrl', ['$scope', '$uibModal', '$stateParams', '$localStorag
         });
     };
 
-    this.openAddPictureModal = function () {
+    this.openAddPictureModal = (size, parentSelector) => {
         var modalInstance = $uibModal.open({
             templateUrl: 'templates/modals/addPictureModal.html',
             controller: 'AddPictureModalCtrl',
@@ -63,8 +63,8 @@ app.controller('ChatCtrl', ['$scope', '$uibModal', '$stateParams', '$localStorag
             size: 'lg'
         });
 
-        modalInstance.result.then(function (selectedItem) {
-            $ctrl.selected = selectedItem;
+        modalInstance.result.then((imageString) => {
+            this.msg_image = imageString;
             },function () {
             $log.info('Modal dismissed at: ' + new Date());
         });

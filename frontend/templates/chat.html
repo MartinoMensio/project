@@ -12,6 +12,7 @@
     </div>
     <div class="panel-footer">
       <div class="bottom_wrapper clearfix">
+        <img ng-if="ctrl.msg_image" ng-src="{{ctrl.msg_image}}" style="max-height:200px;max-width:300px;"/>
         <div class="message_input_wrapper">
           <input class="message_input" ng-model="ctrl.msg_text" placeholder="Type your message here..." ng-keyup="$event.keyCode == 13 ? ctrl.sendMessage() : null"/>
         </div>
