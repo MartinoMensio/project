@@ -5,7 +5,7 @@ app.controller('PageCtrl', ['UserService', '$state', 'user', '$rootScope', funct
 	this.user = user;
 
 	// set a fallback avatar image
-	if (!user.imageUrl) {
+	if (user && !user.imageUrl) {
 		if (user.sex === 'M') {
 			user.localImageUrl = 'user-boy.png';
 		} else if (user.sex == 'F') {
