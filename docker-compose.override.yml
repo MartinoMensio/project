@@ -1,0 +1,36 @@
+version: '3'
+services:
+# the frontend makes the site publicly available
+  # frontend: #TODO ??
+  #   depends_on:
+  #     - backend
+  #     - geoservices
+
+# web services
+# TODO uncomment this section when backend is ready to run inside docker instead of running from STS
+  backend:
+    image: openjdk:latest
+    ports:
+      - "8888:8888"
+    depends_on:
+      - backend_db
+    volumes:
+      - ./backend/target/backend-0.0.1-SNAPSHOT.jar:/app/app.jar
+    environment:
+      - POSTGRES_HOST=backend_db
+    command: java -jar /app/app.jar
+  geoservices:
+    image: openjdk:latest
+    ports:
+      - "9999:9999"
+    depends_on:
+      - postgis
+      - mongodb
+    volumes:
+      - ./GeoServices/target/GeoServices-0.0.1-SNAPSHOT.jar:/app/app.jar
+    environment:
+      - POSTGIS_HOST=postgis
+      - POSTGIS_PORT=5432
+      - MONGO_HOST=mongodb
+    command: java -jar /app/app.jar
+    #command: tail -f /dev/null

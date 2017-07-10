@@ -25,7 +25,7 @@ public class JsonFileReader {
 	static Set<BusStop> busStops = new HashSet<BusStop>();
 
 	 static void readJson(){
-		File jsonInputFile = new File("../linee.json");
+		File jsonInputFile = new File("linee.json");
 		InputStream is;
 
 		try{

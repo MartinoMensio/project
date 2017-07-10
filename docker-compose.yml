@@ -1,0 +1,42 @@
+# This file runs the services
+# prerequisites: the volumes need to be populated
+version: '3'
+services:
+
+
+  # containers for databases
+  backend_db:
+    image: postgres:latest
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=ai-user-password
+      - POSTGRES_DB=lab4
+    ports:
+      - "5432:5432"
+    volumes:
+      - ai_project_backend_db:/var/lib/postgresql/data
+  # the container for postgis (geographic data for geoservices)
+  postgis:
+    build:
+      context: database/GeoServices_database/postgis/Docker_postgis
+    ports:
+      - "5431:5432"
+    volumes:
+      - ai_project_postgis:/var/lib/postgresql/data
+  # the container for mongoDB (minPaths for geoservices)
+  mongodb:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - ai_project_mongo:/data/db
+volumes:
+  ai_project_mongo:
+    # external:
+    #   name: Laboratorio3 # this is the name of the actual volume created outside of docker-compose
+  ai_project_postgis:
+    # external:
+    #   name: ai_project_postgis # this is the name of the actual volume created outside of docker-compose
+  ai_project_backend_db:
+    # external:
+    #   name: ai_project_postgis # TODO for now the same volume

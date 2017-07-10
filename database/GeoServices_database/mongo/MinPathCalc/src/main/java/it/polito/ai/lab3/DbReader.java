@@ -1,13 +1,20 @@
 package it.polito.ai.lab3;
 
-import java.nio.file.*;
-import java.sql.*;
-import java.util.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 
-import it.polito.ai.lab3.mongoClasses.Edge;
 import it.polito.ai.lab3.model.Node;
+import it.polito.ai.lab3.mongoClasses.Edge;
 
 public class DbReader {
 
@@ -45,14 +52,7 @@ public class DbReader {
 			cpds = new ComboPooledDataSource();
 			cpds.setDriverClass("org.postgresql.Driver");
 
-			String server = null;
-			try {
-				List<String> lines = Files.readAllLines(Paths
-						.get(DbReader.class.getClassLoader().getResource("db_ip.txt").toURI().toString().substring(6)));
-				server = lines.get(0);
-			} catch (Exception e) {
-				server = "localhost";
-			}
+			String server = "postgis";
 
 			cpds.setJdbcUrl("jdbc:postgresql://" + server + ":5432/trasporti");
 			cpds.setUser("postgres");

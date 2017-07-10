@@ -1,0 +1,18 @@
+version: '3'
+services:
+  # this container can initialize databases
+  initialize:
+    build:
+      context: Initialize
+    depends_on:
+      - postgis
+      - backend_db
+      - mongodb
+    volumes:
+      - ./database/GeoServices_database/postgis/JsonToDB/target/JsonToDB-0.0.1-SNAPSHOT-jar-with-dependencies.jar:/app/postgis/JsonToDB.jar
+      - ./database/GeoServices_database/postgis/PostGisDBCreator/target/PostGisDBCreator-0.0.1-SNAPSHOT-jar-with-dependencies.jar:/app/postgis/PostGisDBCreator.jar
+      - ./database/GeoServices_database/postgis/linee.json:/app/postgis/linee.json
+      - ./database/GeoServices_database/mongo/MinPathCalc/target/MinPathCalc-0.0.1-SNAPSHOT-jar-with-dependencies.jar:/app/mongo/MinPathCalc.jar
+      - ./database/backend_database:/app/backend_db
+      - ./database/compose_creator.sh:/app/create.sh
+    command: bash /app/create.sh ${WHAT}

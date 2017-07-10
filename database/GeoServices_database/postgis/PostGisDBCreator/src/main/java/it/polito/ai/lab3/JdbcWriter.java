@@ -1,8 +1,10 @@
 package it.polito.ai.lab3;
 
-import java.nio.file.*;
-import java.sql.*;
-import java.util.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import it.polito.ai.lab3.objects.BusStopGeographic;
 
@@ -21,14 +23,7 @@ public class JdbcWriter {
 		try {
 			Class.forName("org.postgresql.Driver");
 
-			String server = null;
-			try {
-				List<String> lines = Files.readAllLines(Paths.get(
-						JdbcWriter.class.getClassLoader().getResource("db_ip.txt").toURI().toString().substring(6)));
-				server = lines.get(0);
-			} catch (Exception e) {
-				server = "localhost";
-			}
+			String server = "postgis";
 
 			connection = DriverManager.getConnection("jdbc:postgresql://" + server + ":5432/trasporti", "postgres",
 					"ai-user-password");

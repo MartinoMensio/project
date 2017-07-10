@@ -20,7 +20,7 @@ public class MongoWriter {
 	 * collection
 	 */
 	public MongoWriter() {
-		mongoClient = new MongoClient("localhost");
+		mongoClient = new MongoClient("mongodb");
 		MongoDatabase database = mongoClient.getDatabase("ai");
 		minPathsCollection = database.getCollection("min_paths");
 		// clear before starting
