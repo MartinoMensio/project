@@ -57,7 +57,7 @@ public class AlertsController {
 	 * @return
 	 */
 	@GetMapping("/api/alerts")
-	public List<Alert> getAlerts(@RequestParam(defaultValue="") String hashtag) {
+	public List<Alert> getAlerts(@RequestParam(value="hashtag", defaultValue="") String hashtag) {
 		if (hashtag != null && !hashtag.equals("")) {
 			return alertsService.getAlertsByHashtag(hashtag);
 		} else {
