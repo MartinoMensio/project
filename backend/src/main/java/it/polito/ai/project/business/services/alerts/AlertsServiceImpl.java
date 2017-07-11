@@ -1,6 +1,5 @@
 package it.polito.ai.project.business.services.alerts;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -45,8 +44,7 @@ public class AlertsServiceImpl implements AlertsService {
 
 	@Override
 	public Alert addNewAlert(Alert newAlert) {
-		// TODO Auto-generated method stub
-		return null;
+		return alertsRepository.save(newAlert);
 	}
 
 }

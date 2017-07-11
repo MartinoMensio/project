@@ -32,6 +32,24 @@ public class Alert {
 	private Date lastViewTime;
 	private Boolean active;
 	private String comment;
+	
+	
+	public Alert() {
+	}
+	
+	public Alert(AlertType alertType, User user, String address, double lat, double lng, String comment) {
+		this.alertType = alertType;
+		this.user = user;
+		this.address = address;
+		this.lat = lat;
+		this.lng = lng;
+		this.comment = comment;
+		
+		this.rating = 0f;
+		this.activationDate = new Date();
+		this.lastViewTime = new Date();
+		this.active = true;
+	}
 
 	public Long getId() {
 		return id;
