@@ -21,4 +21,6 @@ public interface AlertsService {
 	public List<Alert> getAlertsByHashtag(String hashtag);
 	
 	public Alert addNewAlert(Alert newAlert);
+	
+	public Alert updateAlertLastViewTime(Long id);
 }

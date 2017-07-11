@@ -67,7 +67,10 @@ public class AlertsController {
 	
 	@GetMapping("/api/alerts/{id}")
 	public Alert getAlertById(@PathVariable(value = "id") Long id) {
-		return alertsService.getAlertById(id);
+		// update the last view time of the requested alert, then return it
+		Alert alert = alertsService.updateAlertLastViewTime(id);
+		
+		return alert;
 	}
 	
 	// TODO endpoint for ratings of alerts

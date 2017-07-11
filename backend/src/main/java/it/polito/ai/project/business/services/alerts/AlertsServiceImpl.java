@@ -1,5 +1,6 @@
 package it.polito.ai.project.business.services.alerts;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -45,6 +46,20 @@ public class AlertsServiceImpl implements AlertsService {
 	@Override
 	public Alert addNewAlert(Alert newAlert) {
 		return alertsRepository.save(newAlert);
+	}
+
+	@Override
+	public Alert updateAlertLastViewTime(Long id) {
+		// get the alert
+		Alert alert = alertsRepository.findOne(id);
+		
+		// update the last view time with the current time
+		alert.setLastViewTime(new Date());
+		
+		// update the alert into the DB
+		alertsRepository.save(alert);
+		
+		return alert;
 	}
 
 }
