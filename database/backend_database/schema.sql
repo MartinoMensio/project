@@ -108,7 +108,7 @@ create table if not exists alert_types (
 
 create table if not exists alerts (
   id bigint not null,
-  alert_type_id bigint not null,
+  alert_type_id bigint,
   user_id bigint not null,
   rating FLOAT(5),
   address varchar(200) not null,

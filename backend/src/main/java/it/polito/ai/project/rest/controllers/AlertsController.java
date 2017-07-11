@@ -6,6 +6,7 @@ import javax.validation.Valid;
 import javax.websocket.server.PathParam;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,14 +14,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import it.polito.ai.project.business.services.alerts.AlertsService;
+import it.polito.ai.project.business.services.authentication.CurrentUserService;
 import it.polito.ai.project.repo.entities.alerts.Alert;
 import it.polito.ai.project.repo.entities.alerts.AlertType;
+import it.polito.ai.project.rest.controllers.reqbody.NewAlertBodyRequest;
+import it.polito.ai.project.web.exceptions.ClientErrorException;
 
 @RestController
 public class AlertsController {
-	
 	@Autowired
-	AlertsService alertsService;
+	private CurrentUserService currentUserService;
+	@Autowired
+	private AlertsService alertsService;
 
 	@GetMapping("/api/alerts/types")
 	public List<AlertType> getAlertTypes() {
@@ -28,7 +33,19 @@ public class AlertsController {
 	}
 
 	@PostMapping("/api/alerts")
-	public Alert createAlert(@Valid @RequestBody Alert alert) {
+	public Alert createAlert(@Valid @RequestBody NewAlertBodyRequest newAlert, BindingResult result) {
+		if (result.hasErrors()) {
+			throw new ClientErrorException("wrong fields in the request");
+		}
+		
+		// Create the new alert from the newAlert. It is just a conversion, sorry for the bad naming :-)
+		Alert alert = new Alert(null,//TODO should be the object that represents the alert type
+								currentUserService.getCurrentUser(),
+								newAlert.getAddress(),
+								newAlert.getLat(),
+								newAlert.getLng(),
+								newAlert.getComment());
+		
 		return alertsService.addNewAlert(alert);
 	}
 
