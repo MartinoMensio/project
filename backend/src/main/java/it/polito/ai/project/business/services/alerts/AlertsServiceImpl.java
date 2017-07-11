@@ -10,8 +10,11 @@ import org.springframework.stereotype.Service;
 
 import it.polito.ai.project.repo.AlertTypesRepository;
 import it.polito.ai.project.repo.AlertsRepository;
+import it.polito.ai.project.repo.RatingsRepository;
+import it.polito.ai.project.repo.entities.User;
 import it.polito.ai.project.repo.entities.alerts.Alert;
 import it.polito.ai.project.repo.entities.alerts.AlertType;
+import it.polito.ai.project.repo.entities.alerts.Rating;
 
 @Service
 @Transactional
@@ -19,7 +22,9 @@ public class AlertsServiceImpl implements AlertsService {
 	@Autowired
 	private AlertTypesRepository alertTypesRepository;
 	@Autowired
-	private AlertsRepository alertsRepository; 
+	private AlertsRepository alertsRepository;
+	@Autowired
+	private RatingsRepository ratingsRepository;
 	
 
 	@Override
@@ -60,6 +65,16 @@ public class AlertsServiceImpl implements AlertsService {
 		alertsRepository.save(alert);
 		
 		return alert;
+	}
+
+	@Override
+	public void voteAlert(User user, Long alertId, int vote) {
+		Alert alert = alertsRepository.findOne(alertId);
+		
+		// Insert the new rating, or replace the old one if it already exists
+		Rating newRating = new Rating(user, alert, vote);
+		
+		ratingsRepository.save(newRating);
 	}
 
 }

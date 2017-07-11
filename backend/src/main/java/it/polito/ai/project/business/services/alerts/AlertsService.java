@@ -2,6 +2,7 @@ package it.polito.ai.project.business.services.alerts;
 
 import java.util.List;
 
+import it.polito.ai.project.repo.entities.User;
 import it.polito.ai.project.repo.entities.alerts.Alert;
 import it.polito.ai.project.repo.entities.alerts.AlertType;
 
@@ -23,4 +24,6 @@ public interface AlertsService {
 	public Alert addNewAlert(Alert newAlert);
 	
 	public Alert updateAlertLastViewTime(Long id);
+	
+	public void voteAlert(User user, Long alertId, int vote);
 }

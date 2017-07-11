@@ -125,11 +125,10 @@ create table if not exists alerts (
 );
 
 create table if not exists ratings (
-	id bigint not null,
 	user_id bigint not null,
 	alert_id bigint not null,
 	vote integer not null, -- from 1.0 to 5.0
-	primary key (id),
+	primary key (user_id, alert_id),
 	foreign key (user_id) references users(id),
 	foreign key (alert_id) references alerts(id)
 );
