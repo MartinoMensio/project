@@ -42,8 +42,8 @@ app.controller('ChatCtrl', ['$scope', '$uibModal', '$stateParams', '$localStorag
 
     this.openNewWarningModal = function (size, parentSelector) {
         var modalInstance = $uibModal.open({
-            templateUrl: 'templates/modals/newWarningModal.html',
-            controller: 'NewWarningModalCtrl',
+            templateUrl: 'templates/modals/newAlertModal.html',
+            controller: 'NewAlertModalCtrl',
             controllerAs: 'ctrl',
             size: 'lg'
         });
