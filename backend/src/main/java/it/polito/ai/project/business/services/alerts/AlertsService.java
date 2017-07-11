@@ -25,5 +25,5 @@ public interface AlertsService {
 	
 	public Alert updateAlertLastViewTime(Long id);
 	
-	public void voteAlert(User user, Long alertId, int vote);
+	public Alert voteAlert(User user, Long alertId, int vote);
 }

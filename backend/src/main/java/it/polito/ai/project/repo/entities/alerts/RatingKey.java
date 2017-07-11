@@ -19,4 +19,28 @@ public class RatingKey implements Serializable {
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="alert_id")
 	private Alert alert;
+	
+	public RatingKey() {
+	}
+	
+	public RatingKey(User user, Alert alert) {
+		this.user = user;
+		this.alert = alert;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public Alert getAlert() {
+		return alert;
+	}
+
+	public void setAlert(Alert alert) {
+		this.alert = alert;
+	}
 }

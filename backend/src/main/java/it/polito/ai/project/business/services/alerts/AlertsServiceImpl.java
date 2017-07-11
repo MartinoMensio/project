@@ -68,13 +68,15 @@ public class AlertsServiceImpl implements AlertsService {
 	}
 
 	@Override
-	public void voteAlert(User user, Long alertId, int vote) {
+	public Alert voteAlert(User user, Long alertId, int vote) {
 		Alert alert = alertsRepository.findOne(alertId);
 		
 		// Insert the new rating, or replace the old one if it already exists
 		Rating newRating = new Rating(user, alert, vote);
 		
 		ratingsRepository.save(newRating);
+		
+		return alert;
 	}
 
 }
