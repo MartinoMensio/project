@@ -102,12 +102,13 @@ create table if not exists user_profiles (
 create table if not exists alert_types (
   id bigint not null,
   name varchar(30) not null,
-  image BYTEA not null, --fixed image
-  primary key (id)
+  image_id bigint, --fixed image
+  primary key (id),
+  foreign key (image_id) references images(id)
 );
 
 create table if not exists alerts (
-  id bigint not null,
+  id BIGSERIAL not null,
   alert_type_id bigint not null,
   user_id bigint not null,
   rating FLOAT(5),
