@@ -12,7 +12,6 @@ public class NewAlertBodyRequest {
 	private Double lat;
 	@NotNull
 	private Double lng;
-	@NotNull
 	private String comment;
 	
 	
