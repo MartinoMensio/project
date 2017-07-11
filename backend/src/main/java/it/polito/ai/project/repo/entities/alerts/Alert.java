@@ -17,7 +17,7 @@ public class Alert {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private long id;
+	private Long id;
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="alert_type_id")
 	private AlertType alertType;
@@ -49,6 +49,22 @@ public class Alert {
 		this.activationDate = new Date();
 		this.lastViewTime = new Date();
 		this.active = true;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public AlertType getAlertType() {
+		return alertType;
+	}
+
+	public void setAlertType(AlertType alertType) {
+		this.alertType = alertType;
 	}
 
 	public float getRating() {
