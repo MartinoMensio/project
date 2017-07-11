@@ -11,7 +11,7 @@ public interface AlertsService {
 	
 	public List<Alert> getAlerts();
 	
-	public Alert getAlertById();
+	public Alert getAlertById(Long id);
 	
 	/**
 	 * 
