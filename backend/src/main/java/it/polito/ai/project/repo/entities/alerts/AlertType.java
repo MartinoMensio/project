@@ -33,4 +33,7 @@ public class AlertType {
 	public void setImage(Image image) {
 		this.image = image;
 	}
+	public long getId() {
+		return id;
+	}
 }
