@@ -59,19 +59,6 @@ create table if not exists images (
   primary key (id)
 );
 
-create table if not exists messages (
-  id BIGSERIAL,
-  sender_id bigint not null,
-  text text not null,
-  sending_time timestamp not null,
-  topic_id bigint not null,
-  image_id bigint,
-  primary key (id),
-  foreign key (sender_id) references users(id),
-  foreign key (topic_id) references topics(id),
-  foreign key (image_id) references images(id)
-);
-
 create table if not exists user_profiles (
   id bigint not null,
   sex varchar(1),
@@ -131,6 +118,21 @@ create table if not exists ratings (
 	primary key (user_id, alert_id),
 	foreign key (user_id) references users(id),
 	foreign key (alert_id) references alerts(id)
+);
+
+create table if not exists messages (
+  id BIGSERIAL,
+  sender_id bigint not null,
+  text text not null,
+  sending_time timestamp not null,
+  topic_id bigint not null,
+  image_id bigint,
+  alert_id bigint,
+  primary key (id),
+  foreign key (sender_id) references users(id),
+  foreign key (topic_id) references topics(id),
+  foreign key (image_id) references images(id),
+  foreign key (alert_id) references alerts(id)
 );
 
 create table if not exists verification_tokens (

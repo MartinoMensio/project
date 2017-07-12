@@ -11,6 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
+import it.polito.ai.project.repo.entities.alerts.Alert;
+
 @Entity(name = "messages")
 public class Message {
 
@@ -34,6 +36,10 @@ public class Message {
 	@JoinColumn(name="image_id")
 	private Image image;
 	
+	@OneToOne(optional = true)
+	@JoinColumn(name="alert_id")
+	private Alert alert;
+	
 	public Image getImage() {
 		return image;
 	}
@@ -41,12 +47,13 @@ public class Message {
 	public Message() {
 	}
 	
-	public Message(User sender, String text, Calendar sendingTime, Topic topic, Image image) {
+	public Message(User sender, String text, Calendar sendingTime, Topic topic, Image image, Alert alert) {
 		this.sender = sender;
 		this.text = text;
 		this.sendingTime = sendingTime;
 		this.topic = topic;
 		this.image = image;
+		this.alert = alert;
 	}
 
 	public Long getId() {
@@ -67,6 +74,10 @@ public class Message {
 
 	public Topic getTopic() {
 		return topic;
+	}
+
+	public Alert getAlert() {
+		return alert;
 	}
 
 }

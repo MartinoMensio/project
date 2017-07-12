@@ -46,6 +46,9 @@ public class AlertsServiceImpl implements AlertsService {
 
 	@Override
 	public Alert getAlertById(Long id) {
+		if (id == null) {
+			return null;
+		}
 		return alertsRepository.findOne(id);
 	}
 
