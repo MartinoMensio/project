@@ -82,6 +82,9 @@ public class AlertsServiceImpl implements AlertsService {
 
 	@Override
 	public Alert voteAlert(User user, Long alertId, int vote) {
+		//TODO the returned alert rating is not updated. It seems that the alert entity is returned before 
+		// the execution of the trigger that updates the average rate of the voted alert
+		
 		Alert alert = alertsRepository.findOne(alertId);
 		
 		// Insert the new rating, or replace the old one if it already exists
