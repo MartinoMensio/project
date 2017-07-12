@@ -49,7 +49,7 @@ app.controller('ChatCtrl', ['$scope', '$uibModal', '$stateParams', '$localStorag
                     image: null,
                     alertId: null
                 }
-            })
+            });
         }
     }
 
@@ -75,7 +75,7 @@ app.controller('ChatCtrl', ['$scope', '$uibModal', '$stateParams', '$localStorag
         this.alert = alert;
     };
 
-    this.openNewWarningModal = function (size, parentSelector) {
+    this.openNewWarningModal = (size, parentSelector) => {
         var modalInstance = $uibModal.open({
             templateUrl: 'templates/modals/newAlertModal.html',
             controller: 'NewAlertModalCtrl',
@@ -83,8 +83,21 @@ app.controller('ChatCtrl', ['$scope', '$uibModal', '$stateParams', '$localStorag
             size: 'lg'
         });
 
-        modalInstance.result.then(function (selectedItem) {
-            $ctrl.selected = selectedItem;
+        modalInstance.result.then((newAlert) => {
+            AlertsService.saveNewAlert(newAlert).then((createdAlert) => {
+                this.msg.alertId = createdAlert.id;
+
+                ChatService.sendMessage(topicId, this.msg).then((result) => {
+                    this.msg = {
+                        text: "",
+                        image: null,
+                        alertId: null
+                    }
+                });
+            })
+
+
+
         }, function () {
             $log.info('Modal dismissed at: ' + new Date());
         });

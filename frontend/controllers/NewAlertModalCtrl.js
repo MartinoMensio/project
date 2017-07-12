@@ -7,6 +7,11 @@ app.controller('NewAlertModalCtrl', ['$scope', '$uibModalInstance', 'AlertsServi
     });
 
     this.alert = {};
+    this.alert.alertType = 1;
+    this.alert.lat = 4.5;
+    this.alert.lng = 4.5;
+    this.alert.hashtag = "test";
+
 
     // TODO on address change, use geolocation API
     
