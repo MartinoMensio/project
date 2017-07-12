@@ -1,5 +1,6 @@
 package it.polito.ai.project.business.services.alerts;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -19,6 +20,8 @@ import it.polito.ai.project.repo.entities.alerts.Rating;
 @Service
 @Transactional
 public class AlertsServiceImpl implements AlertsService {
+	private final static int maxAlertDuration = 5;
+	
 	@Autowired
 	private AlertTypesRepository alertTypesRepository;
 	@Autowired
@@ -34,7 +37,11 @@ public class AlertsServiceImpl implements AlertsService {
 
 	@Override
 	public List<Alert> getAlerts() {
-		return alertsRepository.findAll();
+		// get the currentTime - maxAlertDuration
+	    Date time = getCurrentTimeMinusMaxAlertDuration();
+		
+	    // get and return the list of active alerts
+		return alertsRepository.findByActiveTrueAndLastViewTimeAfter(time);
 	}
 
 	@Override
@@ -44,7 +51,11 @@ public class AlertsServiceImpl implements AlertsService {
 
 	@Override
 	public List<Alert> getAlertsByHashtag(String hashtag) {
-		return alertsRepository.findByHashtagContaining(hashtag);
+		// get the currentTime - maxAlertDuration
+	    Date time = getCurrentTimeMinusMaxAlertDuration();
+		
+	    // get and return the list of active alerts that match the requested hashtag
+		return alertsRepository.findByHashtagContainingAndActiveTrueAndLastViewTimeAfter(hashtag, time);
 	}
 
 	@Override
@@ -76,6 +87,19 @@ public class AlertsServiceImpl implements AlertsService {
 		ratingsRepository.save(newRating);
 		
 		return alert;
+	}
+	
+	private Date getCurrentTimeMinusMaxAlertDuration() {
+		// get the current time
+		Date currentTime = new Date();
+		
+		// subtract the maxAlertDuration from the current time
+		Calendar calendar = Calendar.getInstance();
+	    calendar.setTime(currentTime);
+	    calendar.add(Calendar.MINUTE, -maxAlertDuration);
+	    Date result = calendar.getTime();
+	    
+	    return result;
 	}
 
 }
