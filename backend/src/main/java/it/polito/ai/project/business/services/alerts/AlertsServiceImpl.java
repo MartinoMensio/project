@@ -44,8 +44,7 @@ public class AlertsServiceImpl implements AlertsService {
 
 	@Override
 	public List<Alert> getAlertsByHashtag(String hashtag) {
-		// TODO Auto-generated method stub
-		return null;
+		return alertsRepository.findByHashtagContaining(hashtag);
 	}
 
 	@Override

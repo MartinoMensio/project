@@ -1,6 +1,7 @@
 package it.polito.ai.project.repo.entities.alerts;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -8,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import it.polito.ai.project.repo.entities.User;
@@ -24,6 +26,7 @@ public class Alert {
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="user_id")
 	private User user;
+	private String hashtag;
 	private float rating;
 	private String address;
 	private double lat;
@@ -33,12 +36,16 @@ public class Alert {
 	private Boolean active;
 	private String comment;
 	
+	@OneToMany(mappedBy="id.alert")
+	private List<Rating> ratings;
+	
 	
 	public Alert() {
 	}
 	
-	public Alert(AlertType alertType, User user, String address, double lat, double lng, String comment) {
+	public Alert(AlertType alertType, String hashtag, User user, String address, double lat, double lng, String comment) {
 		this.alertType = alertType;
+		this.hashtag = hashtag;
 		this.user = user;
 		this.address = address;
 		this.lat = lat;
@@ -131,4 +138,19 @@ public class Alert {
 		this.active = active;
 	}
 
+	public List<Rating> getRatings() {
+		return ratings;
+	}
+
+	public void setRatings(List<Rating> ratings) {
+		this.ratings = ratings;
+	}
+
+	public String getHashtag() {
+		return hashtag;
+	}
+
+	public void setHashtag(String hashtag) {
+		this.hashtag = hashtag;
+	}
 }

@@ -43,6 +43,7 @@ public class AlertsController {
 		
 		// Create the new alert from the newAlert. It is just a conversion, sorry for the bad naming :-)
 		Alert alert = new Alert(null,//TODO should be the object that represents the alert type
+								newAlert.getHashtag(),
 								currentUserService.getCurrentUser(),
 								newAlert.getAddress(),
 								newAlert.getLat(),

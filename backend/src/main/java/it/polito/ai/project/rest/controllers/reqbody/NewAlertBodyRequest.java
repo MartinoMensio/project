@@ -7,6 +7,8 @@ public class NewAlertBodyRequest {
 	@NotNull
 	private Long alertType;
 	@NotNull
+	private String hashtag;
+	@NotNull
 	private String address;
 	@NotNull
 	private Double lat;
@@ -20,6 +22,12 @@ public class NewAlertBodyRequest {
 	}
 	public void setAlertType(Long alertType) {
 		this.alertType = alertType;
+	}
+	public String getHashtag() {
+		return hashtag;
+	}
+	public void setHashTag(String hashtag) {
+		this.hashtag = hashtag;
 	}
 	public String getAddress() {
 		return address;
