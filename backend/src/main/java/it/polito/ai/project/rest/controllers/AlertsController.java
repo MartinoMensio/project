@@ -3,8 +3,6 @@ package it.polito.ai.project.rest.controllers;
 import java.util.List;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
@@ -21,6 +19,7 @@ import it.polito.ai.project.business.services.authentication.CurrentUserService;
 import it.polito.ai.project.repo.entities.alerts.Alert;
 import it.polito.ai.project.repo.entities.alerts.AlertType;
 import it.polito.ai.project.rest.controllers.reqbody.NewAlertBodyRequest;
+import it.polito.ai.project.rest.controllers.reqbody.NewRatingBodyRequest;
 import it.polito.ai.project.web.exceptions.ClientErrorException;
 
 @RestController
@@ -79,9 +78,11 @@ public class AlertsController {
 	
 	// endpoint for ratings of alerts
 	@PutMapping("/api/alerts/{id}/rate")
-	public Alert voteAlert(@PathVariable(value = "id") Long id, @RequestBody int vote) {
-		//TODO validate the request body. Must be between 1 and 5
+	public Alert voteAlert(@PathVariable(value = "id") Long id, @Valid @RequestBody NewRatingBodyRequest vote, BindingResult result) {
+		if (result.hasErrors()) {
+			throw new ClientErrorException("wrong fields in the request");
+		}
 		
-		return alertsService.voteAlert(currentUserService.getCurrentUser(), id, vote);
+		return alertsService.voteAlert(currentUserService.getCurrentUser(), id, vote.getValue());
 	}
 }
