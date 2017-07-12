@@ -1,7 +1,6 @@
 package it.polito.ai.project.repo.entities.alerts;
 
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -9,7 +8,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import it.polito.ai.project.repo.entities.User;
@@ -35,9 +33,6 @@ public class Alert {
 	private Date lastViewTime;
 	private Boolean active;
 	private String comment;
-	
-	@OneToMany(mappedBy="id.alert")
-	private List<Rating> ratings;
 	
 	
 	public Alert() {
@@ -136,14 +131,6 @@ public class Alert {
 
 	public void setActive(Boolean active) {
 		this.active = active;
-	}
-
-	public List<Rating> getRatings() {
-		return ratings;
-	}
-
-	public void setRatings(List<Rating> ratings) {
-		this.ratings = ratings;
 	}
 
 	public String getHashtag() {

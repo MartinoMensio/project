@@ -112,7 +112,7 @@ create table if not exists alerts (
   alert_type_id bigint,
   user_id bigint not null,
   hashtag varchar(200) not null,
-  rating FLOAT(5),
+  rating real,
   address varchar(200) not null,
   lat double precision not null,
   lng double precision not null,
@@ -141,3 +141,22 @@ create table if not exists verification_tokens (
   primary key (id),
   foreign key (id) references users(id)
 );
+
+CREATE OR REPLACE FUNCTION update_average_rating()
+  RETURNS trigger AS
+$BODY$
+BEGIN
+  UPDATE alerts
+  SET rating = (SELECT avg(vote)
+    FROM ratings
+    WHERE alert_id = NEW.alert_id)
+  WHERE id = NEW.alert_id;
+
+  RETURN NEW;
+END;
+$BODY$
+LANGUAGE plpgsql VOLATILE;
+
+create trigger update_average_rating_trigger AFTER insert OR update ON ratings
+FOR EACH ROW
+EXECUTE PROCEDURE update_average_rating();
