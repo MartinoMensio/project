@@ -100,7 +100,7 @@ app.factory('ChatService', ['$http', '$q', '$localStorage', '$stomp', '$log', fu
         */
         sendMessage: function(topicId, message) {
             // send the message to the server via the WebSocket
-            $stomp.send(roomEndpoint + topicId, {
+            return $stomp.send(roomEndpoint + topicId, {
                     content : message.text,
                     image: message.image
                 },

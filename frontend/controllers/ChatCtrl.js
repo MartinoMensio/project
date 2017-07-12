@@ -1,17 +1,20 @@
 var app = angular.module('App');
 
-app.controller('ChatCtrl', ['$scope', '$uibModal', '$stateParams', '$localStorage', 'ChatService', function ($scope, $uibModal, $stateParams, $localStorage, chatService) {
+app.controller('ChatCtrl', ['$scope', '$uibModal', '$stateParams', '$localStorage', 'ChatService', 'AlertsService', function ($scope, $uibModal, $stateParams, $localStorage, ChatService, AlertsService) {
     this.template = "templates/popovers/popoverTemplate.html";
-    
+
     this.messages = [];
-    this.msg_text = "";
-    this.msg_image = null;
+    this.msg = {
+        text: "",
+        image: null,
+        alertId: null
+    }
 
     var topicId = $stateParams.topicId; // get the topic id from the app state
 
 
     // Retrieve the last messages from the topic
-    chatService.getLastMessages(topicId).then((result) => {
+    ChatService.getLastMessages(topicId).then((result) => {
         this.messages = result;
     });
 
@@ -23,22 +26,54 @@ app.controller('ChatCtrl', ['$scope', '$uibModal', '$stateParams', '$localStorag
     }
 
     // Register the topic and the callback
-    chatService.connect(topicId, addMessage);
-    
+    ChatService.connect(topicId, addMessage);
 
-    this.sendMessage = ()=> {
-        if (this.msg_text != "") {
-            var newMsg = {
-                text: this.msg_text,
-                image: this.msg_image
-            };
 
-            chatService.sendMessage(topicId, newMsg);
-            this.msg_text = "";
-            this.msg_image = null;
+    this.sendMessage = () => {
+        if (this.msg.text != "") {
+            // check the alerts
+            if (!this.msg.alertId) {
+                // no alert is selected, check manually the text to find hashtag
+                const hashtag = AlertsService.findHashtag(this.msg.text);
+                if (hashtag) {
+                    // an hashtag is present in the text
+                    this.openNewWarningModal();
+                    // stop the flow. The modal when closed will call again the sendMessage function
+                    return;
+                }
+            }
+
+            ChatService.sendMessage(topicId, this.msg).then((result) => {
+                this.msg = {
+                    text: "",
+                    image: null,
+                    alertId: null
+                }
+            })
         }
     }
 
+    // this function is called every time the message text changes 
+    this.msg_text_changed = () => {
+        // only search if there is not yet an alert linked
+        if (!this.msg.alertId) {
+            const hashtag = AlertsService.findHashtag(this.msg.text);
+            if (hashtag) {
+                AlertsService.getAlertsWithHashtag(hashtag).then((result) => {
+                    // TODO display in dropdown
+                    this.alertsResult = result;
+                })
+            }
+        }
+    };
+
+    // this function is called when an alert in the dropdown is clicked
+    this.alertClicked = (alert) => {
+        // save the id in the message to be sent
+        this.msg.alertId = alert.id;
+        // and also save a copy of the alert (could be useful to display around message, if user wants to remove the linked alert he will click on X ??)
+        this.alert = alert;
+    };
 
     this.openNewWarningModal = function (size, parentSelector) {
         var modalInstance = $uibModal.open({
@@ -50,7 +85,7 @@ app.controller('ChatCtrl', ['$scope', '$uibModal', '$stateParams', '$localStorag
 
         modalInstance.result.then(function (selectedItem) {
             $ctrl.selected = selectedItem;
-            }, function () {
+        }, function () {
             $log.info('Modal dismissed at: ' + new Date());
         });
     };
@@ -64,8 +99,8 @@ app.controller('ChatCtrl', ['$scope', '$uibModal', '$stateParams', '$localStorag
         });
 
         modalInstance.result.then((imageString) => {
-            this.msg_image = imageString;
-            },function () {
+            this.msg.image = imageString;
+        }, function () {
             $log.info('Modal dismissed at: ' + new Date());
         });
     };

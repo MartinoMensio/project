@@ -49,6 +49,16 @@ app.factory('AlertsService', ['$http', '$q', function ($http, $q) {
                 deferred.reject(result);
             });
             return deferred.promise;
+        },
+        findHashtag: function (text) {
+            var regexp = /\B\#\w+\b/g
+            result = text.match(regexp);
+            if (result) {
+                // return the first hashtag (skipping the # char)
+                return result[0].substring(1);
+            } else {
+                return null;
+            }
         }
     }
 }]);
