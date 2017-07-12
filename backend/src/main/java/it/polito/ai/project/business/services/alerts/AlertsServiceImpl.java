@@ -41,7 +41,7 @@ public class AlertsServiceImpl implements AlertsService {
 	    Date time = getCurrentTimeMinusMaxAlertDuration();
 		
 	    // get and return the list of active alerts
-		return alertsRepository.findByActiveTrueAndLastViewTimeAfter(time);
+		return alertsRepository.findByLastViewTimeAfter(time);
 	}
 
 	@Override
@@ -55,7 +55,7 @@ public class AlertsServiceImpl implements AlertsService {
 	    Date time = getCurrentTimeMinusMaxAlertDuration();
 		
 	    // get and return the list of active alerts that match the requested hashtag
-		return alertsRepository.findByHashtagContainingAndActiveTrueAndLastViewTimeAfter(hashtag, time);
+		return alertsRepository.findByHashtagContainingAndLastViewTimeAfter(hashtag, time);
 	}
 
 	@Override

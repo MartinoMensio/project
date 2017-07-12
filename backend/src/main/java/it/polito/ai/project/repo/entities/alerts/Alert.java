@@ -31,7 +31,6 @@ public class Alert {
 	private double lng;
 	private Date activationDate;
 	private Date lastViewTime;
-	private Boolean active;
 	private String comment;
 	
 	
@@ -50,7 +49,6 @@ public class Alert {
 		this.rating = 0f;
 		this.activationDate = new Date();
 		this.lastViewTime = new Date();
-		this.active = true;
 	}
 
 	public Long getId() {
@@ -99,7 +97,7 @@ public class Alert {
 
 	public void setLng(double lng) {
 		this.lng = lng;
-	}// TODO LocalTime è appropriato?
+	}
 
 	public Date getActivationDate() {
 		return activationDate;
@@ -123,14 +121,6 @@ public class Alert {
 
 	public void setComment(String comment) {
 		this.comment = comment;
-	}
-
-	public Boolean getActive() {
-		return active;
-	}
-
-	public void setActive(Boolean active) {
-		this.active = active;
 	}
 
 	public String getHashtag() {
