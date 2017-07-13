@@ -75,7 +75,7 @@
     height: 50px;
     border-radius: 6px;
     border: 1px solid #bcbdc0;
-    width: 90%;
+    width: calc(100% - 130px);
     position: relative;
     padding: 0 20px;
 }
