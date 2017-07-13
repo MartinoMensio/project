@@ -15,9 +15,14 @@
         <div class="bottom_wrapper clearfix">
           <img ng-if="ctrl.msg.image" ng-src="{{ctrl.msg.image}}" style="max-height:200px;max-width:300px;" />
           <!--  TODO show search list <ul></ul> -->
-          <div class="message_input_wrapper">
+          <div class="message_input_wrapper" uib-dropdown is-open="ctrl.alertsResult && ctrl.alertsResult.length">
             <input class="message_input" ng-model="ctrl.msg.content" placeholder="Type your message here..." ng-change="ctrl.msg_text_changed()"
               ng-keyup="$event.keyCode == 13 ? ctrl.sendMessage() : null" />
+            <ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="simple-dropdown" role="menu">
+              <li ng-repeat="alert in ctrl.alertsResult">
+                <a ng-click="ctrl.alertClicked(alert)">{{alert}}</a>
+              </li>
+            </ul>
           </div>
 
           <div class="chat_buttons clearfix">
