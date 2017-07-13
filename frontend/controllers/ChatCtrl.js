@@ -3,6 +3,7 @@ var app = angular.module('App');
 app.controller('ChatCtrl', ['$scope', '$uibModal', '$stateParams', '$localStorage', 'ChatService', 'AlertsService', function ($scope, $uibModal, $stateParams, $localStorage, ChatService, AlertsService) {
     this.template = "templates/popovers/popoverTemplate.html";
 
+    // define the map status: shown/not shown
     this.showMap = false;
 
     this.tiles = {
@@ -65,6 +66,10 @@ app.controller('ChatCtrl', ['$scope', '$uibModal', '$stateParams', '$localStorag
                 }
             });
         }
+    }
+
+    this.mapToggle = () => {
+        this.showMap = !this.showMap;
     }
 
     // this function is called every time the message text changes 
