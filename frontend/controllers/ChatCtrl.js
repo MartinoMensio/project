@@ -63,7 +63,8 @@ app.controller('ChatCtrl', ['$scope', '$uibModal', '$stateParams', '$localStorag
                     content: "",
                     image: null,
                     alertId: null
-                }
+                };
+                this.alert = null;
             });
         }
     }
@@ -97,6 +98,15 @@ app.controller('ChatCtrl', ['$scope', '$uibModal', '$stateParams', '$localStorag
         this.msg.content = AlertsService.autocompleteHashtag(this.msg.content, this.alert.hashtag);
     };
 
+    this.removeAlert = () => {
+        this.alert = null;
+        this.msg.alertId = null;
+    };
+
+    this.removeImage = () => {
+        this.msg.image = null;
+    }
+
     this.openNewWarningModal = (hashtag) => {
         var modalInstance = $uibModal.open({
             templateUrl: 'templates/modals/newAlertModal.html',
@@ -120,7 +130,8 @@ app.controller('ChatCtrl', ['$scope', '$uibModal', '$stateParams', '$localStorag
                         content: "",
                         image: null,
                         alertId: null
-                    }
+                    };
+                    this.alert = null;
                 });
             })
 
