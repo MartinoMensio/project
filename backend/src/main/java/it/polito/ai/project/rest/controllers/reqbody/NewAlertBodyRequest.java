@@ -5,7 +5,7 @@ import javax.validation.constraints.NotNull;
 
 public class NewAlertBodyRequest {
 	@NotNull
-	private Long alertType;
+	private Long alertTypeId;
 	@NotNull
 	private String hashtag;
 	@NotNull
@@ -17,11 +17,11 @@ public class NewAlertBodyRequest {
 	private String comment;
 	
 	
-	public Long getAlertType() {
-		return alertType;
+	public Long getAlertTypeId() {
+		return alertTypeId;
 	}
-	public void setAlertType(Long alertType) {
-		this.alertType = alertType;
+	public void setAlertTypeId(Long alertTypeId) {
+		this.alertTypeId = alertTypeId;
 	}
 	public String getHashtag() {
 		return hashtag;

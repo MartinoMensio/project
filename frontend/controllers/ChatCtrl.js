@@ -5,7 +5,7 @@ app.controller('ChatCtrl', ['$scope', '$uibModal', '$stateParams', '$localStorag
 
     this.messages = [];
     this.msg = {
-        text: "",
+        content: "",
         image: null,
         alertId: null
     }
@@ -30,14 +30,14 @@ app.controller('ChatCtrl', ['$scope', '$uibModal', '$stateParams', '$localStorag
 
 
     this.sendMessage = () => {
-        if (this.msg.text != "") {
+        if (this.msg.content != "") {
             // check the alerts
             if (!this.msg.alertId) {
                 // no alert is selected, check manually the text to find hashtag
-                const hashtag = AlertsService.findHashtag(this.msg.text);
+                const hashtag = AlertsService.findHashtag(this.msg.content);
                 if (hashtag) {
                     // an hashtag is present in the text
-                    this.openNewWarningModal();
+                    this.openNewWarningModal(hashtag);
                     // stop the flow. The modal when closed will call again the sendMessage function
                     return;
                 }
@@ -45,7 +45,7 @@ app.controller('ChatCtrl', ['$scope', '$uibModal', '$stateParams', '$localStorag
 
             ChatService.sendMessage(topicId, this.msg).then((result) => {
                 this.msg = {
-                    text: "",
+                    content: "",
                     image: null,
                     alertId: null
                 }
@@ -57,7 +57,7 @@ app.controller('ChatCtrl', ['$scope', '$uibModal', '$stateParams', '$localStorag
     this.msg_text_changed = () => {
         // only search if there is not yet an alert linked
         if (!this.msg.alertId) {
-            const hashtag = AlertsService.findHashtag(this.msg.text);
+            const hashtag = AlertsService.findHashtag(this.msg.content);
             if (hashtag) {
                 AlertsService.getAlertsWithHashtag(hashtag).then((result) => {
                     // TODO display in dropdown
@@ -75,12 +75,18 @@ app.controller('ChatCtrl', ['$scope', '$uibModal', '$stateParams', '$localStorag
         this.alert = alert;
     };
 
-    this.openNewWarningModal = (size, parentSelector) => {
+    this.openNewWarningModal = (hashtag) => {
         var modalInstance = $uibModal.open({
             templateUrl: 'templates/modals/newAlertModal.html',
             controller: 'NewAlertModalCtrl',
             controllerAs: 'ctrl',
-            size: 'lg'
+            size: 'lg',
+            resolve: {
+                alertTypes: AlertsService.getAlertTypes(),
+                hashtag: function() {
+                    return hashtag;
+                }
+            }
         });
 
         modalInstance.result.then((newAlert) => {
@@ -89,7 +95,7 @@ app.controller('ChatCtrl', ['$scope', '$uibModal', '$stateParams', '$localStorag
 
                 ChatService.sendMessage(topicId, this.msg).then((result) => {
                     this.msg = {
-                        text: "",
+                        content: "",
                         image: null,
                         alertId: null
                     }
