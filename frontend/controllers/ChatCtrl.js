@@ -3,6 +3,20 @@ var app = angular.module('App');
 app.controller('ChatCtrl', ['$scope', '$uibModal', '$stateParams', '$localStorage', 'ChatService', 'AlertsService', function ($scope, $uibModal, $stateParams, $localStorage, ChatService, AlertsService) {
     this.template = "templates/popovers/popoverTemplate.html";
 
+    this.showMap = false;
+
+    this.tiles = {
+        name: 'MapBox',
+        url: '//api.tiles.mapbox.com/v4/mapbox.streets/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw',
+        type: 'xyz'
+    };
+    // define the map centering
+    this.center = {
+        lat: 45.064,
+        lng: 7.681,
+        zoom: 13
+    }
+
     this.messages = [];
     this.msg = {
         content: "",
@@ -83,7 +97,7 @@ app.controller('ChatCtrl', ['$scope', '$uibModal', '$stateParams', '$localStorag
             size: 'lg',
             resolve: {
                 alertTypes: AlertsService.getAlertTypes(),
-                hashtag: function() {
+                hashtag: function () {
                     return hashtag;
                 }
             }

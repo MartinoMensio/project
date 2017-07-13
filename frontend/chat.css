@@ -166,3 +166,8 @@
 .modal-dialog {
     margin: 90px auto;
 }
+
+.nopadding {
+   padding: 0 !important;
+   margin: 0 !important;
+}
