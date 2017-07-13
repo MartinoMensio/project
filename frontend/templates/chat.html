@@ -2,10 +2,11 @@
   <div class="row" id="row-room">
 
     <div class="panel panel-default nopadding" id="panel-room" ng-class="ctrl.showMap ? 'col-sm-6' : 'col-sm-12'">
-      <div class="panel-heading text-center">
-        Chat
-        
-            <button ng-click="ctrl.mapToggle()" claas="pull-left"><img src="images/map.png" style="max-width: 50px; max-height: 50px;"/></button>
+      <div class="panel-heading clearfix">
+        <div class="pull-left">Chat</div>
+        <div class="pull-right">
+          <button ng-click="ctrl.mapToggle()" claas="pull-left"><img src="images/map.png" style="max-width: 50px; max-height: 50px;"/></button>
+        </div>
       </div>
       <div class="panel-body" scroll-glue force-glue>
         <ul class="chat" ng-repeat="msg in ctrl.messages | orderBy:'sendingTime'">
@@ -24,7 +25,7 @@
 
           <div class="chat_buttons clearfix">
             <!--<button class="add_button text" ng-click="ctrl.openNewWarningModal()"><span class="glyphicon glyphicon-plus"></span></button> -->
-            <button class="add_button text" popover-placement="top" uib-popover-template="ctrl.template" type="button"><span class="glyphicon glyphicon-plus"></span></button>
+            <button class="add_button text" popover-placement="top" uib-popover-template="ctrl.template" type="button"><span class="glyphicon glyphicon-paperclip"></span></button>
             <button class="send_button text" ng-click="ctrl.sendMessage()"><span class="glyphicon glyphicon-send"></span></button>
           </div>
         </div>
