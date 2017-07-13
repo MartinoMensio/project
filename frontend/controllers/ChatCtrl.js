@@ -92,6 +92,9 @@ app.controller('ChatCtrl', ['$scope', '$uibModal', '$stateParams', '$localStorag
         this.msg.alertId = alert.id;
         // and also save a copy of the alert (could be useful to display around message, if user wants to remove the linked alert he will click on X ??)
         this.alert = alert;
+        this.alertsResult = null;
+        // autocomplete the text
+        this.msg.content = AlertsService.autocompleteHashtag(this.msg.content, this.alert.hashtag);
     };
 
     this.openNewWarningModal = (hashtag) => {

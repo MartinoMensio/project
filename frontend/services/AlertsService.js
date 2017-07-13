@@ -59,6 +59,16 @@ app.factory('AlertsService', ['$http', '$q', function ($http, $q) {
             } else {
                 return null;
             }
+        },
+        autocompleteHashtag: function(text, hashtag) {
+            var regexp = /\B\#\w+\b/g
+            result = text.match(regexp);
+            if (result) {
+                // return the first hashtag (skipping the # char)
+                return text.replace(result[0], `#${hashtag}`);
+            } else {
+                return null;
+            }
         }
     }
 }]);
