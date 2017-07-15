@@ -96,7 +96,7 @@ create table if not exists alert_types (
 
 create table if not exists alerts (
   id BIGSERIAL not null,
-  alert_type_id bigint,
+  alert_type_id bigint not null,
   user_id bigint not null,
   hashtag varchar(200) not null,
   rating real,

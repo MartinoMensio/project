@@ -10,6 +10,8 @@ public interface AlertsService {
 	
 	public List<AlertType> getAlertsType();
 	
+	public AlertType getAlertTypeById(Long id);
+	
 	public List<Alert> getAlerts();
 	
 	public Alert getAlertById(Long id);

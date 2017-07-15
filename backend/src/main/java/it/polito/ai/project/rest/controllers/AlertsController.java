@@ -40,8 +40,10 @@ public class AlertsController {
 			throw new ClientErrorException("wrong fields in the request");
 		}
 		
+		AlertType alertType = alertsService.getAlertTypeById(newAlert.getAlertTypeId());
+		
 		// Create the new alert from the newAlert. It is just a conversion, sorry for the bad naming :-)
-		Alert alert = new Alert(null,//TODO should be the object that represents the alert type
+		Alert alert = new Alert(alertType,
 								newAlert.getHashtag(),
 								currentUserService.getCurrentUser(),
 								newAlert.getAddress(),

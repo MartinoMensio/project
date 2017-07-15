@@ -34,6 +34,14 @@ public class AlertsServiceImpl implements AlertsService {
 	public List<AlertType> getAlertsType() {
 		return alertTypesRepository.findAll();
 	}
+	
+	@Override
+	public AlertType getAlertTypeById(Long id) {
+		if (id == null) {
+			return null;
+		}
+		return alertTypesRepository.findOne(id);
+	}
 
 	@Override
 	public List<Alert> getAlerts() {
