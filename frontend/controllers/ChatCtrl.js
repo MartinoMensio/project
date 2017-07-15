@@ -157,4 +157,10 @@ app.controller('ChatCtrl', ['$scope', '$uibModal', '$stateParams', '$localStorag
         });
     };
 
+    this.selectAlert = (alertId) => {
+        console.log("clicked alert " + alertId);
+        this.showMap = true;
+        // TODO open alert detail
+    }
+
 }]);
