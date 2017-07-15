@@ -52,7 +52,7 @@ app.controller('ChatCtrl', ['$scope', '$uibModal', '$stateParams', '$localStorag
                 const hashtag = AlertsService.findHashtag(this.msg.content);
                 if (hashtag) {
                     // an hashtag is present in the text
-                    this.openNewWarningModal(hashtag);
+                    this.openNewAlertModal(hashtag);
                     // stop the flow. The modal when closed will call again the sendMessage function
                     return;
                 }
@@ -107,7 +107,7 @@ app.controller('ChatCtrl', ['$scope', '$uibModal', '$stateParams', '$localStorag
         this.msg.image = null;
     }
 
-    this.openNewWarningModal = (hashtag) => {
+    this.openNewAlertModal = (hashtag) => {
         var modalInstance = $uibModal.open({
             templateUrl: 'templates/modals/newAlertModal.html',
             controller: 'NewAlertModalCtrl',

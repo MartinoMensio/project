@@ -1,20 +1,39 @@
 var app = angular.module('App');
 
-app.controller('NewAlertModalCtrl', ['$scope', '$uibModalInstance', 'AlertsService', 'alertTypes', 'hashtag', function ($scope, $uibModalInstance, AlertsService, alertTypes, hashtag) {
+app.controller('NewAlertModalCtrl', ['$scope', '$uibModalInstance', 'AlertsService', 'GeocodingService', 'alertTypes', 'hashtag', function ($scope, $uibModalInstance, AlertsService, GeocodingService, alertTypes, hashtag) {
 
     this.alertTypes = alertTypes;
     this.alert = {};
     this.alert.alertTypeId = alertTypes[alertTypes.length - 1].id;
 
-    // TODO those are fake
-    this.alert.lat = 4.5;
-    this.alert.lng = 4.5;
     this.alert.hashtag = hashtag;
 
 
-    // TODO on address change, use geolocation API
-    
+    // on address change, use geocoding APIs
+    this.addressChanged = () => {
+        GeocodingService.getLocationFromString(this.alert.address).then((result) => {
+            this.fullAddress = result.formatted_address;
+            this.alert.lat = result.geometry.location.lat;
+            this.alert.lng = result.geometry.location.lng;
+        });
+    };
+
+    this.geolocate = () => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition((position) => {
+                this.alert.lat = position.coords.latitude;
+                this.alert.lng = position.coords.longitude;
+                GeocodingService.reverseGeocode(this.alert.lat, this.alert.lng).then((result) => {
+                    this.alert.address = result.formatted_address;
+                    this.fullAddress = result.formatted_address;
+                });
+            });
+        }
+    };
+
     this.save = () => {
+        // take the full parsed address
+        this.alert.address = this.fullAddress;
         $uibModalInstance.close(this.alert);
     };
 

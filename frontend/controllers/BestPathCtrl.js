@@ -52,7 +52,10 @@ app.controller('BestPathCtrl', ['$scope', "leafletData", '$routeParams', '$locat
                     draggable: true
                 };
                 // update the search form
-                this[key + 'Str'] = 'set on map';
+                GeocodingService.reverseGeocode(leafEvent.latlng.lat, leafEvent.latlng.lng).then((result) => {
+                    this[key + 'Str'] = result.formatted_address;
+                });
+
             }
         });
 
@@ -78,16 +81,26 @@ app.controller('BestPathCtrl', ['$scope', "leafletData", '$routeParams', '$locat
             }
         }
 
-        this.geocodeSrc = () => {
-            GeocodingService.getLocationFromString(this.sourceStr).then((result) => {
-                this.markers['source'] = result.geometry.location;
-            })
-        }
+        // key is 'source' or 'destination'
+        this.geocode = (key) => {
+            GeocodingService.getLocationFromString(this[key + 'Str']).then((result) => {
+                this.markers[key] = result.geometry.location;
+            });
+        };
 
-        this.geocodeDst = () => {
-            GeocodingService.getLocationFromString(this.destinationStr).then((result) => {
-                this.markers['destination'] = result.geometry.location;
-            })
-        }
+        // key is 'source' or 'destination'
+        this.geolocate = (key) => {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition((position) => {
+                    this.markers[key] = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    };
+                    GeocodingService.reverseGeocode(this.markers[key].lat, this.markers[key].lng).then((result) => {
+                        this[key + 'Str'] = result.formatted_address;
+                    });
+                });
+            }
+        };
     }
 ]);
