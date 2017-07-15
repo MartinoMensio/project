@@ -47,7 +47,12 @@ public class ChatController {
 			Topic topic = chatService.getTopicById(topicId);
 			if (topic != null) {
 				Image image = imagesService.getImageFromString(webSocketMessage.getImage());
-				Alert alert = alertsService.updateAlertLastViewTime(webSocketMessage.getAlertId());
+				// get the attached alert
+				Long alertId = webSocketMessage.getAlertId();
+				Alert alert = null;
+				if (alertId != null) {
+					alert = alertsService.updateAlertLastViewTime(webSocketMessage.getAlertId());
+				}
 				
 				// create the message entity
 				Message messageEntity = new Message(sender, webSocketMessage.getContent(), Calendar.getInstance(), topic, image, alert);

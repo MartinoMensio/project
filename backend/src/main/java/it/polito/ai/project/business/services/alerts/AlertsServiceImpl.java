@@ -68,8 +68,17 @@ public class AlertsServiceImpl implements AlertsService {
 
 	@Override
 	public Alert updateAlertLastViewTime(Long id) {
+		if (id == null) {
+			return null;
+		}
 		// get the alert
+		// TODO only check for not expired alerts? Or an alert can be resurrected?
 		Alert alert = alertsRepository.findOne(id);
+		
+		if (alert == null) {
+			// alert not found
+			return null;
+		}
 		
 		// update the last view time with the current time
 		alert.setLastViewTime(new Date());
