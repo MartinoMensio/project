@@ -96,7 +96,7 @@
     text-align: center;
 }
 
-.add_button {
+.add_picture_button {
     width: 50px;
     height: 50px;
     margin-right: 10px;
@@ -111,11 +111,11 @@
     
 }
 
-.add_button:hover {
+.add_picture_button:hover {
     background-color: #ffcc00;
 }
 
-.add_button .text {
+.add_picture_button .text {
     font-size: 30px;
     font-weight: 300;
     display: inline-block;
