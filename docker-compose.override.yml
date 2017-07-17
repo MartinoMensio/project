@@ -11,6 +11,7 @@ services:
     # TODO environment variables for backend and geoservices urls
     volumes:
       - ./frontend:/app
+    # TODO use npm with package.json and volume for node_modules folder
     command: bash -c "npm install -g live-server && cd /app && live-server"
 
 # web services
