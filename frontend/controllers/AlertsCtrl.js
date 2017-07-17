@@ -2,11 +2,14 @@ var app = angular.module('App');
 
 app.controller('AlertsCtrl', ['$scope', 'AlertsService', function($scope, alertsService) {
     alertsService.getAlerts().then((result) => {
-        this.alerts = result;
-        this.markers = result;
-        
-    });
+        this.alerts = result; // show the alert list
+        this.markers = result; // show the markers on the map
 
+       this. markers.forEach(function(marker) {
+            marker.message = 'test';
+        }, this);
+
+    });
 
     // initialize the map
     this.center = {
@@ -29,16 +32,5 @@ app.controller('AlertsCtrl', ['$scope', 'AlertsService', function($scope, alerts
             url: '//api.tiles.mapbox.com/v4/mapbox.streets/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw',
             type: 'xyz'
     };
-
-    var createMarker = function (point, msg) {
-        return {
-            lat: point[45.064],
-            lng: point[7.681],
-            focus: false,
-            message: msg
-        };
-    }
-
-    
 
 }]);
