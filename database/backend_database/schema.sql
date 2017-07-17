@@ -41,7 +41,7 @@ create table if not exists users (
   nickname varchar(30) not null,
   email varchar(200) not null unique,
   password varchar(200) not null,
-  status_id bigint DEFAULT 1,
+  status_id bigint DEFAULT 4, -- new users don't have yet completed the verification of email
   primary key (id),
   foreign key (status_id) references status(id)
 );
@@ -57,19 +57,6 @@ create table if not exists images (
   id BIGSERIAL not null,
   value BYTEA not null,
   primary key (id)
-);
-
-create table if not exists messages (
-  id BIGSERIAL,
-  sender_id bigint not null,
-  text varchar(2000) not null,
-  sending_time timestamp not null,
-  topic_id bigint not null,
-  image_id bigint,
-  primary key (id),
-  foreign key (sender_id) references users(id),
-  foreign key (topic_id) references topics(id),
-  foreign key (image_id) references images(id)
 );
 
 create table if not exists user_profiles (
@@ -102,15 +89,17 @@ create table if not exists user_profiles (
 create table if not exists alert_types (
   id bigint not null,
   name varchar(30) not null,
-  image BYTEA not null, --fixed image
-  primary key (id)
+  image_id bigint, --fixed image
+  primary key (id),
+  foreign key (image_id) references images(id)
 );
 
 create table if not exists alerts (
-  id bigint not null,
+  id BIGSERIAL not null,
   alert_type_id bigint not null,
   user_id bigint not null,
-  rating FLOAT(5),
+  hashtag varchar(200) not null,
+  rating real,
   address varchar(200) not null,
   lat double precision not null,
   lng double precision not null,
@@ -123,18 +112,52 @@ create table if not exists alerts (
 );
 
 create table if not exists ratings (
-	id bigint not null,
 	user_id bigint not null,
 	alert_id bigint not null,
 	vote integer not null, -- from 1.0 to 5.0
-	primary key (id),
+	primary key (user_id, alert_id),
 	foreign key (user_id) references users(id),
 	foreign key (alert_id) references alerts(id)
+);
+
+create table if not exists messages (
+  id BIGSERIAL,
+  sender_id bigint not null,
+  text text not null,
+  sending_time timestamp not null,
+  topic_id bigint not null,
+  image_id bigint,
+  alert_id bigint,
+  primary key (id),
+  foreign key (sender_id) references users(id),
+  foreign key (topic_id) references topics(id),
+  foreign key (image_id) references images(id),
+  foreign key (alert_id) references alerts(id)
 );
 
 create table if not exists verification_tokens (
   id bigint not null,
   token text not null,
+  expiration timestamp not null,
   primary key (id),
   foreign key (id) references users(id)
 );
+
+CREATE OR REPLACE FUNCTION update_average_rating()
+  RETURNS trigger AS
+$BODY$
+BEGIN
+  UPDATE alerts
+  SET rating = (SELECT avg(vote)
+    FROM ratings
+    WHERE alert_id = NEW.alert_id)
+  WHERE id = NEW.alert_id;
+
+  RETURN NEW;
+END;
+$BODY$
+LANGUAGE plpgsql VOLATILE;
+
+create trigger update_average_rating_trigger AFTER insert OR update ON ratings
+FOR EACH ROW
+EXECUTE PROCEDURE update_average_rating();

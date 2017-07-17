@@ -7,7 +7,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import it.polito.ai.project.business.services.emailVerification.EmailVerificationService;
+import it.polito.ai.project.repo.StatusRepository;
 import it.polito.ai.project.repo.UsersRepository;
+import it.polito.ai.project.repo.entities.Status;
 import it.polito.ai.project.repo.entities.User;
 import it.polito.ai.project.repo.entities.UserProfile;
 
@@ -17,6 +19,9 @@ public class AccountingServiceImpl implements AccountingService {
 	
 	@Autowired
 	private UsersRepository usersRepository;
+	
+	@Autowired
+	private StatusRepository statusRepository;
 	
 	@Autowired
 	private EmailVerificationService emailVerification;
@@ -35,8 +40,13 @@ public class AccountingServiceImpl implements AccountingService {
 		user.setNickname(nickname);
 		user.setProfile(userProfile);
 		
+		if (!user.getStatus().getValue().equals("COMPLETE")) {
+			// the profile is now complete, so change user status
+			Status completeStatus = statusRepository.findByValue("COMPLETE").stream().findFirst().get();
+			user.setStatus(completeStatus);
+		}
+		// save the user
 		usersRepository.save(user);
-		usersRepository.enableUser(email);
 		
 		return user;
 	}

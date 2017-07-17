@@ -2,6 +2,7 @@ package it.polito.ai.project.business.services.emailVerification;
 
 import java.math.BigInteger;
 import java.security.SecureRandom;
+import java.util.Calendar;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
@@ -12,13 +13,18 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
+import it.polito.ai.project.business.services.emailVerification.sendgrid.EmailRequest;
+import it.polito.ai.project.repo.StatusRepository;
 import it.polito.ai.project.repo.UsersRepository;
 import it.polito.ai.project.repo.VerificationTokensRepository;
+import it.polito.ai.project.repo.entities.Status;
 import it.polito.ai.project.repo.entities.User;
 import it.polito.ai.project.repo.entities.VerificationToken;
 import it.polito.ai.project.rest.controllers.ProfileRestController;
+import it.polito.ai.project.web.exceptions.ClientErrorException;
 
 @Transactional
 @Service
@@ -30,6 +36,9 @@ public class EmailVerificationServiceImpl implements EmailVerificationService {
 	
 	@Autowired
 	private UsersRepository users;
+	
+	@Autowired
+	private StatusRepository statusRepository;
 
 	@Autowired
 	private VerificationTokensRepository tokens;
@@ -51,11 +60,18 @@ public class EmailVerificationServiceImpl implements EmailVerificationService {
 		EmailRequest request = new EmailRequest(email, nickname, link, "project@ai.polito.it");
 		HttpEntity<EmailRequest> entity = new HttpEntity<EmailRequest>(request, headers);
 		
-		ResponseEntity<String> sendgridResponse = restTemplate.postForEntity(sendgrid_endpoint, entity, String.class);
-		if (sendgridResponse.getStatusCode() != HttpStatus.ACCEPTED) {
-			throw new RuntimeException("failed to send email");
+		try {
+			ResponseEntity<String> sendgridResponse = restTemplate.postForEntity(sendgrid_endpoint, entity, String.class);
+			if (sendgridResponse.getStatusCode() != HttpStatus.ACCEPTED) {
+				throw new RuntimeException("failed to send email");
+			}
+		} catch(RestClientException e) {
+			throw new RuntimeException("exception sending email");
 		}
-		tokens.save(new VerificationToken(user, token));
+		Calendar expiration = Calendar.getInstance();
+		// the verification mail is valid for one day
+		expiration.add(Calendar.DATE, 1);
+		tokens.save(new VerificationToken(user, token, expiration));
 	}
 	
 	@Override
@@ -65,11 +81,19 @@ public class EmailVerificationServiceImpl implements EmailVerificationService {
 			return false;
 		}
 		VerificationToken verificationToken = tokens.findOne(user.getId());
-		if (!verificationToken.getToken().equals(token)) {
+		if (verificationToken != null) {
+			if (verificationToken.getExpiration().before(Calendar.getInstance())) {
+				throw new ClientErrorException("verification token expired");
+			}
+			if (verificationToken.getToken().equals(token)) {
+				// the user that verifies the email changes status from NOT_VERIFIED to INCOMPLETE
+				Status incompleteStatus = statusRepository.findByValue("INCOMPLETE").stream().findFirst().get();
+				user.setStatus(incompleteStatus);
+				return true;
+			}
 			return false;
 		}
-		users.enableUser(email);
-		return true;
+		return false;
 	}
 	
 	private String generateLink(String email, String token) {

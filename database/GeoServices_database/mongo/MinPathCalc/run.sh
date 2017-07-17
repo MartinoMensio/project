@@ -8,4 +8,4 @@ docker start postgis
 mvn install -DskipTests
 
 # Run the app
-java -jar target/MinPathCalc-0.0.1-SNAPSHOT.jar
+java -jar target/MinPathCalc-0.0.1-SNAPSHOT.jar || exit 1

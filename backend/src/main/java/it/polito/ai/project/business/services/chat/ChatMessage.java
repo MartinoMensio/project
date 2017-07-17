@@ -4,6 +4,8 @@ import java.util.Calendar;
 
 import org.springframework.hateoas.Identifiable;
 
+import it.polito.ai.project.repo.entities.alerts.Alert;
+
 public interface ChatMessage extends Identifiable<Long>{
 
 	/**
@@ -55,4 +57,10 @@ public interface ChatMessage extends Identifiable<Long>{
 	 * @return
 	 */
 	public String getImageUrl();
+	
+	/**
+	 * If the message contains a linked alert, otherwise null
+	 * @return
+	 */
+	public Alert getAlert();
 }

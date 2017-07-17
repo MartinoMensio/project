@@ -17,13 +17,6 @@ public interface UsersRepository extends PagingAndSortingRepository<User, Long> 
 	
 	User findByEmail(String email);
 	
-	
-	@Modifying
-	@Query(value = "UPDATE users "
-			+ "SET status_id = 2"
-			+ "WHERE email = :email", nativeQuery = true)
-	public int enableUser(@Param("email") String email);
-	
 	@Modifying
 	@Query(value = "UPDATE users "
 			+ "SET password = crypt(:pwd, gen_salt('bf')) "

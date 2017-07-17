@@ -25,7 +25,7 @@ public class UserProfile {
 	private Gender sex;
 	@Type(type="date")
 	private Date dateOfBirth;
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne
 	@JoinColumn(name="education_level_id")
 	private EducationLevel educationLevel;
 	@ManyToOne
