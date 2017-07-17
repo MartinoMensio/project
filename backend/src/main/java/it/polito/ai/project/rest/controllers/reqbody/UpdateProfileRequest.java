@@ -1,4 +1,4 @@
-package it.polito.ai.project.web.controller.forms;
+package it.polito.ai.project.rest.controllers.reqbody;
 
 import java.util.Date;
 
@@ -11,7 +11,9 @@ import it.polito.ai.project.repo.entities.Fuel;
 import it.polito.ai.project.repo.entities.TravelDocument;
 import it.polito.ai.project.repo.entities.UserProfile;
 
-public class ProfileForm {
+// TODO this class should only contain the ids of the linked properties
+// also modify the client
+public class UpdateProfileRequest {
 	private String nickname;
 	
 	private String sex;
@@ -36,14 +38,14 @@ public class ProfileForm {
 	private TravelDocument habitualTravelDocument;
 	
 	
-	public ProfileForm() {
+	public UpdateProfileRequest() {
 	}
 	
-	public ProfileForm(String nickname) {
+	public UpdateProfileRequest(String nickname) {
 		this.nickname = nickname;
 	}
 	
-	public ProfileForm(UserProfile userProfile, String nickname) {
+	public UpdateProfileRequest(UserProfile userProfile, String nickname) {
 		this.nickname = nickname;
 		this.sex = userProfile.getSex();
 		this.dateOfBirth = userProfile.getDateOfBirth();

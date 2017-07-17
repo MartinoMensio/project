@@ -24,11 +24,11 @@ import it.polito.ai.project.business.services.authentication.CurrentUserService;
 import it.polito.ai.project.business.services.emailVerification.EmailVerificationService;
 import it.polito.ai.project.repo.entities.User;
 import it.polito.ai.project.repo.entities.UserProfile;
+import it.polito.ai.project.rest.controllers.reqbody.PasswordChangeRequest;
+import it.polito.ai.project.rest.controllers.reqbody.UpdateProfileRequest;
+import it.polito.ai.project.rest.controllers.reqbody.RegistrationRequest;
 import it.polito.ai.project.rest.resources.ProfileResource;
 import it.polito.ai.project.rest.resources.ResultInfoResource;
-import it.polito.ai.project.web.controller.forms.PasswordForm;
-import it.polito.ai.project.web.controller.forms.ProfileForm;
-import it.polito.ai.project.web.controller.forms.RegistrationForm;
 import it.polito.ai.project.web.exceptions.ClientErrorException;
 
 @RestController
@@ -53,7 +53,7 @@ public class ProfileRestController {
 	}
 
 	@PutMapping("/api/profile/password")
-	public ResultInfoResource changePassword(@Valid @RequestBody PasswordForm passwordForm, BindingResult result) {
+	public ResultInfoResource changePassword(@Valid @RequestBody PasswordChangeRequest passwordForm, BindingResult result) {
 		if (result.hasErrors()) {
 			throw new ClientErrorException("wrong fields in the request");
 		}
@@ -77,7 +77,7 @@ public class ProfileRestController {
 	}
 
 	@PutMapping("/api/profile")
-	public ProfileResource updateProfile(@Valid @RequestBody ProfileForm profileFormTest, BindingResult result) {
+	public ProfileResource updateProfile(@Valid @RequestBody UpdateProfileRequest profileFormTest, BindingResult result) {
 		if (!result.getFieldValue("carRegistrationYear").equals("") && result.hasErrors()) {
 			throw new ClientErrorException("wrong fields in the request");
 		}
@@ -102,7 +102,7 @@ public class ProfileRestController {
 	}
 
 	@PostMapping("/api/signup")
-	public ResultInfoResource signup(@Valid @RequestBody RegistrationForm registrationForm, BindingResult result) {
+	public ResultInfoResource signup(@Valid @RequestBody RegistrationRequest registrationForm, BindingResult result) {
 		/*
 		 * Validate received data.
 		 */
@@ -142,7 +142,7 @@ public class ProfileRestController {
 		return new ResultInfoResource(200, "verified");
 	}
 
-	private UserProfile profileFormToUserProfile(ProfileForm profileForm) {
+	private UserProfile profileFormToUserProfile(UpdateProfileRequest profileForm) {
 		UserProfile userProfile = new UserProfile();
 
 		userProfile.setSex(profileForm.getSex());

@@ -75,7 +75,7 @@
     height: 50px;
     border-radius: 6px;
     border: 1px solid #bcbdc0;
-    width: 90%;
+    width: calc(100% - 130px);
     position: relative;
     padding: 0 20px;
 }
@@ -96,7 +96,7 @@
     text-align: center;
 }
 
-.add_button {
+.add_picture_button {
     width: 50px;
     height: 50px;
     margin-right: 10px;
@@ -106,15 +106,17 @@
     border: 2px solid #ffe066;
     color: #fff;
     transition: all 0.2s linear;
+
+    font-size: 20px;
     
 }
 
-.add_button:hover {
+.add_picture_button:hover {
     background-color: #ffcc00;
 }
 
-.add_button .text {
-    font-size: 18px;
+.add_picture_button .text {
+    font-size: 30px;
     font-weight: 300;
     display: inline-block;
     line-height: 48px;
@@ -130,6 +132,9 @@
     border: 2px solid #a3d063;
     color: #fff;
     transition: all 0.2s linear;
+
+    font-size: 20px;
+    text-align: center;
 }
 
 .send_button:hover {
@@ -165,4 +170,9 @@
 /* change the default margin of the modal from the top */
 .modal-dialog {
     margin: 90px auto;
+}
+
+.nopadding {
+   padding: 0 !important;
+   margin: 0 !important;
 }

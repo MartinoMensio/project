@@ -1,4 +1,5 @@
-INSERT INTO topics (id, value) values (1, 'Car Sharing');
-INSERT INTO topics (id, value) values (2, 'Bike Sharing');
-INSERT INTO topics (id, value) values (3, 'Bus and Metro');
-INSERT INTO topics (id, value) values (4, 'Traffic');
+INSERT INTO topics (id, value) values
+    (1, 'Car Sharing'),
+    (2, 'Bike Sharing'),
+    (3, 'Bus and Metro'),
+    (4, 'Traffic');

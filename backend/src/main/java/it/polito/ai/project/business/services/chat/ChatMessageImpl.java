@@ -7,6 +7,7 @@ import javax.persistence.Id;
 import it.polito.ai.project.repo.entities.Image;
 import it.polito.ai.project.repo.entities.Message;
 import it.polito.ai.project.repo.entities.UserProfile;
+import it.polito.ai.project.repo.entities.alerts.Alert;
 
 public class ChatMessageImpl implements ChatMessage {
 	@Id
@@ -17,6 +18,7 @@ public class ChatMessageImpl implements ChatMessage {
 	private String userImageUrl;
 	private String text;
 	private String imageUrl;
+	private Alert alert;
 	
 	
 	public ChatMessageImpl(Message message) {
@@ -38,6 +40,7 @@ public class ChatMessageImpl implements ChatMessage {
 			// build the link to the image
 			this.imageUrl = message.getImage().getUrl();
 		}
+		this.alert = message.getAlert();
 	}
 
 	@Override
@@ -73,5 +76,10 @@ public class ChatMessageImpl implements ChatMessage {
 	@Override
 	public Long getId() {
 		return id;
+	}
+	
+	@Override
+	public Alert getAlert() {
+		return alert;
 	}
 }

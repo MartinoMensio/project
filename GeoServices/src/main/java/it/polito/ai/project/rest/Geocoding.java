@@ -52,4 +52,20 @@ public class Geocoding {
 		// return the response as is
 		return restTemplate.getForEntity(uriBuilder.build().encode().toUri(), String.class);
 	}
+	
+	@GetMapping("/reverseGeocode")
+	public ResponseEntity<String> reverseGeocode(@RequestParam("latlng") @Size(min = 1) String latlng) {
+		UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(google_geocoding_endpoint)
+				// use the google geocoding token
+				.queryParam("key", google_geocoding_token)
+				// prefer results in the bounding box
+				.queryParam("bounds",
+						minLatLng.get("lat") + "," + minLatLng.get("lng") + "|" + maxLatLng.get("lat") + ","
+								+ maxLatLng.get("lng"))
+				// and use the latlng to get a value
+				.queryParam("latlng", latlng);
+		// return the response as is
+		return restTemplate.getForEntity(uriBuilder.build().encode().toUri(), String.class);
+	}
+	
 }

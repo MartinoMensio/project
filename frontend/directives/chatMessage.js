@@ -1,6 +1,6 @@
 var app = angular.module('App');
 
-app.directive('message', function() {
+app.directive('message', [ function() {
     return {
         scope: {
             userImageUrl: '@',
@@ -8,6 +8,8 @@ app.directive('message', function() {
             username: '@',
             timestamp: '@',
             text: '@',
+            alert: '=',
+            onAlertClicked: '&',
             side: '@'
         },
         link: function link(scope, element, attrs) {
@@ -26,4 +28,4 @@ app.directive('message', function() {
         },
         templateUrl: "../templates/chatMessage.html"
     };
-});
+}]);

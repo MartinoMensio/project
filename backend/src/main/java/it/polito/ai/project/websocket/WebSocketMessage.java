@@ -4,6 +4,7 @@ public class WebSocketMessage {
 
     private String content;
     private String image;
+    private Long alertId;
 
     public WebSocketMessage() {
     }
@@ -23,4 +24,12 @@ public class WebSocketMessage {
     public void setImage(String image) {
     	this.image = image;
     }
+
+	public Long getAlertId() {
+		return alertId;
+	}
+
+	public void setAlertId(Long alertId) {
+		this.alertId = alertId;
+	}
 }

@@ -1,9 +1,9 @@
-package it.polito.ai.project.web.controller.forms;
+package it.polito.ai.project.rest.controllers.reqbody;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-public class PasswordForm {
+public class PasswordChangeRequest {
 	@NotNull
 	private String oldPassword;
 	@NotNull

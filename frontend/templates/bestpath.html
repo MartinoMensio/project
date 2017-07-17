@@ -6,9 +6,15 @@
 			<form name="searchForm">
 				<div class="form-group">
 					<label for="sourceStr">Source</label>
-					<input ng-model="ctrl.sourceStr" ng-model-options="{ debounce: 500 }" ng-change="ctrl.geocodeSrc()" class="form-control" id="sourceStr" placeholder="from where?" required />
+					<button class="btn" ng-click="ctrl.geolocate('source')">
+						<span class="glyphicon glyphicon-map-marker"></span>
+					</button>
+					<input ng-model="ctrl.sourceStr" ng-model-options="{ debounce: 500 }" ng-change="ctrl.geocode('source')" class="form-control" id="sourceStr" placeholder="from where?" required />
 					<label for="destinationStr">Destination</label>
-					<input ng-model="ctrl.destinationStr" ng-model-options="{ debounce: 500 }" ng-change="ctrl.geocodeDst()" class="form-control" id="destinationStr" placeholder="to where?" required />
+					<button class="btn" ng-click="ctrl.geolocate('destination')">
+						<span class="glyphicon glyphicon-map-marker"></span>
+					</button>
+					<input ng-model="ctrl.destinationStr" ng-model-options="{ debounce: 500 }" ng-change="ctrl.geocode('destination')" class="form-control" id="destinationStr" placeholder="to where?" required />
 				</div>
 
 				<div class="form-group" id="button-form-group">
