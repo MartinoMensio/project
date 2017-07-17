@@ -30,13 +30,6 @@ app.controller('BestPathCtrl', ['$scope', "leafletData", '$routeParams', '$locat
             type: 'xyz'
         };
 
-        // define the map centering
-        this.center = {
-            lat: 45.064,
-            lng: 7.681,
-            zoom: 13
-        }
-
         // handle user adding a marker
         $scope.$on("leafletDirectiveMap.click", (event, args) => {
             // check how many markers are there on the map

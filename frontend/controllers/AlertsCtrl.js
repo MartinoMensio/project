@@ -3,6 +3,8 @@ var app = angular.module('App');
 app.controller('AlertsCtrl', ['$scope', 'AlertsService', function($scope, alertsService) {
     alertsService.getAlerts().then((result) => {
         this.alerts = result;
+        this.markers = result;
+        
     });
 
 
@@ -22,7 +24,6 @@ app.controller('AlertsCtrl', ['$scope', 'AlertsService', function($scope, alerts
             logic: 'emit'
         }
     };
-
     this.tiles = {
             name: 'MapBox',
             url: '//api.tiles.mapbox.com/v4/mapbox.streets/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw',
@@ -31,11 +32,13 @@ app.controller('AlertsCtrl', ['$scope', 'AlertsService', function($scope, alerts
 
     var createMarker = function (point, msg) {
         return {
-            lat: point[0],
-            lng: point[1],
+            lat: point[45.064],
+            lng: point[7.681],
             focus: false,
             message: msg
         };
     }
+
+    
 
 }]);
