@@ -6,7 +6,7 @@ app.controller('AlertsCtrl', ['$scope', 'AlertsService', function($scope, alerts
         this.markers = result; // show the markers on the map
 
        this. markers.forEach(function(marker) {
-            marker.message = 'test';
+            marker.message = '<div class="rating">  <span class="fa fa-star-o"></span><span class="fa fa-star-o"></span><span class="fa fa-star-o"></span><span class="fa fa-star-o"></span><span class="fa fa-star-o"></span> </div>'
         }, this);
 
     });
