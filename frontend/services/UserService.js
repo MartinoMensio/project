@@ -2,7 +2,7 @@ var app = angular.module('App');
 
 app.factory('UserService', ['$http', '$q', '$localStorage', '$rootScope', function ($http, $q, $localStorage, $rootScope) {
 
-    var endpoint = "http://localhost:8888";
+    var endpoint = "https://localhost:8888";
 
     return {
         endpoint: endpoint,

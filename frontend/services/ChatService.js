@@ -10,10 +10,10 @@
 var app = angular.module('App');
 
 app.factory('ChatService', ['$http', '$q', '$localStorage', '$stomp', '$log', function ($http, $q, $localStorage, $stomp, $log) {
-    var webEndpoint = "http://localhost:8888/";
+    var webEndpoint = "https://localhost:8888/";
 
     var connectHeaders = {};
-    var chatEndpoint = "http://localhost:8888/chat";
+    var chatEndpoint = "https://localhost:8888/chat";
     var roomEndpoint = "/app/";
 
     

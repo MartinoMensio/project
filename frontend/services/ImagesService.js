@@ -2,7 +2,7 @@ var app = angular.module('App');
 
 app.factory('ImagesService', ['$q', '$http', function ($q, $http) {
 
-    var endpoint = 'http://localhost:8888/api';
+    var endpoint = 'https://localhost:8888/api';
 
     function previewFile(file) {
         var deferred = $q.defer();

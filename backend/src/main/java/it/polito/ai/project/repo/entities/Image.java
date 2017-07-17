@@ -39,7 +39,7 @@ public class Image {
 	public String getUrl() {
 		if (id != null) {
 			// TODO find dynamic way of building this link
-			return "http://localhost:8888/images/" + id + "/raw";
+			return "https://localhost:8888/images/" + id + "/raw";
 			/* this works only inside web context, not when this function is called by the websocket controller
 			Link selfLink = ControllerLinkBuilder
 					.linkTo(ControllerLinkBuilder.methodOn(ImagesController.class).getImageResource(id))
