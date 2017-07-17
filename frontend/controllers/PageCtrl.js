@@ -7,11 +7,11 @@ app.controller('PageCtrl', ['UserService', '$state', 'user', '$rootScope', funct
 	// set a fallback avatar image
 	if (user && !user.imageUrl) {
 		if (user.sex === 'M') {
-			user.localImageUrl = 'user-boy.png';
+			user.localImageUrl = 'images/user-boy.png';
 		} else if (user.sex == 'F') {
-			user.localImageUrl = 'user-girl.png';
+			user.localImageUrl = 'images/user-girl.png';
 		} else {
-			user.localImageUrl = 'user-neutral.png';
+			user.localImageUrl = 'images/user-neutral.png';
 		}
 	}
 
