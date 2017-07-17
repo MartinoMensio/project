@@ -15,30 +15,34 @@ import it.polito.ai.lab3.mongoClasses.Edge;
 
 public class Graph {
 	public ConcurrentMap<String, Node> myNodes;
-	public ConcurrentMap<String, Set<Edge>> myAdjList;
+	public ConcurrentMap<String, Map<String, Edge>> myAdjList;
 
 	public Graph() {
-		myAdjList = new ConcurrentHashMap<String, Set<Edge>>();
-		myNodes = new ConcurrentHashMap<String, Node>();
+		myAdjList = new ConcurrentHashMap<>();
+		myNodes = new ConcurrentHashMap<>();
 	}
 
 	public void addNode(Node myNode) {
 		String myNodeId = myNode.getId();
 		myNodes.put(myNodeId, myNode);
-		myAdjList.put(myNodeId, new HashSet<Edge>());
+		myAdjList.put(myNodeId, new HashMap<>());
 	}
 
-	public void addNode(Node myNode, Set<Edge> myEdgeList) {
+	/*public void addNode(Node myNode, Set<Edge> myEdgeList) {
 		String myNodeId = myNode.getId();
 		myNodes.put(myNodeId, myNode);
 		myAdjList.put(myNodeId, myEdgeList);
-	}
+	}*/
 
 	// Aggiunge la lista di edge ad un nodo esistente
-	public void addEdges(String sourceId, Set<Edge> myEdgeList) {
-		Node myNode = myNodes.get(sourceId);
-		if (myNode != null) {
-			myAdjList.get(sourceId).addAll(myEdgeList);
+	public void addEdges(Set<Edge> myEdgeList) {
+			for (Edge e : myEdgeList) {
+				Edge storedEdge = myAdjList.get(e.getIdSource()).get(e.getIdDestination());
+				// if there is not an edge between this source and destination
+				// or the stored edge is higher in cost
+				if (storedEdge == null || storedEdge.getCost() > e.getCost()) {
+					myAdjList.get(e.getIdSource()).put(e.getIdDestination(), e);
+				}
 		}
 	}
 
@@ -46,7 +50,7 @@ public class Graph {
 		return myNodes.keySet();
 	}
 
-	public Set<Edge> getEdges(String sourceId) {
+	public Map<String, Edge> getEdges(String sourceId) {
 		return myAdjList.get(sourceId);
 	}
 
