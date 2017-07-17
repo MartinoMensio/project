@@ -2,12 +2,27 @@ package it.polito.ai.project.mongo.entities;
 
 import java.util.List;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document(collection = "edges")
 public class Edge {
+	
+	@Id
+	private Key id;
 	private String idSource;
 	private String idDestination;
 	private boolean mode;
 	private int cost;
 	private String lineId;
+	
+	public Key getId() {
+		return id;
+	}
+
+	public void setId(Key id) {
+		this.id = id;
+	}
 
 	private List<String> stopsId;
 

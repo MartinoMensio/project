@@ -3,6 +3,7 @@ package it.polito.ai.project.mongo.entities;
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "min_paths")
@@ -11,6 +12,7 @@ public class MinPath {
 	private Key id;
 	private String idSource;
 	private String idDestination;
+	@DBRef
 	private List<Edge> edges;
 	private int totalCost;
 

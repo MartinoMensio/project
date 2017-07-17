@@ -60,21 +60,28 @@ public class Main {
 			dbReader.closeConnection(connection);
 
 			graph.addNode(node);
-			graph.addEdges(node.getId(), byBus);
-			graph.addEdges(node.getId(), byWalk);
+			graph.addEdges(byBus);
+			graph.addEdges(byWalk);
 		});
 
 		dbReader.close();
 		printTime("done with postgis");
 
 		System.out.println("Numero di nodi: " + graph.myNodes.size());
-		System.out.println("numero di archi: " + graph.myAdjList.values().stream().flatMap(value -> value.stream()).count());
+		System.out.println("numero di archi: " + graph.myAdjList.values().stream().flatMap(value -> value.values().stream()).count());
 
 		Dijsktra dijkstra = new Dijsktra(graph);
 
-		System.out.println("Going to run Dijkstra from each node (should take around 1 hour)...");
-
 		MongoWriter mongoWriter = new MongoWriter();
+		
+		printTime("adding the edges to mongo");
+		
+		// add the edges
+		graph.getNodes().parallelStream().forEach(node -> {
+			mongoWriter.addEdges(graph.getEdges(node).values());
+		});
+		
+		printTime("Going to run Dijkstra from each node (should take around 1 hour) and adding minpaths to mongo...");
 
 		// work with the data collected
 		graph.getNodes()
