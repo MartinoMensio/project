@@ -48,6 +48,32 @@ app.controller('ChatCtrl', ['$scope', '$uibModal', '$stateParams', '$localStorag
     var addMessage = (message) => {
         this.messages.push(message);
         $scope.$apply();
+        if(this.showMap === true){
+            AlertsService.getAlerts().then((result) => {
+            this.alerts = result; // show the alert list
+
+            this.hashtag = result.hashtag;
+            this.markers = result; // show the markers on the map
+
+            // each marker display the 5 star for rating the alert
+            this.markers.forEach((marker,index) => {
+                marker.getMessageScope = ()=> { return $scope; }
+                var initialization = true;
+                // watch added to check if a new rate is inserted by the user
+                $scope.$watch("ctrl.alerts["+index+"].newRating", (newValue, oldValue)=> {
+                    if (initialization === true || newValue===0) {
+                        initialization = false;
+                        return;
+                    }
+                    this.vote(marker);
+                });
+                // 5 starts used by the user for rating the signalization and 5 stars readonly for the rating avg
+                //marker.iconUrl="icons/alert.png";
+                marker.icon= local_icons.leaf_icon,
+                marker.message = '<div style="min-width:160px;"></div><h2>#'+marker.hashtag+'</h2> <h5>Vote Here</h5><input-stars ng-model="ctrl.markers['+index+'].newRating" max="5"></input-stars> </br><h5>Average</h5> <input-stars max="5" ng-model="ctrl.markers['+index+'].rating" readonly="true" allow-half ></input-stars>';
+            }, this);
+        });
+        }
     }
 
     // Register the topic and the callback
