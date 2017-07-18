@@ -23,7 +23,7 @@ app.controller('AlertsCtrl', ['$scope', 'AlertsService', function($scope, alerts
                 }
                 this.vote(marker);
             });
-            marker.message = marker.id + '<input-stars ng-model="ctrl.markers['+index+'].rating" max="5"></input-stars>'
+            marker.message = '<h4>#'+marker.hashtag+'</h4><input-stars allow-half ng-model="ctrl.markers['+index+'].rating" max="5"></input-stars>'
         }, this);
     });
 
