@@ -2,7 +2,7 @@
 
 	<div class="hero-unit">
 	    <div class="page-header">
-	        <h1>Alert</h1>
+	        <h1>Alerts</h1>
 	    </div>
 	    <p class="lead">Alert List</p>
 	    <div class="container-signup">
@@ -16,9 +16,20 @@
 
 	<div class="hero-unit" style="margin-top:40px;">
 		<p class="lead">Hashtags List</p>
-		<div ng-repeat="alert in ctrl.alerts">
-			<a ui-sref="page.alerts({alertId: '{{alert.id}}' })">#{{alert.hashtag}} </a> {{alert.rating}}
-		</div>
+		  <table class="table table-bordered">
+				<thead>
+					<tr>
+						<th>Hashtag</th>
+						<th>Value</th>
+					</tr>
+				</thead>
+				 <tbody>
+					<tr ng-repeat="alert in ctrl.alerts">
+						<td ui-sref="page.alerts({alertId: '{{alert.id}}' })">#{{alert.hashtag}} </td> 
+						<td> {{alert.rating}}</td>
+					</tr>
+			    <tbody>
+			</table>
 	</div>
 
 
