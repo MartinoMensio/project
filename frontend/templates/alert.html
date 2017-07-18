@@ -16,17 +16,19 @@
 
 	<div class="hero-unit" style="margin-top:40px;">
 		<p class="lead">Hashtags List</p>
-		  <table class="table table-bordered">
+		<table class="table table-bordered">
 				<thead>
 					<tr>
 						<th>Hashtag</th>
 						<th>Value</th>
+						<th>Type</th>
 					</tr>
 				</thead>
 				 <tbody>
 					<tr ng-repeat="alert in ctrl.alerts">
 						<td ui-sref="page.alerts({alertId: '{{alert.id}}' })">#{{alert.hashtag}} </td> 
 						<td> {{alert.rating}}</td>
+						<td> {{alert.alertType.name}}</td>
 					</tr>
 			    <tbody>
 			</table>

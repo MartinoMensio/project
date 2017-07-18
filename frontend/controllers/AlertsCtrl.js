@@ -8,9 +8,32 @@ app.controller('AlertsCtrl', ['$scope', 'AlertsService', function($scope, alerts
     }];
 
     var local_icons = {
-        default_icon: {},
-        leaf_icon: {
-            iconUrl: 'icons/alert1.png',
+        generic_alert_icon: {
+            iconUrl: 'icons/alert.png',
+            iconSize:     [50, 50], // size of the icon
+            iconAnchor:   [30, 30], // point of the icon which will correspond to marker's location
+            popupAnchor:  [0, 0] // point from which the popup should open relative to the iconAnchor
+        },
+        traffic_icon: {
+            iconUrl: 'icons/traffic.png',
+            iconSize:     [50, 50], // size of the icon
+            iconAnchor:   [30, 30], // point of the icon which will correspond to marker's location
+            popupAnchor:  [0, 0] // point from which the popup should open relative to the iconAnchor
+        },
+        broken_bus_icon: {
+            iconUrl: 'icons/broken-bus.png',
+            iconSize:     [50, 50], // size of the icon
+            iconAnchor:   [30, 30], // point of the icon which will correspond to marker's location
+            popupAnchor:  [0, 0] // point from which the popup should open relative to the iconAnchor
+        },
+        accident_icon: {
+            iconUrl: 'icons/accident.png',
+            iconSize:     [50, 50], // size of the icon
+            iconAnchor:   [30, 30], // point of the icon which will correspond to marker's location
+            popupAnchor:  [0, 0] // point from which the popup should open relative to the iconAnchor
+        },
+        road_works_icon: {
+            iconUrl: 'icons/work_in_progress.png',
             iconSize:     [50, 50], // size of the icon
             iconAnchor:   [30, 30], // point of the icon which will correspond to marker's location
             popupAnchor:  [0, 0] // point from which the popup should open relative to the iconAnchor
@@ -37,9 +60,26 @@ app.controller('AlertsCtrl', ['$scope', 'AlertsService', function($scope, alerts
                 this.vote(marker);
             });
             // 5 starts used by the user for rating the signalization and 5 stars readonly for the rating avg
-            //marker.iconUrl="icons/alert.png";
-            marker.icon= local_icons.leaf_icon,
-            marker.message = '<div style="min-width:160px;"></div><h2>#'+marker.hashtag+'</h2> <h5>Vote Here</h5><input-stars ng-model="ctrl.markers['+index+'].newRating" max="5"></input-stars> </br><h5>Average</h5> <input-stars max="5" ng-model="ctrl.markers['+index+'].rating" readonly="true" allow-half ></input-stars>';
+            if(this.alerts[index].alertType.name === "Traffic"){
+                marker.icon = local_icons.traffic_icon;
+                marker.message = '<div style="min-width:160px;"></div><h2>#'+marker.hashtag+'</h2> <h5>Vote Here</h5><input-stars ng-model="ctrl.markers['+index+'].newRating" max="5"></input-stars> </br><h5>Average</h5> <input-stars max="5" ng-model="ctrl.markers['+index+'].rating" readonly="true" allow-half ></input-stars>';
+            }
+            else if(this.alerts[index].alertType.name === "Broken bus"){
+                marker.icon = local_icons.broken_bus_icon;
+                marker.message = '<div style="min-width:160px;"></div><h2>#'+marker.hashtag+'</h2> <h5>Vote Here</h5><input-stars ng-model="ctrl.markers['+index+'].newRating" max="5"></input-stars> </br><h5>Average</h5> <input-stars max="5" ng-model="ctrl.markers['+index+'].rating" readonly="true" allow-half ></input-stars>';
+            }
+            else if(this.alerts[index].alertType.name === "Accident"){
+                marker.icon = local_icons.accident_icon;
+                marker.message = '<div style="min-width:160px;"></div><h2>#'+marker.hashtag+'</h2> <h5>Vote Here</h5><input-stars ng-model="ctrl.markers['+index+'].newRating" max="5"></input-stars> </br><h5>Average</h5> <input-stars max="5" ng-model="ctrl.markers['+index+'].rating" readonly="true" allow-half ></input-stars>';
+            }
+            else if(this.alerts[index].alertType.name === "Road works"){
+                marker.icon = local_icons.road_works_icon;
+                marker.message = '<div style="min-width:160px;"></div><h2>#'+marker.hashtag+'</h2> <h5>Vote Here</h5><input-stars ng-model="ctrl.markers['+index+'].newRating" max="5"></input-stars> </br><h5>Average</h5> <input-stars max="5" ng-model="ctrl.markers['+index+'].rating" readonly="true" allow-half ></input-stars>';
+            }else{
+                // generic alert
+                marker.icon= local_icons.generic_alert_icon;
+                marker.message = '<div style="min-width:160px;"></div><h2>#'+marker.hashtag+'</h2> <h5>Vote Here</h5><input-stars ng-model="ctrl.markers['+index+'].newRating" max="5"></input-stars> </br><h5>Average</h5> <input-stars max="5" ng-model="ctrl.markers['+index+'].rating" readonly="true" allow-half ></input-stars>';
+            }
         }, this);
     });
 
