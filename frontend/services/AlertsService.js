@@ -54,13 +54,11 @@ app.factory('AlertsService', ['$http', '$q', function ($http, $q) {
             var deferred = $q.defer();
             $http.put(endpoint + 'alerts/' + alertId + '/rate', { value: vote }).then(function (result) {
                 // TODO this is because the trigger on backend is run after returning
-                var deferred2 = $q.defer();
                 $http.get(endpoint + 'alerts/' + alertId).then(function (result) {
-                    deferred2.resolve(result.data);
+                    deferred.resolve(result.data);
                 }, function (result) {
-                    deferred2.reject(result);
+                    deferred.reject(result);
                 });
-                return deferred2.promise;
             }, function (result) {
                 deferred.reject(result);
             });

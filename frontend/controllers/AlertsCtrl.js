@@ -25,14 +25,16 @@ app.controller('AlertsCtrl', ['$scope', 'AlertsService', function($scope, alerts
                 this.vote(marker);
             });
             // 5 starts used by the user for rating the signalization and 5 stars readonly for the rating avg
-            marker.message = '<h2>#'+marker.hashtag+'</h2> <h5>Vote Here</h5><input-stars ng-model="ctrl.markers['+index+'].newRating" max="5"></input-stars> </br><h5>Average</h5> <input-stars max="5" ng-model="ctrl.markers['+index+'].rating" readonly="true" ></input-stars>'
+            marker.message = '<div style="min-width:160px;"></div><h2>#'+marker.hashtag+'</h2> <h5>Vote Here</h5><input-stars ng-model="ctrl.markers['+index+'].newRating" max="5"></input-stars> </br><h5>Average</h5> <input-stars max="5" ng-model="ctrl.markers['+index+'].rating" readonly="true" allow-half ></input-stars>'
         }, this);
     });
 
     // send the new vote to the database
     this.vote = function(marker){
         // send the vote and then modify dynamically the avg value
-        alertsService.voteAlert(marker.id,marker.newRating).then(result=>{ marker.rating = result.rating});
+        alertsService.voteAlert(marker.id,marker.newRating).then(result=>{
+            marker.rating = result.rating;
+        });
     }
  
 
