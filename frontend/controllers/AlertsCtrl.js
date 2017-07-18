@@ -1,6 +1,6 @@
 var app = angular.module('App');
 
-app.controller('AlertsCtrl', ['$scope', 'AlertsService', function($scope, alertsService) {
+app.controller('AlertsCtrl', ['$scope', 'AlertsService', function($scope, AlertsService) {
     $scope.rating = 0;
     $scope.ratings = [{
         current: 0,
@@ -41,7 +41,7 @@ app.controller('AlertsCtrl', ['$scope', 'AlertsService', function($scope, alerts
     };
 
     // get the list of all teh alerts
-    alertsService.getAlerts().then((result) => {
+    AlertsService.getAlerts().then((result) => {
         this.alerts = result; // show the alert list
 
         this.hashtag = result.hashtag;
@@ -75,7 +75,8 @@ app.controller('AlertsCtrl', ['$scope', 'AlertsService', function($scope, alerts
             else if(this.alerts[index].alertType.name === "Road works"){
                 marker.icon = local_icons.road_works_icon;
                 marker.message = '<div style="min-width:160px;"></div><h2>#'+marker.hashtag+'</h2> <h5>Vote Here</h5><input-stars ng-model="ctrl.markers['+index+'].newRating" max="5"></input-stars> </br><h5>Average</h5> <input-stars max="5" ng-model="ctrl.markers['+index+'].rating" readonly="true" allow-half ></input-stars>';
-            }else{
+            }
+            else{
                 // generic alert
                 marker.icon= local_icons.generic_alert_icon;
                 marker.message = '<div style="min-width:160px;"></div><h2>#'+marker.hashtag+'</h2> <h5>Vote Here</h5><input-stars ng-model="ctrl.markers['+index+'].newRating" max="5"></input-stars> </br><h5>Average</h5> <input-stars max="5" ng-model="ctrl.markers['+index+'].rating" readonly="true" allow-half ></input-stars>';
@@ -86,7 +87,7 @@ app.controller('AlertsCtrl', ['$scope', 'AlertsService', function($scope, alerts
     // send the new vote to the database
     this.vote = function(marker){
         // send the vote and then modify dynamically the avg value
-        alertsService.voteAlert(marker.id,marker.newRating).then(result=>{
+        AlertsService.voteAlert(marker.id,marker.newRating).then(result=>{
             marker.rating = result.rating;
         });
     }
@@ -114,25 +115,4 @@ app.controller('AlertsCtrl', ['$scope', 'AlertsService', function($scope, alerts
             url: '//api.tiles.mapbox.com/v4/mapbox.streets/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw',
             type: 'xyz'
     };
-
-    // create custom icon
-    var alertIcon = L.icon({
-        iconUrl: 'icons/alert.png',
-        iconSize: [38, 95], // size of the icon
-        });
-
-     var greenIcon = L.icon({
-        iconUrl: 'icons/leaf-green.png',
-        shadowUrl: 'icons/leaf-shadow.png',
-
-        iconSize:     [38, 95], // size of the icon
-        shadowSize:   [50, 64], // size of the shadow
-        iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
-        shadowAnchor: [4, 62],  // the same for the shadow
-        popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
-    });
-    
-    //var marker = L.marker([45.064, 7.681], {icon: alertIcon}).addTo(map);
-
-
 }]);
