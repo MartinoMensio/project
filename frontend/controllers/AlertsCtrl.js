@@ -71,21 +71,37 @@ app.controller('AlertsCtrl', ['$scope', 'AlertsService', function($scope, Alerts
             }
             else if(this.alerts[index].alertType.name === "Broken bus"){
                 marker.icon = local_icons.broken_bus_icon;
-                marker.message = '<div style="min-width:160px;"></div><h2>#'+marker.hashtag+'</h2> <h5>Vote Here</h5><input-stars ng-model="ctrl.markers['+index+'].newRating" max="5"></input-stars> </br><h5>Average</h5> <input-stars max="5" ng-model="ctrl.markers['+index+'].rating" readonly="true" allow-half ></input-stars>';
-            }
+                marker.message = '<div style="min-width:160px;"></div><h2>#' + marker.hashtag
+                + '</h2><h5>Activation Date: {{'+marker.activationDate+' | date:"HH:mm:ss dd-MM-yyyy"}}'
+                + '</h5><h5>Address: '+ marker.address
+                + '</h5><h5>Added by: '+ marker.userNickname 
+                + '</h5> <h5>Vote Here</h5> <input-stars ng-model="ctrl.markers['+index+'].newRating" max="5"></input-stars>' 
+                + '</br> <h5>Average</h5> <input-stars max="5" ng-model="ctrl.markers['+index+'].rating" readonly="true" allow-half ></input-stars>';            }
             else if(this.alerts[index].alertType.name === "Accident"){
                 marker.icon = local_icons.accident_icon;
-                marker.message = '<div style="min-width:160px;"></div><h2>#'+marker.hashtag+'</h2> <h5>Vote Here</h5><input-stars ng-model="ctrl.markers['+index+'].newRating" max="5"></input-stars> </br><h5>Average</h5> <input-stars max="5" ng-model="ctrl.markers['+index+'].rating" readonly="true" allow-half ></input-stars>';
-            }
+                marker.message = '<div style="min-width:160px;"></div><h2>#' + marker.hashtag
+                + '</h2><h5>Activation Date: {{'+marker.activationDate+' | date:"HH:mm:ss dd-MM-yyyy"}}'
+                + '</h5><h5>Address: '+ marker.address
+                + '</h5><h5>Added by: '+ marker.userNickname 
+                + '</h5> <h5>Vote Here</h5> <input-stars ng-model="ctrl.markers['+index+'].newRating" max="5"></input-stars>' 
+                + '</br> <h5>Average</h5> <input-stars max="5" ng-model="ctrl.markers['+index+'].rating" readonly="true" allow-half ></input-stars>';            }
             else if(this.alerts[index].alertType.name === "Road works"){
                 marker.icon = local_icons.road_works_icon;
-                marker.message = '<div style="min-width:160px;"></div><h2>#'+marker.hashtag+'</h2> <h5>Vote Here</h5><input-stars ng-model="ctrl.markers['+index+'].newRating" max="5"></input-stars> </br><h5>Average</h5> <input-stars max="5" ng-model="ctrl.markers['+index+'].rating" readonly="true" allow-half ></input-stars>';
-            }
+                marker.message = '<div style="min-width:160px;"></div><h2>#' + marker.hashtag
+                + '</h2><h5>Activation Date: {{'+marker.activationDate+' | date:"HH:mm:ss dd-MM-yyyy"}}'
+                + '</h5><h5>Address: '+ marker.address
+                + '</h5><h5>Added by: '+ marker.userNickname 
+                + '</h5> <h5>Vote Here</h5> <input-stars ng-model="ctrl.markers['+index+'].newRating" max="5"></input-stars>' 
+                + '</br> <h5>Average</h5> <input-stars max="5" ng-model="ctrl.markers['+index+'].rating" readonly="true" allow-half ></input-stars>';            }
             else{
                 // generic alert
                 marker.icon= local_icons.generic_alert_icon;
-                marker.message = '<div style="min-width:160px;"></div><h2>#'+marker.hashtag+'</h2> <h5>Vote Here</h5><input-stars ng-model="ctrl.markers['+index+'].newRating" max="5"></input-stars> </br><h5>Average</h5> <input-stars max="5" ng-model="ctrl.markers['+index+'].rating" readonly="true" allow-half ></input-stars>';
-            }
+                marker.message = '<div style="min-width:160px;"></div><h2>#' + marker.hashtag
+                + '</h2><h5>Activation Date: {{'+marker.activationDate+' | date:"HH:mm:ss dd-MM-yyyy"}}'
+                + '</h5><h5>Address: '+ marker.address
+                + '</h5><h5>Added by: '+ marker.userNickname 
+                + '</h5> <h5>Vote Here</h5> <input-stars ng-model="ctrl.markers['+index+'].newRating" max="5"></input-stars>' 
+                + '</br> <h5>Average</h5> <input-stars max="5" ng-model="ctrl.markers['+index+'].rating" readonly="true" allow-half ></input-stars>';            }
         }, this);
     });
 
