@@ -54,6 +54,10 @@ public class Alert {
 	public Long getId() {
 		return id;
 	}
+	
+	public String getUserNickname() {
+		return user.getNickname();
+	}
 
 	public void setId(Long id) {
 		this.id = id;
