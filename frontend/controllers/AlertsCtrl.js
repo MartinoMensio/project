@@ -25,7 +25,7 @@ app.controller('AlertsCtrl', ['$scope', 'AlertsService', function($scope, alerts
                 this.vote(marker);
             });
             // 5 starts used by the user for rating the signalization and 5 stars readonly for the rating avg
-            marker.message = '<h4>#'+marker.hashtag+'</h4><input-stars ng-model="ctrl.markers['+index+'].newRating" max="5"></input-stars> </br> <input-stars max="5" ng-model="ctrl.markers['+index+'].rating" readonly="true" ></input-stars>'
+            marker.message = '<h2>#'+marker.hashtag+'</h2> <h5>Vote Here</h5><input-stars ng-model="ctrl.markers['+index+'].newRating" max="5"></input-stars> </br><h5>Average</h5> <input-stars max="5" ng-model="ctrl.markers['+index+'].rating" readonly="true" ></input-stars>'
         }, this);
     });
 
