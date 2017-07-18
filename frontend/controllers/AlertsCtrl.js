@@ -15,8 +15,10 @@ app.controller('AlertsCtrl', ['$scope', 'AlertsService', function($scope, alerts
         // each marker display the 5 star for rating the alert
         this.markers.forEach((marker,index) => {
             marker.getMessageScope = ()=> { return $scope; }
+            var initialization = true;
             $scope.$watch("ctrl.alerts["+index+"].rating", (newValue, oldValue)=> {
-                if (newValue === oldValue) {
+                if (initialization === true || newValue===0) {
+                    initialization = false;
                     return;
                 }
                 this.vote(marker);
