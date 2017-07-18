@@ -10,6 +10,8 @@ app.controller('AlertsCtrl', ['$scope', 'AlertsService', function($scope, alerts
     // get the list of all teh alerts
     alertsService.getAlerts().then((result) => {
         this.alerts = result; // show the alert list
+
+        this.hashtag = result.hashtag;
         this.markers = result; // show the markers on the map
 
         // each marker display the 5 star for rating the alert

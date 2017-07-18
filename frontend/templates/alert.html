@@ -14,9 +14,12 @@
 		<leaflet geojson-nested="true" geojson="ctrl.geojson" markers="ctrl.markers" center="ctrl.center" event-broadcast="ctrl.events" legend="ctrl.legend" tiles="ctrl.tiles" height="480px"></leaflet>
 	</div>
 
-	<div ng-repeat="alert in ctrl.alerts">
-        <a ui-sref="page.alerts({alertId: '{{alert.id}}' })">{{alert}}</a>
-    </div>
+	<div class="hero-unit" style="margin-top:40px;">
+		<p class="lead">Hashtags List</p>
+		<div ng-repeat="alert in ctrl.alerts">
+			<a ui-sref="page.alerts({alertId: '{{alert.id}}' })">#{{alert.hashtag}} </a> {{alert.rating}}
+		</div>
+	</div>
 
 
 
