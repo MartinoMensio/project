@@ -7,7 +7,8 @@ var app = angular.module('App', ['ngRoute',
                                 'luegg.directives',
                                 'ui.bootstrap',
                                 'ui.router.state.events',
-                                'angular.img'])
+                                'angular.img',
+                                'angular-input-stars'])
 
 app.config(['$locationProvider', '$urlRouterProvider', '$stateProvider', '$httpProvider', function ($locationProvider, $urlRouterProvider, $stateProvider, $httpProvider) {
     // If the URL does not correspond to anything then redirect to '/'

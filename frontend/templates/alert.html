@@ -10,12 +10,14 @@
 	    </div>
 	</div>
 
+	<div style="margin-top:40px;">
+		<leaflet geojson-nested="true" geojson="ctrl.geojson" markers="ctrl.markers" center="ctrl.center" event-broadcast="ctrl.events" legend="ctrl.legend" tiles="ctrl.tiles" height="480px"></leaflet>
+	</div>
+
 	<div ng-repeat="alert in ctrl.alerts">
         <a ui-sref="page.alerts({alertId: '{{alert.id}}' })">{{alert}}</a>
     </div>
 
-	<div style="margin-top:40px;">
-			<leaflet geojson-nested="true" geojson="ctrl.geojson" markers="ctrl.markers" center="ctrl.center" event-broadcast="ctrl.events" legend="ctrl.legend" tiles="ctrl.tiles" height="480px"></leaflet>
-	</div>
+
 
 </div>
