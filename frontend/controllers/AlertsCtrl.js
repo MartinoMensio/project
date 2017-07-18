@@ -16,23 +16,23 @@ app.controller('AlertsCtrl', ['$scope', 'AlertsService', function($scope, alerts
         this.markers.forEach((marker,index) => {
             marker.getMessageScope = ()=> { return $scope; }
             var initialization = true;
-            $scope.$watch("ctrl.alerts["+index+"].rating", (newValue, oldValue)=> {
+            // watch added to check if a new rate is inserted by the user
+            $scope.$watch("ctrl.alerts["+index+"].newRating", (newValue, oldValue)=> {
                 if (initialization === true || newValue===0) {
                     initialization = false;
                     return;
                 }
                 this.vote(marker);
             });
-            marker.message = '<h4>#'+marker.hashtag+'</h4><input-stars ng-model="ctrl.markers['+index+'].rating" max="5"></input-stars>'
+            // 5 starts used by the user for rating the signalization and 5 stars readonly for the rating avg
+            marker.message = '<h4>#'+marker.hashtag+'</h4><input-stars ng-model="ctrl.markers['+index+'].newRating" max="5"></input-stars> </br> <input-stars max="5" ng-model="ctrl.markers['+index+'].rating" readonly="true" ></input-stars>'
         }, this);
     });
 
-   
-
-
     // send the new vote to the database
     this.vote = function(marker){
-        alertsService.voteAlert(marker.id,marker.rating);
+        // send the vote and then modify dynamically the avg value
+        alertsService.voteAlert(marker.id,marker.newRating).then(result=>{ marker.rating = result.rating});
     }
  
 
