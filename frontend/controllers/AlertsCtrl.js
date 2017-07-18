@@ -13,15 +13,23 @@ app.controller('AlertsCtrl', ['$scope', 'AlertsService', function($scope, alerts
         this.markers = result; // show the markers on the map
 
         // each marker display the 5 star for rating the alert
-        this.markers.forEach(function(marker,index) {
-             marker.message = '<input-stars ng-model="ctrl.alerts['+index+'].rating" on-star-click="ctrl.vote('+index+')" max="5"></input-stars>'
+        this.markers.forEach((marker,index) => {
+            marker.getMessageScope = ()=> { return $scope; }
+            $scope.$watch("ctrl.alerts["+index+"].rating", (newValue, oldValue)=> {
+                if (newValue === oldValue) {
+                    return;
+                }
+                this.vote(marker);
+            });
+            marker.message = marker.id + '<input-stars ng-model="ctrl.markers['+index+'].rating" max="5"></input-stars>'
         }, this);
     });
 
+   
+
 
     // send the new vote to the database
-    this.vote = function(index){
-        var marker = this.markers[index];
+    this.vote = function(marker){
         alertsService.voteAlert(marker.id,marker.rating);
     }
  

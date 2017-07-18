@@ -50,9 +50,9 @@ app.factory('AlertsService', ['$http', '$q', function ($http, $q) {
             });
             return deferred.promise;
         },
-        voteAlert:function (id, vote) {
+        voteAlert:function (alertId, vote) {
             var deferred = $q.defer();
-            $http.post(endpoint + 'alerts/' + alertId + '/rate', {value: vote}).then(function (result) {
+            $http.put(endpoint + 'alerts/' + alertId + '/rate', {value: vote}).then(function (result) {
                 deferred.resolve(result.data);
             }, function (result) {
                 deferred.reject(result);
