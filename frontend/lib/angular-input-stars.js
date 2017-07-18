@@ -141,9 +141,9 @@ angular.module('angular-input-stars', [])
 
                 // sets to 0 if the user clicks twice on the first "star"
                 // the user should be allowed to give a 0 score
-                if (newValue === scope.lastValue) {
+                /*if (newValue === scope.lastValue) {
                     newValue = 0;
-                }
+                }*/
 
                 scope.lastValue = newValue;
 
