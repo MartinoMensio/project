@@ -54,14 +54,14 @@ app.config(['$locationProvider', '$urlRouterProvider', '$stateProvider', '$httpP
         .state('page.busLines', {
             url: '/busLines',
             templateUrl: 'templates/busLinesList.html',
-            controller: 'MainCtrl',
+            controller: 'BusLinesCtrl',
             controllerAs: 'ctrl'
         })
         // Bus lines list page + map visualization
         .state('page.busLines.line', {
             url: '/{lineId}',
             templateUrl: 'templates/busLineMap.html',
-            controller: 'MainCtrl',
+            controller: 'BusLinesCtrl',
             controllerAs: 'ctrl'
         })
         // Best path page
