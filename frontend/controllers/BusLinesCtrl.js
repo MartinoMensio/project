@@ -1,6 +1,6 @@
 var app = angular.module('App');
 
-app.controller('MainCtrl', ['$scope', 'leafletData', 'DataProvider', '$stateParams',
+app.controller('BusLinesCtrl', ['$scope', 'leafletData', 'DataProvider', '$stateParams',
     function ($scope, leafletData,  DataProvider, $stateParams) {
         var lineId =  $stateParams.lineId;
         this.lines = DataProvider.getLines();
