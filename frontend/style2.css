@@ -254,6 +254,12 @@ app {
 	padding-bottom: 50px;
 }
 
+#container-registration-success{
+	margin-top: 40px;
+	width:50%;
+	padding-bottom:550px;
+}
+
 #container-editprofile {
 	margin-top: 40px;
 	width: 50%;
