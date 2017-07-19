@@ -216,26 +216,26 @@ app {
 	padding-right: 30px;
 }
 
-
 #container-login {
 	margin-top: 40px;
 	width: 50%;
+	padding-bottom: 300px;
 }
 
 #container-bestpath {
 	margin-top: 80px;
-	padding-bottom: 150px;
+	padding-bottom: 210px;
 }
 
 #container-busLineList {
 	margin-top: 80px;
-	padding-bottom: 580px;
+	padding-bottom: 640px;
 }
 
 #container-chat {
 	margin-top: 40px;
 	width: 50%;
-	padding-bottom: 400px;
+	padding-bottom: 460px;
 }
 
 #container-chat-messages {
@@ -245,11 +245,24 @@ app {
 #container-signup {
 	margin-top: 40px;
 	width: 50%;
+	padding-bottom: 320px;
+}
+
+#container-profile {
+	margin-top: 40px;
+	width: 50%;
+	padding-bottom: 50px;
 }
 
 #container-editprofile {
 	margin-top: 40px;
 	width: 50%;
+}
+
+#container-change-password {
+	margin-top: 40px;
+	width: 50%;
+	padding-bottom: 410px;
 }
 
 #container-alert {
@@ -259,6 +272,15 @@ app {
 
 #chat-map{
 	margin-top:122px;
+}
+
+#change-password-form{
+	margin: 0 auto;
+}
+
+.center_div{
+    margin: 0 auto;
+    width:100% /* value of your choice which suits your alignment */
 }
 
 .rating {
@@ -310,13 +332,6 @@ app {
     font-size: 87px;
 }
 
-#row-profile{
-}
-#container-profile {
-	margin-top: 40px;
-	width: 50%;
-	padding-bottom: 50px;
-}
 #panel-footer-profile{
 	padding-top: 20px;
 }
