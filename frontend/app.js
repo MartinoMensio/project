@@ -113,6 +113,16 @@ app.config(['$locationProvider', '$urlRouterProvider', '$stateProvider', '$httpP
             controller: 'SignupCtrl',
             controllerAs: 'ctrl'
         })
+        // account created
+        .state('page.registrationSuccess', {
+            url: '/registrationSuccess',
+            templateUrl: 'templates/registrationSuccess.html',
+            controller: 'RegistrationSuccessCtrl',
+            controllerAs: 'ctrl',
+            params: {
+                nickname: null
+            }
+        })
         // profile
         .state('page.profile', {
             url: '/profile',
