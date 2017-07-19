@@ -22,12 +22,10 @@
 						<label for="destinationStr">Destination</label>
 						<div class="input-group">
 							<span class="input-group-btn">
-
 								<button class="btn" ng-click="ctrl.geolocate('destination')">
 									<span class="glyphicon glyphicon-map-marker"></span>
 								</button>
 							</span>
-
 							<input ng-model="ctrl.destinationStr" ng-model-options="{ debounce: 500 }" ng-change="ctrl.geocode('destination')" class="form-control" id="destinationStr" placeholder="to where?" required />
 						</div>
 					</div>
