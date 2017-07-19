@@ -115,13 +115,17 @@ app.config(['$locationProvider', '$urlRouterProvider', '$stateProvider', '$httpP
         })
         // account created
         .state('page.registrationSuccess', {
-            url: '/registrationSuccess',
+            url: '/registrationSuccess?nickname',
             templateUrl: 'templates/registrationSuccess.html',
             controller: 'RegistrationSuccessCtrl',
             controllerAs: 'ctrl',
-            params: {
-                nickname: null
-            }
+        })
+        // confirmation of email
+        .state('page.confirmEmail', {
+            url: '/confirmEmail?email&token',
+            templateUrl: 'templates/confirmEmail.html',
+            controller: 'ConfirmEmailCtrl',
+            controllerAs: 'ctrl'
         })
         // profile
         .state('page.profile', {

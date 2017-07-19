@@ -112,7 +112,7 @@ public class ProfileRestController {
 
 		try {
 			accountingService.addNewUser(registrationForm.getEmail(), registrationForm.getNickname(),
-					registrationForm.getPassword());
+					registrationForm.getPassword(), registrationForm.getUrl());
 		} catch (DataIntegrityViolationException e) {
 			throw new ClientErrorException("An account already exists associated to this email");
 		}

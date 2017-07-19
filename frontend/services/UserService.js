@@ -135,6 +135,17 @@ app.factory('UserService', ['$http', '$q', '$localStorage', '$rootScope', functi
                 deferred.reject(error);
             });
             return deferred.promise;
+        },
+        confirmEmail: function(email, token) {
+            var deferred = $q.defer();
+            $http.get(endpoint + '/api/confirmEmail', {params: {email: email, token: token}}).then(function (result) {
+                // get succeeded
+                deferred.resolve(result.data);
+            }, function (error) {
+                // get failed
+                deferred.reject(error);
+            });
+            return deferred.promise;
         }
     }
 }]);

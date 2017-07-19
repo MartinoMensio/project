@@ -11,6 +11,8 @@ public interface AccountingService {
 	 * @param email - The user's mail. It represents also the user ID (must be unique)
 	 * @param nickname - The user's nickname
 	 * @param password - The user's password
+	 * @param url - this parameter is optional. If it is set, it indicated the url of
+	 * frontend state on which send the user
 	 * @return the result status of the registration
 	 * 				<ul>
 	 * 					<li>Success: ResultInfo.REGISTRATION_OK</li>
@@ -18,7 +20,7 @@ public interface AccountingService {
 	 * 					<li>Error: REGISTRATION_ERROR</li>
 	 * 				</ul>
 	 */
-	public User addNewUser(String email, String nickname, String password);
+	public User addNewUser(String email, String nickname, String password, String url);
 	
 	/**
 	 * Insert the user's profile details 
