@@ -10,7 +10,6 @@ import javax.validation.constraints.Size;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -25,8 +24,8 @@ import it.polito.ai.project.business.services.emailVerification.EmailVerificatio
 import it.polito.ai.project.repo.entities.User;
 import it.polito.ai.project.repo.entities.UserProfile;
 import it.polito.ai.project.rest.controllers.reqbody.PasswordChangeRequest;
-import it.polito.ai.project.rest.controllers.reqbody.UpdateProfileRequest;
 import it.polito.ai.project.rest.controllers.reqbody.RegistrationRequest;
+import it.polito.ai.project.rest.controllers.reqbody.UpdateProfileRequest;
 import it.polito.ai.project.rest.resources.ProfileResource;
 import it.polito.ai.project.rest.resources.ResultInfoResource;
 import it.polito.ai.project.web.exceptions.ClientErrorException;
@@ -53,10 +52,7 @@ public class ProfileRestController {
 	}
 
 	@PutMapping("/api/profile/password")
-	public ResultInfoResource changePassword(@Valid @RequestBody PasswordChangeRequest passwordForm, BindingResult result) {
-		if (result.hasErrors()) {
-			throw new ClientErrorException("wrong fields in the request");
-		}
+	public ResultInfoResource changePassword(@Valid @RequestBody PasswordChangeRequest passwordForm) {
 
 		String userEmail = currentUserService.getCurrentUser().getEmail();
 		ResultInfo res = null;
@@ -77,10 +73,7 @@ public class ProfileRestController {
 	}
 
 	@PutMapping("/api/profile")
-	public ProfileResource updateProfile(@Valid @RequestBody UpdateProfileRequest profileFormTest, BindingResult result) {
-		if (!result.getFieldValue("carRegistrationYear").equals("") && result.hasErrors()) {
-			throw new ClientErrorException("wrong fields in the request");
-		}
+	public ProfileResource updateProfile(@Valid @RequestBody UpdateProfileRequest profileFormTest) {
 
 		// Create the userProfile object from the form. It is just a conversion
 		UserProfile userProfile = profileFormToUserProfile(profileFormTest);
@@ -102,13 +95,10 @@ public class ProfileRestController {
 	}
 
 	@PostMapping("/api/signup")
-	public ResultInfoResource signup(@Valid @RequestBody RegistrationRequest registrationForm, BindingResult result) {
+	public ResultInfoResource signup(@Valid @RequestBody RegistrationRequest registrationForm) {
 		/*
 		 * Validate received data.
 		 */
-		if (result.hasErrors()) {
-			throw new ClientErrorException("the data provided contains some errors");
-		}
 
 		try {
 			accountingService.addNewUser(registrationForm.getEmail(), registrationForm.getNickname(),

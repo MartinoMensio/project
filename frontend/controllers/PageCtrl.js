@@ -24,6 +24,10 @@ app.controller('PageCtrl', ['UserService', '$state', 'user', '$rootScope', funct
 	// the error event is emitted when some error are found and need to be displayed
 	$rootScope.$on('error', (event, error) => {
 		console.log(error);
+		if (error.errors && error.errors.length > 0) {
+			// detailed error message
+			error.message = error.errors[0].field + " " + error.errors[0].defaultMessage;
+		}
 		this.message = {
 			type: "error",
 			class: "alert-danger",

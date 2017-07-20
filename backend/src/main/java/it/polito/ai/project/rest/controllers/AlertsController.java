@@ -5,7 +5,6 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,7 +19,6 @@ import it.polito.ai.project.repo.entities.alerts.Alert;
 import it.polito.ai.project.repo.entities.alerts.AlertType;
 import it.polito.ai.project.rest.controllers.reqbody.NewAlertBodyRequest;
 import it.polito.ai.project.rest.controllers.reqbody.NewRatingBodyRequest;
-import it.polito.ai.project.web.exceptions.ClientErrorException;
 
 @RestController
 public class AlertsController {
@@ -35,10 +33,7 @@ public class AlertsController {
 	}
 
 	@PostMapping("/api/alerts")
-	public Alert createAlert(@Valid @RequestBody NewAlertBodyRequest newAlert, BindingResult result) {
-		if (result.hasErrors()) {
-			throw new ClientErrorException("wrong fields in the request");
-		}
+	public Alert createAlert(@Valid @RequestBody NewAlertBodyRequest newAlert) {
 		
 		AlertType alertType = alertsService.getAlertTypeById(newAlert.getAlertTypeId());
 		
@@ -80,11 +75,7 @@ public class AlertsController {
 	
 	// endpoint for ratings of alerts
 	@PutMapping("/api/alerts/{id}/rate")
-	public Alert voteAlert(@PathVariable(value = "id") Long id, @Valid @RequestBody NewRatingBodyRequest vote, BindingResult result) {
-		if (result.hasErrors()) {
-			throw new ClientErrorException("wrong fields in the request");
-		}
-		
+	public Alert voteAlert(@PathVariable(value = "id") Long id, @Valid @RequestBody NewRatingBodyRequest vote) {
 		return alertsService.voteAlert(currentUserService.getCurrentUser(), id, vote.getValue());
 	}
 }
