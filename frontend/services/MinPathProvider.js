@@ -1,6 +1,6 @@
 var app = angular.module('App');
 
-app.factory('MinPathProvider', ['FakeBestPath', 'DataProvider', 'MongoRestClient', '$q', '$http', '$timeout', '$rootScope', function (FakeBestPath, DataProvider, MongoRestClient, $q, $http, $timeout, $rootScope) {
+app.factory('MinPathProvider', ['DataProvider', 'MongoRestClient', '$q', '$http', '$timeout', '$rootScope', function (DataProvider, MongoRestClient, $q, $http, $timeout, $rootScope) {
 
     var endpoint = 'http://localhost:9999/'
     var stops = DataProvider.getStops();

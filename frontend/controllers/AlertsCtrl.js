@@ -109,6 +109,11 @@ app.controller('AlertsCtrl', ['$scope', 'AlertsService', function($scope, Alerts
 		}, this);
 	});
 
+	$scope.$on('leafletDirectiveMarker.click', (event, args) => {
+		// get the alert again, to refresh the last view time
+		AlertsService.getAlertById(args.model.id);
+	})
+
 	// send the new vote to the database
 	this.vote = function(marker){
 		// send the vote and then modify dynamically the avg value
