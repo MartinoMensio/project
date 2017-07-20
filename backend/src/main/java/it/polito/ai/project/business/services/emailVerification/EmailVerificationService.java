@@ -7,7 +7,7 @@ public interface EmailVerificationService {
 	 * @param mail
 	 * @param nickname
 	 */
-	public void sendVerificationMail(String mail, String nickname);
+	public void sendVerificationMail(String mail, String nickname, String url);
 	
 	/**
 	 * Attempts to verify the email address with the provided token

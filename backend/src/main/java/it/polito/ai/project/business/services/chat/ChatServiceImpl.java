@@ -41,12 +41,8 @@ public class ChatServiceImpl implements ChatService {
 	}
 
 	@Override
-	public Topic getTopicById(String id) {
-		try {
-			return topicsRepository.findOne(Long.parseLong(id));
-		} catch (NumberFormatException e) {
-			return null;
-		}
+	public Topic getTopicById(Long id) {
+		return topicsRepository.findOne(id);
 	}
 
 	@Override

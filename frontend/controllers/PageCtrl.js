@@ -1,6 +1,6 @@
 var app = angular.module('App');
 
-app.controller('PageCtrl', ['UserService', '$state', 'user', '$rootScope', function (UserService, $state, user, $rootScope) {
+app.controller('PageCtrl', ['UserService', '$scope', '$state', 'user', '$rootScope', function (UserService, $scope, $state, user, $rootScope) {
 
 	this.user = user;
 
@@ -24,11 +24,18 @@ app.controller('PageCtrl', ['UserService', '$state', 'user', '$rootScope', funct
 	// the error event is emitted when some error are found and need to be displayed
 	$rootScope.$on('error', (event, error) => {
 		console.log(error);
-		this.message = {
-			type: "error",
-			class: "alert-danger",
-			value: error.message
-		};
+		if (error.errors && error.errors.length > 0) {
+			// detailed error message
+			error.message = error.errors[0].field + " " + error.errors[0].defaultMessage;
+		}
+		$scope.safeApply(() => {
+			this.message = {
+				type: "error",
+				class: "alert-danger",
+				value: error.message
+			};
+		})
+
 	});
 
 	// this is a friendly message to be shown

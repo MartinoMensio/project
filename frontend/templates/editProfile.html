@@ -14,21 +14,21 @@
 	    <form class="form-horizontal" ng-submit="ctrl.submit()">
 	        <div class="category-account-info">
 	            <div class="form-group">
-	                <label for="nickname" class="col-sm-5 control-label">Nickname</label>
-	                <div class="col-sm-7">
+	                <label for="nickname" class="col-sm-4 control-label">Nickname</label>
+	                <div class="col-sm-6">
 	                    <input type="text" ng-model="ctrl.user.nickname" class="form-control" required="required">
 	                </div>
 	            </div>
 	            <div class="form-group">
-	                <label for="date-of-birth" class="col-sm-5 control-label">Birth Date</label>
-	                <div class="col-sm-7">
+	                <label for="date-of-birth" class="col-sm-4 control-label">Birth Date</label>
+	                <div class="col-sm-6">
 	                    <input type="date" ng-model="ctrl.user.dateOfBirth" class="form-control" placeholder="yyyy-mm-dd" required="required" pattern="(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))"
 	                        title="the date in format YYYY-MM-DD">
 	                </div>
 	            </div>
 	            <div class="form-group">
-	                <label for="option-gender" class="col-sm-5 control-label">Gender</label>
-	                <div class="col-sm-7">
+	                <label for="option-gender" class="col-sm-4 control-label">Gender</label>
+	                <div class="col-sm-6">
 	                    <label class="radio-inline">
 						<input type="radio" id="option-gender-male" name="option-gender" value="M" ng-model="ctrl.user.sex" required="required">M
 						</label>
@@ -38,23 +38,23 @@
 	                </div>
 	            </div>
 	            <div class="form-group">
-	                <label for="education" class="col-sm-5 control-label">Education</label>
-	                <div class="col-sm-7">
+	                <label for="education" class="col-sm-4 control-label">Education</label>
+	                <div class="col-sm-6">
 	                    <select class="form-control" ng-model="ctrl.user.educationLevel" ng-options="option.value for option in ctrl.profileAttributes.educationLevels track by option.id"
 	                        required="required">
 						</select>
 	                </div>
 	            </div>
 	            <div class="form-group">
-	                <label for="employment" class="col-sm-5 control-label">Employment</label>
-	                <div class="col-sm-7">
+	                <label for="employment" class="col-sm-4 control-label">Employment</label>
+	                <div class="col-sm-6">
 	                    <select class="form-control" ng-model="ctrl.user.employment" ng-options="option.value for option in ctrl.profileAttributes.employments track by option.id"
 	                        required="required"></select>
 	                </div>
 	            </div>
 	            <div class="form-group">
-	                <label for="private-car" class="col-sm-5 control-label">Private Car Ownership</label>
-	                <div class="col-sm-7">
+	                <label for="private-car" class="col-sm-4 control-label">Private Car Ownership</label>
+	                <div class="col-sm-6">
 	                    <label class="radio-inline">
 						<input type="radio" id="private-carN" name="privateCarOwnership" ng-value="false" ng-model="ctrl.user.privateCarOwnership" required="required">No
 						</label>
@@ -66,23 +66,23 @@
 	            <div ng-if="ctrl.user.privateCarOwnership">
 	                <label class="control-label">Car details:</label>
 	                <div id="fuel-type" class="form-group">
-	                    <label for="fuel" class="col-sm-5 control-label">Car Fuel:</label>
-	                    <div class="col-sm-7">
+	                    <label for="fuel" class="col-sm-4 control-label">Car Fuel:</label>
+	                    <div class="col-sm-6">
 	                        <select class="form-control" ng-model="ctrl.user.carFuel" ng-options="option.value for option in ctrl.profileAttributes.fuels track by option.id"
 	                            required="required">
 						</select>
 	                    </div>
 	                </div>
 	                <div id="car-registration-year" class="form-group">
-	                    <label for="car-year" class="col-sm-5 control-label">Car Year:</label>
-	                    <div class="col-sm-7">
-	                        <input type="number" ng-model="ctrl.user.carRegistrationYear" class="form-control" id="car-year" name="car-year">
+	                    <label for="car-year" class="col-sm-4 control-label">Car Year:</label>
+	                    <div class="col-sm-6">
+	                        <input type="number" ng-model="ctrl.user.carRegistrationYear" class="form-control" id="car-year" name="car-year" required="true">
 	                    </div>
 	                </div>
 	            </div>
 	            <div id="car-sharing-usage" class="form-group">
-	                <label for="car-sharing-usage" class="col-sm-5 control-label">Car Sharing Usage</label>
-	                <div class="col-sm-7">
+	                <label for="car-sharing-usage" class="col-sm-4 control-label">Car Sharing Usage</label>
+	                <div class="col-sm-6">
 	                    <label class="radio-inline">
 						<input type="radio" id="car-sharing-usageN" ng-value="false" name="carSharingUsage" ng-model="ctrl.user.carSharingUsage" required="required">No
 						</label>
@@ -92,16 +92,16 @@
 	                </div>
 	            </div>
 	            <div id="car-sharing-services" class="form-group" ng-if="ctrl.user.carSharingUsage">
-	                <label for="car-sharing" class="col-sm-5 control-label">Car Sharing</label>
-	                <div class="col-sm-7">
+	                <label for="car-sharing" class="col-sm-4 control-label">Car Sharing</label>
+	                <div class="col-sm-6">
 	                    <select class="form-control" ng-model="ctrl.user.carSharingService" ng-options="option.name for option in ctrl.profileAttributes.carSharingServices track by option.id"
 	                        required="required">
 						</select>
 	                </div>
 	            </div>
 	            <div class="form-group">
-	                <label for="public-transport-usage" class="col-sm-5 control-label">Public Transport Usage</label>
-	                <div class="col-sm-7">
+	                <label for="public-transport-usage" class="col-sm-4 control-label">Public Transport Usage</label>
+	                <div class="col-sm-6">
 	                    <label class="radio-inline">
 						<input type="radio" id="public-transport-usageN" ng-value="false" name="publicTransportUsage" ng-model="ctrl.user.publicTransportUsage" required="required">No
 						</label>
@@ -111,16 +111,16 @@
 	                </div>
 	            </div>
 	            <div id="habitual-travel-document" class="form-group" ng-if="ctrl.user.publicTransportUsage">
-	                <label for="habitual-travel-document" class="col-sm-5 control-label">Travel Documents</label>
-	                <div class="col-sm-7">
+	                <label for="habitual-travel-document" class="col-sm-4 control-label">Travel Documents</label>
+	                <div class="col-sm-6">
 	                    <select class="form-control" ng-model="ctrl.user.habitualTravelDocument" ng-options="option.name for option in ctrl.profileAttributes.travelDocuments track by option.id"
 	                        required="required">
 						</select>
 	                </div>
 	            </div>
 	            <div class="form-group">
-	                <label for="bike-usage" class="col-sm-5 control-label">Bike Usage</label>
-	                <div class="col-sm-7">
+	                <label for="bike-usage" class="col-sm-4 control-label">Bike Usage</label>
+	                <div class="col-sm-6">
 	                    <label class="radio-inline">
 						<input type="radio" id="bike-usageN" name="bikeUsage" ng-value="false" ng-model="ctrl.user.bikeUsage" required="required">No
 						</label>
@@ -131,8 +131,8 @@
 	            </div>
 	            <div ng-if="ctrl.user.bikeUsage">
 	                <div id="private-bike-usage" class="form-group">
-	                    <label for="private-bike-usage" class="col-sm-5 control-label">Private Bike Usage</label>
-	                    <div class="col-sm-7">
+	                    <label for="private-bike-usage" class="col-sm-4 control-label">Private Bike Usage</label>
+	                    <div class="col-sm-6">
 	                        <label class="radio-inline">
 						<input type="radio" id="private-bike-usageY" name="privateBikeUsage" ng-value="false" ng-model="ctrl.user.privateBikeUsage">No
 						</label>
@@ -142,8 +142,8 @@
 	                    </div>
 	                </div>
 	                <div id="bike-sharing-usage" class="form-group">
-	                    <label for="bike-sharing-usage" class="col-sm-5 control-label">Bike Sharing Usage</label>
-	                    <div class="col-sm-7">
+	                    <label for="bike-sharing-usage" class="col-sm-4 control-label">Bike Sharing Usage</label>
+	                    <div class="col-sm-6">
 	                        <label class="radio-inline">
 						<input type="radio" id="sharing-bike-usageY" name="bikeSharingUsage" ng-value="false" ng-model="ctrl.user.bikeSharingUsage">No
 						</label>
@@ -154,7 +154,7 @@
 	                </div>
 	            </div>
 	            <div class="form-group">
-	                <div class="col-sm-offset-5 col-sm-10">
+	                <div class="col-sm-offset-4 col-sm-10">
 	                    <button type="submit" class="btn btn-large btn-success">Save</button>
 	                </div>
 	            </div>

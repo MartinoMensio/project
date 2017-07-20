@@ -1,48 +1,48 @@
-<div class="container-fluid">
-  <div class="row" id="row-room">
+<div class="container-fluid" id="container-chat-messages">
+	<div class="row" id="row-room">
 
-    <div class="panel panel-default nopadding" id="panel-room" ng-class="ctrl.showMap ? 'col-sm-6' : 'col-sm-12'">
-      <div class="panel-heading clearfix">
-        <div class="pull-left">Chat</div>
-        <div class="pull-right">
-          <button ng-click="ctrl.mapToggle()" claas="pull-left"><img src="images/map.png" style="max-width: 50px; max-height: 50px;"/></button>
-        </div>
-      </div>
-      <div class="panel-body" scroll-glue force-glue>
-        <ul class="chat" ng-repeat="msg in ctrl.messages | orderBy:'sendingTime'">
-          <message username="{{msg.userNickname}}" user-image-url="{{msg.userImageUrl || (global.user.id == msg.userId ? global.user.localImageUrl: null)}}" timestamp="{{msg.sendingTime}}" text="{{msg.text}}"
-            image-url="{{msg.imageUrl}}" alert="msg.alert" on-alert-clicked="ctrl.selectAlert(alertId)" side="{{global.user.id == msg.userId ? 'right' : 'left'}}"></message>
-        </ul>
-      </div>
-      <div class="panel-footer">
-        <div class="bottom_wrapper clearfix">
-          <div ng-if="ctrl.msg.image">
-            <img ng-src="{{ctrl.msg.image}}" style="max-height:200px;max-width:300px;" />
-            <button class="btn" ng-click="ctrl.removeImage()">X</button>
-          </div>
-          <div ng-if="ctrl.alert">
-            #{{ctrl.alert.hashtag}} [{{ctrl.alert.address}}] <button class="btn" ng-click="ctrl.removeAlert()">X</button>
-          </div>
-          <div class="message_input_wrapper" uib-dropdown is-open="ctrl.alertsResult && ctrl.alertsResult.length">
-            <input class="message_input" ng-model="ctrl.msg.content" placeholder="Type your message here..." ng-change="ctrl.msg_text_changed()"
-              ng-keyup="$event.keyCode == 13 ? ctrl.sendMessage() : null" />
-            <ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="simple-dropdown" role="menu">
-              <li ng-repeat="alert in ctrl.alertsResult">
-                <a ng-click="ctrl.alertClicked(alert)">#{{alert.hashtag}} [{{alert.address}}]</a>
-              </li>
-            </ul>
-          </div>
+		<div class="panel panel-default nopadding" id="panel-room"  style="margin-top:80px;" ng-class="ctrl.showMap ? 'col-sm-6' : 'col-sm-12'">
+			<div class="panel-heading clearfix">
+				<div class="pull-left">{{ctrl.topic.value}}</div>
+				<div class="pull-right">
+					<button ng-click="ctrl.mapToggle()" claas="pull-left"><img src="images/map.png" style="max-width: 50px; max-height: 50px;"/></button>
+				</div>
+			</div>
+			<div class="chat-panel-body" scroll-glue force-glue>
+				<ul class="chat" ng-repeat="msg in ctrl.messages | orderBy:'sendingTime'">
+					<message username="{{msg.userNickname}}" user-image-url="{{msg.userImageUrl || (global.user.id == msg.userId ? global.user.localImageUrl: null)}}" timestamp="{{msg.sendingTime}}" text="{{msg.text}}"
+					image-url="{{msg.imageUrl}}" alert="msg.alert" on-alert-clicked="ctrl.selectAlert(alertId)" side="{{global.user.id == msg.userId ? 'right' : 'left'}}"></message>
+				</ul>
+			</div>
+			<div class="chat-panel-footer">
+				<div class="bottom_wrapper clearfix">
+					<div ng-if="ctrl.msg.image">
+						<img ng-src="{{ctrl.msg.image}}" style="max-height:200px;max-width:300px;" />
+						<button class="btn" ng-click="ctrl.removeImage()">X</button>
+					</div>
+					<div ng-if="ctrl.alert">
+						#{{ctrl.alert.hashtag}} [{{ctrl.alert.address}}] <button class="btn" ng-click="ctrl.removeAlert()">X</button>
+					</div>
+					<div class="message_input_wrapper" uib-dropdown is-open="ctrl.alertsResult && ctrl.alertsResult.length">
+						<input class="message_input" ng-model="ctrl.msg.content" placeholder="Type your message here..." ng-change="ctrl.msg_text_changed()"
+						ng-keyup="$event.keyCode == 13 ? ctrl.sendMessage() : null" />
+						<ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="simple-dropdown" role="menu">
+							<li ng-repeat="alert in ctrl.alertsResult">
+								<a ng-click="ctrl.alertClicked(alert)">#{{alert.hashtag}} [{{alert.address}}]</a>
+							</li>
+						</ul>
+					</div>
 
-          <div class="chat_buttons clearfix">
-            <button class="add_picture_button text" ng-click="ctrl.openAddPictureModal()"><span class="glyphicon glyphicon-picture"></span></button>
-            <button class="send_button text" ng-click="ctrl.sendMessage()"><span class="glyphicon glyphicon-send"></span></button>
-          </div>
-        </div>
-      </div>
-    </div>
+					<div class="chat_buttons clearfix">
+						<button class="add_picture_button text" ng-click="ctrl.openAddPictureModal()"><span class="glyphicon glyphicon-picture"></span></button>
+						<button class="send_button text" ng-click="ctrl.sendMessage()"><span class="glyphicon glyphicon-send"></span></button>
+					</div>
+				</div>
+			</div>
+		</div>
 
-    <div ng-show="ctrl.showMap" class="col-sm-6">
-      <leaflet geojson="ctrl.data.geojson" markers="ctrl.data.markers" lf-center="ctrl.center" bounds="ctrl.bounds" tiles="ctrl.tiles" height="480px"></leaflet>
-    </div>
-  </div>
+		<div ng-show="ctrl.showMap" id="chat-map" class="col-sm-6">
+			<leaflet geojson="ctrl.data.geojson" markers="ctrl.markers" lf-center="ctrl.center" bounds="ctrl.bounds" tiles="ctrl.tiles" height="480px"></leaflet>
+		</div>
+	</div>
 </div>

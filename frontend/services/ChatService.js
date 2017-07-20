@@ -45,6 +45,26 @@ app.factory('ChatService', ['$http', '$q', '$localStorage', '$stomp', '$log', fu
             return deferred.promise;
         },
 
+        /* Returns the topic associated to the passed id
+         * Parameters:
+         *  - id - the topic id
+         * Return
+         *  - a promise that contains the topic
+         * */
+        getTopicById: function(id) {
+            var deferred = $q.defer();
+
+            $http.get(webEndpoint + 'api/open/topics/' + id).then(function (result) {
+                // get secceded
+                deferred.resolve(result.data);
+            }, function (error) {
+                // get failed
+                deferred.reject(error);
+            });
+
+            return deferred.promise;
+        },
+
         /* Returns the list of the last messages about the specified topic
          * Parameters:
          *  - the topic id

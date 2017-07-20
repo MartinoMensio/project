@@ -38,7 +38,7 @@ public class MessagesController {
 	 * @return
 	 */
 	@RequestMapping(value = "/api/messages/{topicId}", method = RequestMethod.GET, headers = "Accept=application/json")
-	public PagedResources<Resource<ChatMessage>> getMessages(@PathVariable("topicId") String topicId,
+	public PagedResources<Resource<ChatMessage>> getMessages(@PathVariable("topicId") Long topicId,
 			@PageableDefault(sort = { "sendingTime" }, direction = Direction.DESC, size = 10) Pageable pageable,
 			PagedResourcesAssembler<ChatMessage> assembler) {
 		// get the topic

@@ -1,6 +1,6 @@
 var app = angular.module('App');
 
-app.controller('NewAlertModalCtrl', ['$scope', '$uibModalInstance', 'AlertsService', 'GeocodingService', 'alertTypes', 'hashtag', function ($scope, $uibModalInstance, AlertsService, GeocodingService, alertTypes, hashtag) {
+app.controller('NewAlertModalCtrl', ['$rootScope', '$scope', '$uibModalInstance', 'AlertsService', 'GeocodingService', 'alertTypes', 'hashtag', function ($rootScope, $scope, $uibModalInstance, AlertsService, GeocodingService, alertTypes, hashtag) {
 
     this.alertTypes = alertTypes;
     this.alert = {};
@@ -27,6 +27,8 @@ app.controller('NewAlertModalCtrl', ['$scope', '$uibModalInstance', 'AlertsServi
                     this.alert.address = result.formatted_address;
                     this.fullAddress = result.formatted_address;
                 });
+            }, (error) => {
+                $rootScope.$emit('error', { message: "You denied access to geolocation" });
             });
         }
     };

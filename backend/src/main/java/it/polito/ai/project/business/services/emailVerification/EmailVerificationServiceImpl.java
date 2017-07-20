@@ -44,7 +44,7 @@ public class EmailVerificationServiceImpl implements EmailVerificationService {
 	private VerificationTokensRepository tokens;
 	
 	@Override
-	public void sendVerificationMail(String email, String nickname) {
+	public void sendVerificationMail(String email, String nickname, String url) {
 		User user = users.findByEmail(email);
 		if (user == null) {
 			throw new RuntimeException("current user is null");
@@ -55,7 +55,7 @@ public class EmailVerificationServiceImpl implements EmailVerificationService {
 		
 		// create activation link with random token
 		String token = new BigInteger(130, new SecureRandom()).toString(32);
-		String link = generateLink(email, token);
+		String link = generateLink(email, token, url);
 		
 		EmailRequest request = new EmailRequest(email, nickname, link, "project@ai.polito.it");
 		HttpEntity<EmailRequest> entity = new HttpEntity<EmailRequest>(request, headers);
@@ -96,7 +96,12 @@ public class EmailVerificationServiceImpl implements EmailVerificationService {
 		return false;
 	}
 	
-	private String generateLink(String email, String token) {
+	private String generateLink(String email, String token, String url) {
+		if (url != null) {
+			// the url will point to the frontend
+			return url + "?email=" + email + "&token=" + token;
+		}
+		// otherwise the url will point to the backend
 		Link verificationLink = ControllerLinkBuilder 
 		          .linkTo(ControllerLinkBuilder.methodOn(ProfileRestController.class).confirmEmail(email, token)) 
 		          .withSelfRel();

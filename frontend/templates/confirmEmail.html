@@ -1,0 +1,7 @@
+<div class="container" style="margin-top: 60px">
+    Verification of email {{ctrl.email}}
+    <div>{{ctrl.status}}</div>
+    <div ng-if="ctrl.status">
+        <a class="btn btn-primary" ui-sref="page.login">Login</a>
+    </div>
+</div>

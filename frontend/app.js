@@ -7,7 +7,8 @@ var app = angular.module('App', ['ngRoute',
                                 'luegg.directives',
                                 'ui.bootstrap',
                                 'ui.router.state.events',
-                                'angular.img'])
+                                'angular.img',
+                                'angular-input-stars'])
 
 app.config(['$locationProvider', '$urlRouterProvider', '$stateProvider', '$httpProvider', function ($locationProvider, $urlRouterProvider, $stateProvider, $httpProvider) {
     // If the URL does not correspond to anything then redirect to '/'
@@ -53,14 +54,14 @@ app.config(['$locationProvider', '$urlRouterProvider', '$stateProvider', '$httpP
         .state('page.busLines', {
             url: '/busLines',
             templateUrl: 'templates/busLinesList.html',
-            controller: 'MainCtrl',
+            controller: 'BusLinesCtrl',
             controllerAs: 'ctrl'
         })
         // Bus lines list page + map visualization
         .state('page.busLines.line', {
             url: '/{lineId}',
             templateUrl: 'templates/busLineMap.html',
-            controller: 'MainCtrl',
+            controller: 'BusLinesCtrl',
             controllerAs: 'ctrl'
         })
         // Best path page
@@ -112,6 +113,20 @@ app.config(['$locationProvider', '$urlRouterProvider', '$stateProvider', '$httpP
             controller: 'SignupCtrl',
             controllerAs: 'ctrl'
         })
+        // account created
+        .state('page.registrationSuccess', {
+            url: '/registrationSuccess?nickname',
+            templateUrl: 'templates/registrationSuccess.html',
+            controller: 'RegistrationSuccessCtrl',
+            controllerAs: 'ctrl',
+        })
+        // confirmation of email
+        .state('page.confirmEmail', {
+            url: '/confirmEmail?email&token',
+            templateUrl: 'templates/confirmEmail.html',
+            controller: 'ConfirmEmailCtrl',
+            controllerAs: 'ctrl'
+        })
         // profile
         .state('page.profile', {
             url: '/profile',
@@ -153,6 +168,19 @@ app.config(['$locationProvider', '$urlRouterProvider', '$stateProvider', '$httpP
 }]);
 
 app.run(['$rootScope', '$state', function ($rootScope, $state) {
+
+    // if necessary, this calls the scope apply
+    $rootScope.safeApply = function (fn) {
+        var phase = $rootScope.$$phase;
+        if (phase === '$apply' || phase === '$digest') {
+            if (fn && (typeof (fn) === 'function')) {
+                fn();
+            }
+        } else {
+            this.$apply(fn);
+        }
+    };
+
     // check the status of the user
     $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
         var user = $rootScope.user;

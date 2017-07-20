@@ -2,6 +2,10 @@ package it.polito.ai.project.rest.controllers.reqbody;
 
 import java.util.Date;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+
+import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import it.polito.ai.project.repo.entities.CarSharingService;
@@ -11,29 +15,34 @@ import it.polito.ai.project.repo.entities.Fuel;
 import it.polito.ai.project.repo.entities.TravelDocument;
 import it.polito.ai.project.repo.entities.UserProfile;
 
-// TODO this class should only contain the ids of the linked properties
-// also modify the client
 public class UpdateProfileRequest {
+	@NotNull
+	@Length(min=1)
 	private String nickname;
 	
+	@Pattern(regexp="[MF]")
 	private String sex;
+	
+	@NotNull
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date dateOfBirth;
 	
+	@NotNull
 	private EducationLevel educationLevel;
+	@NotNull
 	private Employment employment;
-	
+	@NotNull
 	private Boolean privateCarOwnership;
 	private Integer carRegistrationYear;
 	private Fuel carFuel;
-	
+	@NotNull
 	private Boolean carSharingUsage;
 	private CarSharingService carSharingService;
-	
+	@NotNull
 	private Boolean bikeUsage;
 	private Boolean privateBikeUsage;
 	private Boolean bikeSharingUsage;
-	
+	@NotNull
 	private Boolean publicTransportUsage;
 	private TravelDocument habitualTravelDocument;
 	

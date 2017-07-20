@@ -50,6 +50,20 @@ app.factory('AlertsService', ['$http', '$q', function ($http, $q) {
             });
             return deferred.promise;
         },
+        voteAlert: function (alertId, vote) {
+            var deferred = $q.defer();
+            $http.put(endpoint + 'alerts/' + alertId + '/rate', { value: vote }).then(function (result) {
+                // TODO this is because the trigger on backend is run after returning
+                $http.get(endpoint + 'alerts/' + alertId).then(function (result) {
+                    deferred.resolve(result.data);
+                }, function (result) {
+                    deferred.reject(result);
+                });
+            }, function (result) {
+                deferred.reject(result);
+            });
+            return deferred.promise;
+        },
         findHashtag: function (text) {
             var regexp = /\B\#\w+\b/g
             result = text.match(regexp);
@@ -60,7 +74,7 @@ app.factory('AlertsService', ['$http', '$q', function ($http, $q) {
                 return null;
             }
         },
-        autocompleteHashtag: function(text, hashtag) {
+        autocompleteHashtag: function (text, hashtag) {
             var regexp = /\B\#\w+\b/g
             result = text.match(regexp);
             if (result) {

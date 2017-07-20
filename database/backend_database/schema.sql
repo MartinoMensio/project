@@ -49,6 +49,7 @@ create table if not exists users (
 create table if not exists topics(
   id bigint not null,
   value varchar(50) not null,
+  description varchar(200) not null,
   primary key (id)
 );
 
@@ -89,9 +90,7 @@ create table if not exists user_profiles (
 create table if not exists alert_types (
   id bigint not null,
   name varchar(30) not null,
-  image_id bigint, --fixed image
-  primary key (id),
-  foreign key (image_id) references images(id)
+  primary key (id)
 );
 
 create table if not exists alerts (
