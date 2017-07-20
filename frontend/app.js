@@ -168,6 +168,19 @@ app.config(['$locationProvider', '$urlRouterProvider', '$stateProvider', '$httpP
 }]);
 
 app.run(['$rootScope', '$state', function ($rootScope, $state) {
+
+    // if necessary, this calls the scope apply
+    $rootScope.safeApply = function (fn) {
+        var phase = $rootScope.$$phase;
+        if (phase === '$apply' || phase === '$digest') {
+            if (fn && (typeof (fn) === 'function')) {
+                fn();
+            }
+        } else {
+            this.$apply(fn);
+        }
+    };
+
     // check the status of the user
     $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
         var user = $rootScope.user;

@@ -1,6 +1,6 @@
 var app = angular.module('App');
 
-app.controller('AddPictureModalCtrl', ['$scope', '$uibModalInstance', 'ImagesService', function ($scope, $uibModalInstance, ImagesService) {
+app.controller('AddPictureModalCtrl', ['$rootScope', '$scope', '$uibModalInstance', 'ImagesService', function ($rootScope, $scope, $uibModalInstance, ImagesService) {
 
     // all this stuff because ng-change does not work on input type="file"
     this.inputField = null;
@@ -27,7 +27,7 @@ app.controller('AddPictureModalCtrl', ['$scope', '$uibModalInstance', 'ImagesSer
         }, function (error) {
             // TODO do something
             this.image = null;
-            console.log('error previewing the file');
+            $rootScope.$emit('error', {message: error});
         })
     }
 

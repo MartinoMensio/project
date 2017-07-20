@@ -1,7 +1,7 @@
 var app = angular.module('App');
 
-app.controller('BestPathCtrl', ['$scope', "leafletData", '$routeParams', '$location', 'MinPathProvider', 'GeocodingService',
-    function ($scope, leafletData, $routeParams, $location, MinPathProvider, GeocodingService) {
+app.controller('BestPathCtrl', ['$rootScope', '$scope', "leafletData", '$routeParams', '$location', 'MinPathProvider', 'GeocodingService',
+    function ($rootScope, $scope, leafletData, $routeParams, $location, MinPathProvider, GeocodingService) {
 
         // initialize the map
         this.center = {
@@ -92,6 +92,8 @@ app.controller('BestPathCtrl', ['$scope', "leafletData", '$routeParams', '$locat
                     GeocodingService.reverseGeocode(this.markers[key].lat, this.markers[key].lng).then((result) => {
                         this[key + 'Str'] = result.formatted_address;
                     });
+                }, (error) => {
+                    $rootScope.$emit('error', { message: "You denied access to geolocation " });
                 });
             }
         };
