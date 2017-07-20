@@ -157,6 +157,15 @@
     text-align: center;
 }
 
+#chat-map{
+    height: 500px;
+	/*margin-top:122px;*/
+}
+
+.dropdown-menu{
+    z-index: 1000;
+}
+
 ::-webkit-scrollbar-track
 {
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);

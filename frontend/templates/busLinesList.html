@@ -1,30 +1,29 @@
 <!-- -->
 <div class="container" id="container-busLineList">
-    <div class="col-sm-6">
-		<h3>Select a line to see the map</h3>
-        <div class="input-group">
+    <div class="hero-unit">
+	    <div class="page-header">
+	        <h1>Lines</h1>
+	    </div>
+	    <p class="lead">Here you can see the paths of each bus, tram and metro line</p>
+
+	</div>
+
+    <div class="col-sm-12">
+        <div class="input-group" uib-dropdown is-open="ctrl.showList">
             <input ng-model="ctrl.searchText" ng-change="ctrl.showResult()" type="text" class="form-control" placeholder="Search a line...">
+            <ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="simple-dropdown" role="menu">
+                <li ng-repeat="line in ctrl.lines | filter : {line: ctrl.searchText}">
+                    <a ui-sref="page.busLines.line({lineId: '{{line.line}}' })">{{line.line}} - {{line.desc}}</a>
+                </li>
+            </ul>
+
             <span class="input-group-btn">
                 <button class="btn btn-secondary" ng-click="ctrl.showAll()" type="button">{{ctrl.buttonText}}</button>
             </span>
         </div>
-        <div style="max-height: 400px;overflow-y: scroll;">
-            <table class="table" ng-if="ctrl.showList">
-                <thead>
-                    <td>Line</td>
-                    <td>Description</td>
-                </thead>
-                <tbody>
-                    <tr ng-repeat="line in ctrl.lines | filter : {line: ctrl.searchText}">
-                        <td>{{line.line}}</td>
-                        <td><a ui-sref="page.busLines.line({lineId: '{{line.line}}' })">{{line.desc}}</a></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
     </div>
 
-    <div class="col-sm-6" style="margin-top:40px;">
+    <div>
         <div ui-view></div>
     </div>
 </div>
