@@ -8,13 +8,13 @@
 					<button ng-click="ctrl.mapToggle()" claas="pull-left"><img src="images/map.png" style="max-width: 50px; max-height: 50px;"/></button>
 				</div>
 			</div>
-			<div class="panel-body" scroll-glue force-glue>
+			<div class="chat-panel-body" scroll-glue force-glue>
 				<ul class="chat" ng-repeat="msg in ctrl.messages | orderBy:'sendingTime'">
 					<message username="{{msg.userNickname}}" user-image-url="{{msg.userImageUrl || (global.user.id == msg.userId ? global.user.localImageUrl: null)}}" timestamp="{{msg.sendingTime}}" text="{{msg.text}}"
 					image-url="{{msg.imageUrl}}" alert="msg.alert" on-alert-clicked="ctrl.selectAlert(alertId)" side="{{global.user.id == msg.userId ? 'right' : 'left'}}"></message>
 				</ul>
 			</div>
-			<div class="panel-footer">
+			<div class="chat-panel-footer">
 				<div class="bottom_wrapper clearfix">
 					<div ng-if="ctrl.msg.image">
 						<img ng-src="{{ctrl.msg.image}}" style="max-height:200px;max-width:300px;" />
