@@ -5,15 +5,6 @@ app.controller('BusLinesCtrl', ['$scope', 'leafletData', 'DataProvider', '$state
         var lineId =  $stateParams.lineId;
         this.lines = DataProvider.getLines();
 
-        if (lineId) {
-            this.data = DataProvider.getLineByIdAsGeoJson(lineId);
-            var data = this.data;
-
-            leafletData.getMap().then(function(map) {
-                map.fitBounds(data.latlngs);
-            });
-        }
-
         this.tiles = {
             name: 'MapBox',
             url: '//api.tiles.mapbox.com/v4/mapbox.streets/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw',
@@ -30,10 +21,19 @@ app.controller('BusLinesCtrl', ['$scope', 'leafletData', 'DataProvider', '$state
         // variable that controls the visualization of the whole list
         this.showList = false;
         this.searchText = "";
-        this.buttonText = "Show all"
+        this.buttonText = "Show all";
+
+        if (lineId) {
+            this.data = DataProvider.getLineByIdAsGeoJson(lineId);
+            var data = this.data;
+
+            leafletData.getMap().then(function(map) {
+                map.fitBounds(data.latlngs);
+            });
+        }
 
         // control wether it is necessary to show or not the whole list
-        this.showAll = function() {
+        this.showAll = () => {
             if (this.searchText.localeCompare("") != 0) {
                 this.searchText = "";
                 this.showList = true;
@@ -49,10 +49,10 @@ app.controller('BusLinesCtrl', ['$scope', 'leafletData', 'DataProvider', '$state
                     this.buttonText = "Hide";
                 }
             }
-        }
+        };
 
         // control wether it is necessary to show or not the list when search text is written
-        this.showResult = function() {
+        this.showResult = () => {
             if (this.searchText.localeCompare("") != 0) {
                 this.showList = true;
                 this.buttonText = "Show all";
@@ -60,6 +60,10 @@ app.controller('BusLinesCtrl', ['$scope', 'leafletData', 'DataProvider', '$state
             else {
                 this.showList = false;
             }
-        }
+        };
+
+        this.toggleResult = () => {
+            this.showList = !this.showList;
+        };
     }
 ]);
