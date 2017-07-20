@@ -41,7 +41,7 @@ public class ChatController {
 	AlertsService alertsService;
 
 	@MessageMapping("/{topicId}")
-	public void handleMessage(SimpMessageHeaderAccessor hs, @DestinationVariable String topicId, WebSocketMessage webSocketMessage) throws Exception {
+	public void handleMessage(SimpMessageHeaderAccessor hs, @DestinationVariable Long topicId, WebSocketMessage webSocketMessage) throws Exception {
 		User sender = currentUserService.getCurrentUser();
 		if (sender != null) {
 			Topic topic = chatService.getTopicById(topicId);

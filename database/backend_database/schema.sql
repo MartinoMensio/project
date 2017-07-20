@@ -49,6 +49,7 @@ create table if not exists users (
 create table if not exists topics(
   id bigint not null,
   value varchar(50) not null,
+  description varchar(200) not null,
   primary key (id)
 );
 

@@ -55,11 +55,19 @@
     margin-right: 5px;
 }
 
-.panel-body
+.chat-panel-body
 {
     overflow-y: scroll;
+    padding: 15px;
     height: 500px;
     background-color: #f8f8f8;
+}
+
+.chat-panel-footer {
+    padding: 10px 15px;
+    border-top: 1px solid #ddd;
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
 }
 
 .bottom_wrapper {

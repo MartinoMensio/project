@@ -2,6 +2,7 @@ var app = angular.module('App');
 
 app.controller('ChatCtrl', ['$scope', '$uibModal', '$stateParams', '$localStorage', 'ChatService', 'AlertsService', function ($scope, $uibModal, $stateParams, $localStorage, ChatService, AlertsService) {
     this.template = "templates/popovers/popoverTemplate.html";
+    var topicId = $stateParams.topicId; // get the topic id from the app state
 
     var local_icons = {
         generic_alert_icon: {
@@ -58,9 +59,10 @@ app.controller('ChatCtrl', ['$scope', '$uibModal', '$stateParams', '$localStorag
         alertId: null
     }
 
-    var topicId = $stateParams.topicId; // get the topic id from the app state
-
-
+    ChatService.getTopicById(topicId).then((result) => {
+        this.topic = result;
+    });
+    
     // Retrieve the last messages from the topic
     ChatService.getLastMessages(topicId).then((result) => {
         this.messages = result;
