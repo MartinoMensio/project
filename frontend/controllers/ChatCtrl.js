@@ -74,6 +74,8 @@ app.controller('ChatCtrl', ['$scope', '$uibModal', '$stateParams', '$localStorag
         this.messages.push(message);
         $scope.$apply();
         if(this.showMap === true){
+
+            // TODO remove DUPLICATE CODE as below
             // get the list of all teh alerts
             AlertsService.getAlerts().then((result) => {
                 this.alerts = result; // show the alert list
@@ -84,11 +86,11 @@ app.controller('ChatCtrl', ['$scope', '$uibModal', '$stateParams', '$localStorag
                 // each marker display the 5 star for rating the alert
                 this.markers.forEach((marker,index) => {
                     marker.getMessageScope = ()=> { return $scope; }
-                    var initialization = true;
+                    marker.watchEnabled = false;
                     // watch added to check if a new rate is inserted by the user
                     $scope.$watch("ctrl.alerts["+index+"].newRating", (newValue, oldValue)=> {
-                        if (initialization === true || newValue===0) {
-                            initialization = false;
+                        if (marker.watchEnabled === false || newValue===0) {
+                            marker.watchEnabled = true;
                             return;
                         }
                         this.vote(marker);
@@ -168,11 +170,11 @@ app.controller('ChatCtrl', ['$scope', '$uibModal', '$stateParams', '$localStorag
             // each marker display the 5 star for rating the alert
             this.markers.forEach((marker,index) => {
                 marker.getMessageScope = ()=> { return $scope; }
-                var initialization = true;
+                marker.watchEnabled = false;
                 // watch added to check if a new rate is inserted by the user
                 $scope.$watch("ctrl.alerts["+index+"].newRating", (newValue, oldValue)=> {
-                    if (initialization === true || newValue===0) {
-                        initialization = false;
+                    if (marker.watchEnabled === false || newValue===0) {
+                        marker.watchEnabled = true;
                         return;
                     }
                     this.vote(marker);
@@ -210,6 +212,13 @@ app.controller('ChatCtrl', ['$scope', '$uibModal', '$stateParams', '$localStorag
         }
     }
 
+    $scope.$on('leafletDirectiveMarker.click', (event, args) => {
+		// get the user rating and update last view time
+		AlertsService.getUserRatingToAlert(args.model.id).then((result) => {
+			args.model.watchEnabled = false;
+			args.model.newRating = result.vote;
+		});
+	});
 
     // this function is called every time the message text changes 
     this.msg_text_changed = () => {
