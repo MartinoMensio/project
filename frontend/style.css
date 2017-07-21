@@ -324,9 +324,13 @@ app {
 
 .navbar-login
 {
-    width: 305px;
+    width: 355px;
     padding: 10px;
     padding-bottom: 0px;
+}
+
+#DIV_ID{
+	font-size: 10px !important;
 }
 
 .navbar-login-session
