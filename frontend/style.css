@@ -237,6 +237,12 @@ app {
 	padding-bottom: 460px;
 }
 
+#container-chat-topics {
+	margin-top: 40px;
+	width: 80%;
+	padding-bottom: 10px;
+}
+
 #container-chat-messages {
 	margin-top:40px;
 }
