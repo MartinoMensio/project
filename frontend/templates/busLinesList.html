@@ -4,26 +4,26 @@
 	    <div class="page-header">
 	        <h1>Lines</h1>
 	    </div>
-	    <p class="lead">Here you can see the paths of each bus, tram and metro line</p>
+	    <p class="lead">Here you can see the path of each bus, tram and metro line and its stops</p>
 
 	</div>
 
     <div class="col-sm-12">
         <div class="input-group" uib-dropdown is-open="ctrl.showList">
-            <input ng-model="ctrl.searchText" ng-change="ctrl.showResult()" type="text" class="form-control" placeholder="Search a line...">
+            <input ng-model="ctrl.searchText" ng-change="ctrl.showResult()" type="text" class="form-control" placeholder="Type a line number here...">
             <ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="simple-dropdown" role="menu">
                 <li ng-repeat="line in ctrl.lines | filter : {line: ctrl.searchText}">
-                    <a ui-sref="page.busLines.line({lineId: '{{line.line}}' })">{{line.line}} - {{line.desc}}</a>
+                    <a ng-click="ctrl.showLine(line.line)">{{line.line}} - {{line.desc}}</a>
                 </li>
             </ul>
 
             <span class="input-group-btn">
                 <button class="btn btn-secondary" ng-click="ctrl.showAll()" type="button">{{ctrl.buttonText}}</button>
             </span>
-        </div>
+        </div>        
     </div>
 
-    <div>
-        <div ui-view></div>
+    <div class="col-sm-12" style="margin-top: 20px;">
+        <leaflet geojson="ctrl.data.geojson" markers="ctrl.data.markers" center="ctrl.center" tiles="ctrl.tiles" defaults="ctr.defaults" height="480px"></leaflet>
     </div>
 </div>

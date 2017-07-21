@@ -163,7 +163,8 @@
 }
 
 .dropdown-menu{
-    z-index: 1000;
+    z-index: 1500;
+    width: 100%;
 }
 
 ::-webkit-scrollbar-track

@@ -1,36 +1,30 @@
 var app = angular.module('App');
 
-app.controller('BusLinesCtrl', ['$scope', 'leafletData', 'DataProvider', '$stateParams',
-    function ($scope, leafletData,  DataProvider, $stateParams) {
-        var lineId =  $stateParams.lineId;
+app.controller('BusLinesCtrl', ['$scope', 'leafletData', 'DataProvider',
+    function ($scope, leafletData,  DataProvider) {
         this.lines = DataProvider.getLines();
 
+        // map settings
+        this.center = { 
+            lat: 45.064, 
+            lng: 7.681, 
+            zoom: 13
+        };
+        this.data = {};
+        this.bounds = {};
+        this.defaults = {
+            scrollWheelZoom: false
+        };
         this.tiles = {
             name: 'MapBox',
             url: '//api.tiles.mapbox.com/v4/mapbox.streets/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw',
             type: 'xyz'
         };
 
-        // define the map centering
-        this.center = { 
-            lat: 45.064, 
-            lng: 7.681, 
-            zoom: 13
-        }
-
         // variable that controls the visualization of the whole list
         this.showList = false;
         this.searchText = "";
         this.buttonText = "Show all";
-
-        if (lineId) {
-            this.data = DataProvider.getLineByIdAsGeoJson(lineId);
-            var data = this.data;
-
-            leafletData.getMap().then(function(map) {
-                map.fitBounds(data.latlngs);
-            });
-        }
 
         // control wether it is necessary to show or not the whole list
         this.showAll = () => {
@@ -64,6 +58,16 @@ app.controller('BusLinesCtrl', ['$scope', 'leafletData', 'DataProvider', '$state
 
         this.toggleResult = () => {
             this.showList = !this.showList;
+        };
+
+        this.showLine = (lineId) => {
+            this.searchText = lineId;
+
+            this.data = DataProvider.getLineByIdAsGeoJson(lineId);
+
+            leafletData.getMap().then((map) => {
+                map.fitBounds(this.data.latlngs);
+            });
         };
     }
 ]);
