@@ -26,7 +26,7 @@
 					<div class="message_input_wrapper" uib-dropdown is-open="ctrl.alertsResult && ctrl.alertsResult.length">
 						<input class="message_input" ng-model="ctrl.msg.content" placeholder="Type your message here..." ng-change="ctrl.msg_text_changed()"
 						ng-keyup="$event.keyCode == 13 ? ctrl.sendMessage() : null" />
-						<ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="simple-dropdown" role="menu">
+						<ul class="autocomplete-dropdown-menu" uib-dropdown-menu aria-labelledby="simple-dropdown" role="menu">
 							<li ng-repeat="alert in ctrl.alertsResult">
 								<a ng-click="ctrl.alertClicked(alert)">#{{alert.hashtag}} [{{alert.address}}]</a>
 							</li>
@@ -42,7 +42,7 @@
 		</div>
 
 		<div ng-show="ctrl.showMap" id="chat-map" class="col-sm-6">
-			<leaflet geojson="ctrl.data.geojson" markers="ctrl.markers" lf-center="ctrl.center" bounds="ctrl.bounds" tiles="ctrl.tiles" height="480px"></leaflet>
+			<leaflet geojson="ctrl.data.geojson" markers="ctrl.markers" lf-center="ctrl.center" bounds="ctrl.bounds" tiles="ctrl.tiles" height="670px"></leaflet>
 		</div>
 	</div>
 </div>

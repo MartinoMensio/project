@@ -222,7 +222,7 @@ app {
 }
 
 #container-bestpath {
-	margin-top: 80px;
+	margin-top: 40px;
 	padding-bottom: 210px;
 }
 
@@ -235,6 +235,12 @@ app {
 	margin-top: 40px;
 	width: 50%;
 	padding-bottom: 460px;
+}
+
+#container-chat-topics {
+	margin-top: 40px;
+	width: 80%;
+	padding-bottom: 10px;
 }
 
 #container-chat-messages {
@@ -309,16 +315,22 @@ app {
 
 #source-input-position{
 	margin-top: 10px;
+	width: 40%;
 }
 #destination-input-position{
 	margin-top: 10px;
+	width: 40%;
 }
 
 .navbar-login
 {
-    width: 305px;
+    width: 355px;
     padding: 10px;
     padding-bottom: 0px;
+}
+
+#DIV_ID{
+	font-size: 10px !important;
 }
 
 .navbar-login-session

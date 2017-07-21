@@ -64,6 +64,15 @@ app.factory('AlertsService', ['$http', '$q', function ($http, $q) {
             });
             return deferred.promise;
         },
+        getUserRatingToAlert: function (id) {
+            var deferred = $q.defer();
+            $http.get(endpoint + 'alerts/' + id + '/rate').then(function (result) {
+                deferred.resolve(result.data);
+            }, function (result) {
+                deferred.reject(result);
+            });
+            return deferred.promise;
+        },
         findHashtag: function (text) {
             var regexp = /\B\#\w+\b/g
             result = text.match(regexp);

@@ -50,11 +50,11 @@ app.controller('AlertsCtrl', ['$scope', 'AlertsService', function($scope, Alerts
 		// each marker display the 5 star for rating the alert
 		this.markers.forEach((marker,index) => {
 			marker.getMessageScope = ()=> { return $scope; }
-			var initialization = true;
+			marker.watchEnabled = false;
 			// watch added to check if a new rate is inserted by the user
 			$scope.$watch("ctrl.alerts["+index+"].newRating", (newValue, oldValue)=> {
-				if (initialization === true || newValue===0) {
-					initialization = false;
+				if (marker.watchEnabled === false || newValue===0) {
+					marker.watchEnabled = true;
 					return;
 				}
 				this.vote(marker);
@@ -110,9 +110,12 @@ app.controller('AlertsCtrl', ['$scope', 'AlertsService', function($scope, Alerts
 	});
 
 	$scope.$on('leafletDirectiveMarker.click', (event, args) => {
-		// get the alert again, to refresh the last view time
-		AlertsService.getAlertById(args.model.id);
-	})
+		// get the user rating and update last view time
+		AlertsService.getUserRatingToAlert(args.model.id).then((result) => {
+			args.model.watchEnabled = false;
+			args.model.newRating = result.vote;
+		});
+	});
 
 	// send the new vote to the database
 	this.vote = function(marker){

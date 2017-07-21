@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import it.polito.ai.project.business.services.alerts.AlertsService;
 import it.polito.ai.project.business.services.authentication.CurrentUserService;
+import it.polito.ai.project.repo.entities.User;
 import it.polito.ai.project.repo.entities.alerts.Alert;
 import it.polito.ai.project.repo.entities.alerts.AlertType;
+import it.polito.ai.project.repo.entities.alerts.Rating;
 import it.polito.ai.project.rest.controllers.reqbody.NewAlertBodyRequest;
 import it.polito.ai.project.rest.controllers.reqbody.NewRatingBodyRequest;
 
@@ -77,5 +79,18 @@ public class AlertsController {
 	@PutMapping("/api/alerts/{id}/rate")
 	public Alert voteAlert(@PathVariable(value = "id") Long id, @Valid @RequestBody NewRatingBodyRequest vote) {
 		return alertsService.voteAlert(currentUserService.getCurrentUser(), id, vote.getValue());
+	}
+	
+	// endpoint for getting your own vote
+	// also updates last view time
+	@GetMapping("/api/alerts/{id}/rate")
+	public Rating getUserRating(@PathVariable(value = "id") Long id) {
+		alertsService.updateAlertLastViewTime(id);
+		User user = currentUserService.getCurrentUser();
+		if (user == null) {
+			// no current user
+			return null;
+		}
+		return alertsService.getAlertRatingForUser(id, user);
 	}
 }

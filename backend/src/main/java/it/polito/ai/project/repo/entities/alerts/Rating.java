@@ -10,7 +10,7 @@ import it.polito.ai.project.repo.entities.User;
 public class Rating {
 	@EmbeddedId
 	@GeneratedValue
-	private RatingKey id;
+	private RatingKey ratingKey;
 	private int vote;
 	
 	
@@ -18,7 +18,7 @@ public class Rating {
 	}
 	
 	public Rating(User user, Alert alert, int vote) {
-		this.id = new RatingKey(user, alert);
+		this.ratingKey = new RatingKey(user, alert);
 		this.vote = vote;
 	}
 	
@@ -30,19 +30,11 @@ public class Rating {
 		this.vote = vote;
 	}
 	
-	public Alert getAlert() {
-		return id.getAlert();
-	}
-	
 	public void setAlert(Alert alert) {
-		this.id.setAlert(alert);
-	}
-	
-	public User getUser() {
-		return id.getUser();
+		this.ratingKey.setAlert(alert);
 	}
 	
 	public void setUser(User user) {
-		this.id.setUser(user);
+		this.ratingKey.setUser(user);
 	}
 }
