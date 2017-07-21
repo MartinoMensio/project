@@ -162,7 +162,13 @@
 	/*margin-top:122px;*/
 }
 
-.dropdown-menu{
+.dropdown-menu
+{
+    z-index: 1500;
+}
+
+.autocomplete-dropdown-menu
+{
     z-index: 1500;
     width: 100%;
 }

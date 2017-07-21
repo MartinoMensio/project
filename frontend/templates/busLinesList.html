@@ -11,7 +11,7 @@
     <div class="col-sm-12">
         <div class="input-group" uib-dropdown is-open="ctrl.showList">
             <input ng-model="ctrl.searchText" ng-change="ctrl.showResult()" type="text" class="form-control" placeholder="Type a line number here...">
-            <ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="simple-dropdown" role="menu">
+            <ul class="autocomplete-dropdown-menu" uib-dropdown-menu aria-labelledby="simple-dropdown" role="menu">
                 <li ng-repeat="line in ctrl.lines | filter : {line: ctrl.searchText}">
                     <a ng-click="ctrl.showLine(line.line)">{{line.line}} - {{line.desc}}</a>
                 </li>
