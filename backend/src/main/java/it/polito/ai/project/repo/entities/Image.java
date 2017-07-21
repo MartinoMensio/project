@@ -72,7 +72,7 @@ public class Image {
 				// we are in the websocket environment, no way to use HATEOAS
 				// // https://stackoverflow.com/questions/27802786/spring-boot-java-lang-illegalstateexception-when-calling-controllerlinkbuilder
 				String port = environment.getProperty("server.port");
-				String address = environment.getProperty("server.address");
+				String address = environment.getProperty("server.myaddress");
 				return "http://" + address + ":" + port + "/images/" + id + "/raw";
 			}
 		} else {
