@@ -2,7 +2,8 @@ version: '3'
 services:
 # the frontend makes the site publicly available
   frontend:
-    image: node:boron
+    build:
+      context: frontend
     ports:
       - "8080:8080"
     depends_on:
@@ -10,9 +11,9 @@ services:
       - geoservices
     # TODO environment variables for backend and geoservices urls
     volumes:
-      - ./frontend:/app
-    # TODO use npm with package.json and volume for node_modules folder
-    command: bash -c "npm install -g live-server && cd /app && live-server"
+      - ./frontend/app:/usr/src/app
+      - ./frontend/server.js:/usr/src/server.js
+    command: npm start
 
 # web services
 # TODO uncomment this section when backend is ready to run inside docker instead of running from STS
@@ -26,6 +27,8 @@ services:
       - ./backend/target/backend-0.0.1-SNAPSHOT.jar:/app/app.jar
     environment:
       - POSTGRES_HOST=backend_db
+      # self-knowledge (taken from outer environment and passed to container)
+      - BACKEND_HOST
     command: java -jar /app/app.jar
   geoservices:
     image: openjdk:latest
