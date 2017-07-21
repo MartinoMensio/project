@@ -24,41 +24,28 @@ app.controller('BusLinesCtrl', ['$scope', 'leafletData', 'DataProvider',
         // variable that controls the visualization of the whole list
         this.showList = false;
         this.searchText = "";
-        this.buttonText = "Show all";
-
-        // control wether it is necessary to show or not the whole list
-        this.showAll = () => {
-            if (this.searchText.localeCompare("") != 0) {
-                this.searchText = "";
-                this.showList = true;
-                this.buttonText = "Hide";
-            }
-            else {
-                if (this.showList == true) {
-                    this.showList = false;
-                    this.buttonText = "Show all";
-                }
-                else {
-                    this.showList = true;
-                    this.buttonText = "Hide";
-                }
-            }
-        };
 
         // control wether it is necessary to show or not the list when search text is written
         this.showResult = () => {
             if (this.searchText.localeCompare("") != 0) {
                 this.showList = true;
-                this.buttonText = "Show all";
             }
             else {
                 this.showList = false;
             }
         };
 
-        this.toggleResult = () => {
-            this.showList = !this.showList;
-        };
+        // reset the map to the initial state and clear the input text
+        this.clearResult = () => {
+            this.searchText = "";
+            this.data = {};
+
+            this.center = { 
+                lat: 45.064, 
+                lng: 7.681, 
+                zoom: 13
+            };
+        }
 
         this.showLine = (lineId) => {
             this.searchText = lineId;
