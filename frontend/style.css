@@ -222,7 +222,7 @@ app {
 }
 
 #container-bestpath {
-	margin-top: 80px;
+	margin-top: 40px;
 	padding-bottom: 210px;
 }
 
@@ -309,9 +309,11 @@ app {
 
 #source-input-position{
 	margin-top: 10px;
+	width: 40%;
 }
 #destination-input-position{
 	margin-top: 10px;
+	width: 40%;
 }
 
 .navbar-login
