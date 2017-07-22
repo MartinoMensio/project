@@ -100,7 +100,15 @@ app.config(['$locationProvider', '$urlRouterProvider', '$stateProvider', '$httpP
             url: '/chat/{topicId}',
             templateUrl: 'templates/chat.html',
             controller: 'ChatCtrl',
-            controllerAs: 'ctrl'
+            controllerAs: 'ctrl',
+            resolve: {
+                topic: ['$stateParams', 'ChatService', function($stateParams, ChatService) {
+                    return ChatService.getTopicById($stateParams.topicId);
+                }],
+                messages: ['$stateParams', 'ChatService', function($stateParams, ChatService) {
+                    return ChatService.getLastMessages($stateParams.topicId);
+                }]
+            }
         })
         // Alert page
         .state('page.alerts', {

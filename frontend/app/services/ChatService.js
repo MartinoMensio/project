@@ -16,10 +16,9 @@ app.factory('ChatService', ['$http', '$q', '$localStorage', '$stomp', '$log', fu
     var chatEndpoint = "http://localhost:8888/chat";
     var roomEndpoint = "/app/";
 
-    
     // Configuring the WebSocket for console logging
     $stomp.setDebug(function (args) {
-      $log.debug(args)
+        $log.debug(args)
     });
 
 
@@ -31,7 +30,7 @@ app.factory('ChatService', ['$http', '$q', '$localStorage', '$stomp', '$log', fu
          * Return
          *  - a promise that contains the list of topics
          * */
-        getTopics: function() {
+        getTopics: function () {
             var deferred = $q.defer();
 
             $http.get(webEndpoint + 'api/open/topics').then(function (result) {
@@ -51,7 +50,7 @@ app.factory('ChatService', ['$http', '$q', '$localStorage', '$stomp', '$log', fu
          * Return
          *  - a promise that contains the topic
          * */
-        getTopicById: function(id) {
+        getTopicById: function (id) {
             var deferred = $q.defer();
 
             $http.get(webEndpoint + 'api/open/topics/' + id).then(function (result) {
@@ -71,7 +70,7 @@ app.factory('ChatService', ['$http', '$q', '$localStorage', '$stomp', '$log', fu
          * Return
          *  - a promise that contains the list of messages
         */
-        getLastMessages: function(topicId) {
+        getLastMessages: function (topicId) {
             var deferred = $q.defer();
 
             $http.get(webEndpoint + 'api/messages/' + topicId).then(function (result) {
@@ -91,18 +90,22 @@ app.factory('ChatService', ['$http', '$q', '$localStorage', '$stomp', '$log', fu
          *  - the topic id
          *  - the callback: function callback(msg) { ... }
          * Return
-         *  - void
+         *  - a promise
         */
-        connect: function(topicId, callback) {
-            var jwtParam = "?jwt=Bearer " + $localStorage.token;
+        connect: function (topicId, callback) {
+            if ($localStorage.token) {
+                var jwtParam = "?jwt=Bearer " + $localStorage.token;
 
-            $stomp.connect(chatEndpoint + jwtParam, connectHeaders).then(function (frame) {
-                var subscription = $stomp.subscribe('/topic/' + topicId, function (message, headers, res) {
+                return $stomp.connect(chatEndpoint + jwtParam, connectHeaders).then(function (frame) {
+                    var subscription = $stomp.subscribe('/topic/' + topicId, function (message, headers, res) {
                         callback(message);
                     },
-                    { }
-                );
-            });
+                        {}
+                    );
+                });
+            } else {
+                return $q.reject('no local storage token');
+            }
         },
 
         /* Sends a message to the server adding it to the list of messages
@@ -118,7 +121,7 @@ app.factory('ChatService', ['$http', '$q', '$localStorage', '$stomp', '$log', fu
          * Return
          *  - void
         */
-        sendMessage: function(topicId, message) {
+        sendMessage: function (topicId, message) {
             // send the message to the server via the WebSocket
             return $stomp.send(roomEndpoint + topicId, message,
                 {}
