@@ -52,10 +52,27 @@ app.config(['$locationProvider', '$urlRouterProvider', '$stateProvider', '$httpP
         })
         // Bus lines list page
         .state('page.busLines', {
-            url: '/busLines',
+            url: '/busLines/:id',
+            params: {
+                id: null
+            },
             templateUrl: 'templates/busLinesList.html',
             controller: 'BusLinesCtrl',
-            controllerAs: 'ctrl'
+            controllerAs: 'ctrl',
+            resolve: {
+                busStops: ['$stateParams', 'BusLinesService', function($stateParams, BusLinesService) {
+                    if (!$stateParams.id) {
+                        return null;
+                    }
+                    return BusLinesService.getBusStopsOfLine($stateParams.id);
+                }],
+                geojson: ['BusLinesService', 'busStops', function(BusLinesService, busStops) {
+                    if (!busStops) {
+                        return null;
+                    }
+                    return BusLinesService.getGeoJsonOfBusStops(busStops);
+                }]
+            }
         })
         // Best path page
         .state('page.bestPath', {

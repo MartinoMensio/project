@@ -4,16 +4,73 @@ app.factory('BusLinesService', ['$http', '$q', 'DataProvider', function ($http, 
 
     var endpoint = 'http://localhost:9999/';
 
+    // this function returns the points [[x,y]] from a line
+    var getLinePoints = function (busStops) {
+        var result = [];
+        busStops.forEach(function (stop) {
+            // add the stop coordinates to the result array
+            result.push([stop.longitude, stop.latitude]);
+        }, this);
+        return result;
+    }
+
+    // this function returns the markers of the busstops belonging to a line
+    var getStopsMarkers = function (busStops) {
+        markers = {};
+
+        busStops.forEach(function (stop) {
+
+            markers[stop.id] = {
+                lat: stop.latitude,
+                lng: stop.longitude,
+                focus: false,
+                message: '<h3>' + stop.id + ' - ' + stop.name + '</h3>'
+            }
+        }, this);
+
+        return markers;
+    }
+
     return {
         /*
-         * Returns the list of bus lines
+         * Returns the list of bus lines that match the query
          * 
         */
-        getLines: function () {
+        getLinesByIdContaining: function (query) {
             var deferred = $q.defer();
 
-            $http.get(endpoint + 'busLines').then(function (response) {    
-                deferred.resolve(response.data);
+            $http.get(endpoint + 'busLines/search/getByLine', { params: { line: query } }).then(function (response) {
+                deferred.resolve(response.data._embedded.busLines);
+            }, function (error) {
+                deferred.reject(error);
+            });
+
+            return deferred.promise;
+        },
+
+        /**
+         * Return the BusStops belonging to a line identified by its id
+         */
+        getBusStopsOfLine: function (lineId) {
+            var deferred = $q.defer();
+
+            $http.get(endpoint + 'busLines/' + lineId + '/stops').then(function (response) {
+                deferred.resolve(response.data._embedded.busStops);
+            }, function (error) {
+                deferred.reject(error);
+            });
+
+            return deferred.promise;
+        },
+
+        /**
+         * Return the BusLines passing in the specified busStop (busStop is an object with HATEOAS links)
+         */
+        getBusLinesPassingAtBusStop: function (busStop) {
+            var deferred = $q.defer();
+
+            $http.get(busStop._links.lines.href).then(function (response) {
+                deferred.resolve(response.data._embedded.busLines);
             }, function (error) {
                 deferred.reject(error);
             });
@@ -25,20 +82,33 @@ app.factory('BusLinesService', ['$http', '$q', 'DataProvider', function ($http, 
          * Returns the bus line associated to the lineId
          * 
         */
-        getLineByIdAsGeoJson: function (lineId) {
-            var deferred = $q.defer();
+        getGeoJsonOfBusStops: function (busStops) {
 
-            $http.get(endpoint + 'busLines/' + lineId).then(function (response) {
+            var linePoints = getLinePoints(busStops);
 
-                //TODO convert dato to geoJSON format
+            var latlngs = [];
+            linePoints.forEach(function (coordinate) {
+                // transform [x,y] to {lat, lng}
+                latlngs.push(L.GeoJSON.coordsToLatLng(coordinate));
+            }, this);
 
-
-                deferred.resolve(response.data);
-            }, function (error) {
-                deferred.reject(error);
-            });
-
-            return deferred.promise;
+            return {
+                // the path of the busline
+                geojson: {
+                    data: {
+                        type: "LineString", coordinates: linePoints
+                    },
+                    style: {
+                        "color": "#ff7800",
+                        "weight": 5,
+                        "opacity": 0.65
+                    }
+                },
+                // the markers corresponding to the busstops of the line
+                markers: getStopsMarkers(busStops),
+                // an array of {lat,lng} for centering the map on the provided data
+                latlngs: latlngs
+            }
         }
     }
 }]);

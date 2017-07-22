@@ -1,13 +1,15 @@
 var app = angular.module('App');
 
-app.controller('BusLinesCtrl', ['$scope', 'leafletData', 'DataProvider',
-    function ($scope, leafletData,  DataProvider) {
-        this.lines = DataProvider.getLines();
+app.controller('BusLinesCtrl', ['$scope', '$stateParams', 'leafletData', 'BusLinesService', 'geojson',
+    function ($scope, $stateParams, leafletData, BusLinesService, geojson) {
+        this.lines = [];
+        this.lineId = $stateParams.id;
+
 
         // map settings
-        this.center = { 
-            lat: 45.064, 
-            lng: 7.681, 
+        this.center = {
+            lat: 45.064,
+            lng: 7.681,
             zoom: 13
         };
         this.data = {};
@@ -21,40 +23,28 @@ app.controller('BusLinesCtrl', ['$scope', 'leafletData', 'DataProvider',
             type: 'xyz'
         };
 
-        // variable that controls the visualization of the whole list
-        this.showList = false;
-        this.searchText = "";
-
-        // control wether it is necessary to show or not the list when search text is written
-        this.showResult = () => {
-            if (this.searchText.localeCompare("") != 0) {
-                this.showList = true;
-            }
-            else {
-                this.showList = false;
-            }
-        };
-
-        // reset the map to the initial state and clear the input text
-        this.clearResult = () => {
-            this.searchText = "";
-            this.data = {};
-
-            this.center = { 
-                lat: 45.064, 
-                lng: 7.681, 
-                zoom: 13
-            };
-        }
-
-        this.showLine = (lineId) => {
-            this.searchText = lineId;
-
-            this.data = DataProvider.getLineByIdAsGeoJson(lineId);
+        if (geojson) {
+            this.data = geojson;
 
             leafletData.getMap().then((map) => {
                 map.fitBounds(this.data.latlngs);
             });
-        };
+        }
+
+        this.searchText = "";
+
+        this.searchLines = () => {
+            if (this.searchText === "") {
+                return;
+            }
+            BusLinesService.getLinesByIdContaining(this.searchText).then((result) => {
+                this.lines = result;
+                this.showList = true;
+            })
+        }
+
+        $scope.$on('leafletDirectiveMarker.click', (event, args) => {
+            // TODO expand details of marker
+        });
     }
 ]);
