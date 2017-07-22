@@ -25,7 +25,6 @@ app.controller('AddPictureModalCtrl', ['$rootScope', '$scope', '$uibModalInstanc
         ImagesService.previewFile(this.inputField[0].files[0]).then((previewResult) => {
             this.image = previewResult;
         }, function (error) {
-            // TODO do something
             this.image = null;
             $rootScope.$emit('error', {message: error});
         })

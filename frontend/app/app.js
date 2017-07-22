@@ -14,7 +14,7 @@ app.config(['$locationProvider', '$urlRouterProvider', '$stateProvider', '$httpP
     // If the URL does not correspond to anything then redirect to '/'
     $urlRouterProvider.otherwise('/');
 
-    // TODO this interceptor is only for interaction with a specific server
+    // this interceptor is only for interaction with backend that requires authentication
     $httpProvider.interceptors.push('AuthenticationInterceptor');
 
     // States defintion
@@ -211,15 +211,11 @@ app.run(['$rootScope', '$state', function ($rootScope, $state) {
             case "INCOMPLETE":
                 console.log('incomplete profile');
                 if (toState.name != 'page.editProfile') {
-                    // TODO show warning
+                    // show warning
+                    $rootScope.$emit('error', {message: "Please complete your profile before using this platform"});
                     event.preventDefault();
                     $state.go('page.editProfile');
                 }
-                break;
-            // user needs to confirm email
-            case "NOT_CONFIRMED":
-                // TODO
-                console.log('user not confirmed mail');
                 break;
         }
     });

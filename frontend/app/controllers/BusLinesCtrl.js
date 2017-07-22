@@ -44,7 +44,7 @@ app.controller('BusLinesCtrl', ['$scope', '$state', '$stateParams', 'leafletData
         }
 
         $scope.$on('leafletDirectiveMarker.click', (event, args) => {
-            // TODO expand details of marker
+            // expand details of marker
             BusLinesService.getBusLinesPassingAtBusStop(args.model.busStop).then((result) => {
                 args.model.message = '<h3>' + args.model.busStop.id + ' - ' + args.model.busStop.name + '</h3>';
                 args.model.message += '<ul>';

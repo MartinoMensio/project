@@ -6,7 +6,6 @@ app.controller('ChangePasswordCtrl', ['UserService', '$state', function (UserSer
         console.log('submit');
         UserService.changePassword(this.form).then(function (result) {
             console.log('changed password');
-            // TODO display message
             $state.go('page.profile', null);
         })
     }
