@@ -80,6 +80,21 @@ app.factory('BusLinesService', ['$http', '$q', 'DataProvider', function ($http, 
             return deferred.promise;
         },
 
+        // returns the nearest bus stop to the provided point
+        findNearestStop: function (point) {
+            var deferred = $q.defer();
+            $http.get(endpoint + 'findNearestBusStop', { params: { lat: point.lat, lng: point.lng } }).then(function (result) {
+                if (!result.data) {
+                    deferred.reject('no bus stops near the selected position');
+                } else {
+                    deferred.resolve(result.data);
+                }
+            }, function (result) {
+                deferred.reject(result);
+            });
+            return deferred.promise;
+        },
+
         /*
          * Returns the bus line associated to the lineId
          * 

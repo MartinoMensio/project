@@ -24,6 +24,7 @@ public interface BusStopsGeoRepository extends PagingAndSortingRepository<BusSto
 	 */
 	@Query("select t " +
 	           "from BusStopGeographic t " +
-	           "where ST_DWithin(t.location, ST_GeographyFromText(:point), :distance) = true")
+	           "where ST_DWithin(t.location, ST_GeographyFromText(:point), :distance) = true " + 
+	           "order by ST_Distance(t.location, ST_GeographyFromText(:point))")
 	List<BusStopGeographic> findByDistance(@Param("point") String point, @Param("distance") Double distance);
 }

@@ -1,8 +1,7 @@
 var app = angular.module('App');
 
-app.factory('MinPathProvider', ['DataProvider', 'MongoRestClient', '$q', '$http', '$timeout', '$rootScope', function (DataProvider, MongoRestClient, $q, $http, $timeout, $rootScope) {
+app.factory('MinPathProvider', ['DataProvider', 'BusLinesService', 'MongoRestClient', '$q', '$http', '$timeout', '$rootScope', function (DataProvider, BusLinesService, MongoRestClient, $q, $http, $timeout, $rootScope) {
 
-    var endpoint = 'http://localhost:9999/'
     var stops = DataProvider.getStops();
     var last_color_modified = 0;
 
@@ -165,31 +164,6 @@ app.factory('MinPathProvider', ['DataProvider', 'MongoRestClient', '$q', '$http'
         return result;
     }
 
-    // returns the nearest bus stop to the provided point
-    var findNearestStop = function (point) {
-        var minDistSq = Infinity;
-        var bestStop = null;
-        stops.forEach(function (stop) {
-            var distSq = Math.pow(point.lat - stop.latLng[0], 2) + Math.pow(point.lng - stop.latLng[1], 2);
-            if (distSq < minDistSq) {
-                bestStop = stop;
-                minDistSq = distSq;
-            }
-        }, this);
-        return bestStop;
-    }
-
-    // returns an array with bus stops nearest to the provided point
-    var findNearestStops = function (point) {
-        var deferred = $q.defer();
-        $http.get(endpoint + 'findBusStops', { params: { lat: point.lat, lng: point.lng } }).then(function (result) {
-            deferred.resolve(result.data);
-        }, function (result) {
-            deferred.reject(result);
-        });
-        return deferred.promise;
-    }
-
     function sendError(message) {
         $rootScope.$emit('error', { message: message });
     }
@@ -198,23 +172,27 @@ app.factory('MinPathProvider', ['DataProvider', 'MongoRestClient', '$q', '$http'
         // src and dst are objects {lat,lng}
         getMinPathBetween: function (src, dst) {
             var path = null;
-            var nearestSrc = findNearestStop(src).id;
-            var nearestDst = findNearestStop(dst).id;
-            // check if user needs to take some buses
-            if (nearestSrc === nearestDst) {
-                // don't go to the nearest stop just to go to the destination, better to go directly to destination since no bus is taken
-                var deferred = $q.defer();
-                deferred.resolve(getResultFromMinPath(null, src, dst));
-                return deferred.promise;
-            }
-            return MongoRestClient.getMinPathBetweenPositions(src.lat, src.lng, dst.lat, dst.lng).then((minPath) => {
-                // transform MinPath to GeoJson
-                return getResultFromMinPath(minPath, src, dst);
+            return $q.all([BusLinesService.findNearestStop(src), BusLinesService.findNearestStop(dst)]).then((results) => {
+                var nearestSrc = results[0];
+                var nearestDst = results[1];
+                // check if user needs to take some buses
+                if (nearestSrc === nearestDst) {
+                    // don't go to the nearest stop just to go to the destination, better to go directly to destination since no bus is taken
+                    var deferred = $q.defer();
+                    deferred.resolve(getResultFromMinPath(null, src, dst));
+                    return deferred.promise;
+                }
+                return MongoRestClient.getMinPathBetweenPositions(src.lat, src.lng, dst.lat, dst.lng).then((minPath) => {
+                    // transform MinPath to GeoJson
+                    return getResultFromMinPath(minPath, src, dst);
+                });
             }).catch((error) => {
                 // notify about the error
                 sendError(error);
                 return $q.reject(error);
             });
+
+
 
         }
     }
