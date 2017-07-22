@@ -219,7 +219,7 @@ app.controller('ChatCtrl', ['$scope', '$uibModal', '$stateParams', '$localStorag
             const hashtag = AlertsService.findHashtag(this.msg.content);
             if (hashtag) {
                 AlertsService.getAlertsWithHashtag(hashtag).then((result) => {
-                    // TODO display in dropdown
+                    // display in dropdown
                     this.alertsResult = result;
                 })
             }
