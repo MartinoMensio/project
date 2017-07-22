@@ -24,7 +24,9 @@ app.factory('BusLinesService', ['$http', '$q', 'DataProvider', function ($http, 
                 lat: stop.latitude,
                 lng: stop.longitude,
                 focus: false,
-                message: '<h3>' + stop.id + ' - ' + stop.name + '</h3>'
+                message: '<h3>' + stop.id + ' - ' + stop.name + '</h3>',
+                // link other informations (used later when marker clicked)
+                busStop: stop
             }
         }, this);
 

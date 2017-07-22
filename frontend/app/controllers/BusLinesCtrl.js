@@ -1,7 +1,7 @@
 var app = angular.module('App');
 
-app.controller('BusLinesCtrl', ['$scope', '$stateParams', 'leafletData', 'BusLinesService', 'geojson',
-    function ($scope, $stateParams, leafletData, BusLinesService, geojson) {
+app.controller('BusLinesCtrl', ['$scope', '$state', '$stateParams', 'leafletData', 'BusLinesService', 'geojson',
+    function ($scope, $state, $stateParams, leafletData, BusLinesService, geojson) {
         this.lines = [];
         this.lineId = $stateParams.id;
 
@@ -45,6 +45,15 @@ app.controller('BusLinesCtrl', ['$scope', '$stateParams', 'leafletData', 'BusLin
 
         $scope.$on('leafletDirectiveMarker.click', (event, args) => {
             // TODO expand details of marker
+            BusLinesService.getBusLinesPassingAtBusStop(args.model.busStop).then((result) => {
+                args.model.message = '<h3>' + args.model.busStop.id + ' - ' + args.model.busStop.name + '</h3>';
+                args.model.message += '<ul>';
+                result.forEach(function(busLine) {
+                    // cannot use ui-sref because problems with isolated scope of popup, but build manually the link
+                    args.model.message += '<li><a href="' + $state.href('page.busLines', {id: busLine.line}) + '">' + busLine.line + '</a></li>';
+                });
+                args.model.message += '</ul>';
+            })
         });
     }
 ]);
