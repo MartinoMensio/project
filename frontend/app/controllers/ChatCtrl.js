@@ -1,6 +1,6 @@
 var app = angular.module('App');
 
-app.controller('ChatCtrl', ['$scope', '$uibModal', '$stateParams', '$localStorage', 'ChatService', 'AlertsService', 'topic', 'messages', function ($scope, $uibModal, $stateParams, $localStorage, ChatService, AlertsService, topic, messages) {
+app.controller('ChatCtrl', ['$scope', '$uibModal', '$stateParams', '$localStorage', 'leafletData', 'ChatService', 'AlertsService', 'topic', 'messages', function ($scope, $uibModal, $stateParams, $localStorage, leafletData, ChatService, AlertsService, topic, messages) {
     this.template = "templates/popovers/popoverTemplate.html";
     var topicId = $stateParams.topicId; // get the topic id from the app state
     this.topic = topic;
@@ -60,6 +60,50 @@ app.controller('ChatCtrl', ['$scope', '$uibModal', '$stateParams', '$localStorag
         alertId: null
     }
 
+
+
+    // get the list of all teh alerts
+    AlertsService.getAlerts().then((result) => {
+        this.alerts = result; // show the alert list
+
+        this.hashtag = result.hashtag;
+        this.markers = result; // show the markers on the map
+
+        // each marker display the 5 star for rating the alert
+        this.markers.forEach((marker,index) => {
+            marker.getMessageScope = ()=> { return $scope; }
+            marker.watchEnabled = false;
+            // watch added to check if a new rate is inserted by the user
+            $scope.$watch("ctrl.alerts["+index+"].newRating", (newValue, oldValue)=> {
+                if (marker.watchEnabled === false || newValue===0) {
+                    marker.watchEnabled = true;
+                    return;
+                }
+                this.vote(marker);
+            });
+            // 5 starts used by the user for rating the signalization and 5 stars readonly for the rating avg
+            if(this.alerts[index].alertType.name === "Traffic"){
+                marker.icon = local_icons.traffic_icon;
+                marker.message = '<div style="min-width:160px;"></div><h2>#'+marker.hashtag+'</h2> <h5>Vote Here</h5><input-stars ng-model="ctrl.markers['+index+'].newRating" max="5"></input-stars> </br><h5>Average</h5> <input-stars max="5" ng-model="ctrl.markers['+index+'].rating" readonly="true" allow-half ></input-stars>';
+            }
+            else if(this.alerts[index].alertType.name === "Broken bus"){
+                marker.icon = local_icons.broken_bus_icon;
+                marker.message = '<div style="min-width:160px;"></div><h2>#'+marker.hashtag+'</h2> <h5>Vote Here</h5><input-stars ng-model="ctrl.markers['+index+'].newRating" max="5"></input-stars> </br><h5>Average</h5> <input-stars max="5" ng-model="ctrl.markers['+index+'].rating" readonly="true" allow-half ></input-stars>';
+            }
+            else if(this.alerts[index].alertType.name === "Accident"){
+                marker.icon = local_icons.accident_icon;
+                marker.message = '<div style="min-width:160px;"></div><h2>#'+marker.hashtag+'</h2> <h5>Vote Here</h5><input-stars ng-model="ctrl.markers['+index+'].newRating" max="5"></input-stars> </br><h5>Average</h5> <input-stars max="5" ng-model="ctrl.markers['+index+'].rating" readonly="true" allow-half ></input-stars>';
+            }
+            else if(this.alerts[index].alertType.name === "Road works"){
+                marker.icon = local_icons.road_works_icon;
+                marker.message = '<div style="min-width:160px;"></div><h2>#'+marker.hashtag+'</h2> <h5>Vote Here</h5><input-stars ng-model="ctrl.markers['+index+'].newRating" max="5"></input-stars> </br><h5>Average</h5> <input-stars max="5" ng-model="ctrl.markers['+index+'].rating" readonly="true" allow-half ></input-stars>';
+            }else{
+                // generic alert
+                marker.icon= local_icons.generic_alert_icon;
+                marker.message = '<div style="min-width:160px;"></div><h2>#'+marker.hashtag+'</h2> <h5>Vote Here</h5><input-stars ng-model="ctrl.markers['+index+'].newRating" max="5"></input-stars> </br><h5>Average</h5> <input-stars max="5" ng-model="ctrl.markers['+index+'].rating" readonly="true" allow-half ></input-stars>';
+            }
+        }, this);
+    });
 
     // Define the callback that is called when a new message is received
     var addMessage = (message) => {
@@ -297,9 +341,17 @@ app.controller('ChatCtrl', ['$scope', '$uibModal', '$stateParams', '$localStorag
     };
 
     this.selectAlert = (alertId) => {
-        console.log("clicked alert " + alertId);
         this.showMap = true;
-        // TODO open alert detail
-    }
+
+        // show the marker details
+        this.markers.forEach( (marker) => {
+            if (marker.id === alertId) {
+                marker.focus = true;
+            }
+            else {
+                marker.focus = false; 
+            }
+        });    
+    };
 
 }]);
