@@ -9,17 +9,17 @@
 	</div>
 
     <div class="col-sm-12">
-        <div class="input-group" uib-dropdown is-open="ctrl.showList">
-            <input ng-model="ctrl.searchText" ng-change="ctrl.showResult()" type="text" class="form-control" placeholder="Type a line number here...">
+        <div class="input-group" uib-dropdown is-open="ctrl.lines && ctrl.lines.length > 0">
+            <input ng-model="ctrl.searchText" ng-change="ctrl.searchLines()" type="text" class="form-control" placeholder="Type a line number here...">
             <ul class="autocomplete-dropdown-menu" uib-dropdown-menu aria-labelledby="simple-dropdown" role="menu">
-                <li ng-repeat="line in ctrl.lines | filter : {line: ctrl.searchText}">
-                    <a ng-click="ctrl.showLine(line.line)">{{line.line}} - {{line.desc}}</a>
+                <li ng-repeat="line in ctrl.lines">
+                    <a ui-sref="page.busLines({id: line.line})">{{line.line}} - {{line.description}}</a>
                 </li>
             </ul>
 
             
             <span class="input-group-btn">
-                <button class="btn btn-secondary" ng-click="ctrl.clearResult()" type="button">Clear</button>
+                <button class="btn btn-secondary" ui-sref="page.busLines({id: line.line})" type="button">Clear</button>
             </span>
         </div>        
     </div>

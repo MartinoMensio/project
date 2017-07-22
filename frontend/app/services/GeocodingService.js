@@ -1,6 +1,6 @@
 var app = angular.module('App');
 
-app.factory('GeocodingService', ['$http', '$q', 'DataProvider', function ($http, $q, DataProvider) {
+app.factory('GeocodingService', ['$http', '$q', function ($http, $q) {
 
     var endpoint = 'http://localhost:9999/';
 

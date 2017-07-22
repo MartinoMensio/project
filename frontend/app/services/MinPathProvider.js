@@ -1,9 +1,7 @@
 var app = angular.module('App');
 
-app.factory('MinPathProvider', ['DataProvider', 'MongoRestClient', '$q', '$http', '$timeout', '$rootScope', function (DataProvider, MongoRestClient, $q, $http, $timeout, $rootScope) {
+app.factory('MinPathProvider', ['BusLinesService', 'MongoRestClient', '$q', '$http', '$timeout', '$rootScope', function (BusLinesService, MongoRestClient, $q, $http, $timeout, $rootScope) {
 
-    var endpoint = 'http://localhost:9999/'
-    var stops = DataProvider.getStops();
     var last_color_modified = 0;
 
     // returns a RGB color with luminance not greater than 50% and saturation 100%
@@ -30,7 +28,7 @@ app.factory('MinPathProvider', ['DataProvider', 'MongoRestClient', '$q', '$http'
     }
 
     // returns the geojson for an edge
-    var getEdgeFeature = function (edge) {
+    var getEdgeFeature = function (edge, stops) {
         var msg = edge.mode ? 'walk from stop ' + edge.idSource + ' to stop ' + edge.idDestination : 'take line ' + edge.lineId + ' from stop ' + edge.idSource + ' to stop ' + edge.idDestination;
         var result = {
             data: {
@@ -53,34 +51,34 @@ app.factory('MinPathProvider', ['DataProvider', 'MongoRestClient', '$q', '$http'
         }
         if (edge.mode) {
             // this is a walk edge
-            var srcStop = stops.find(s => s.id === edge.idSource);
+            var srcStop = stops[edge.idSource];
             if (srcStop) {
                 // add the stop coordinates to the array
-                result.data.coordinates.push([srcStop.latLng[1], srcStop.latLng[0]]);
+                result.data.coordinates.push([srcStop.longitude, srcStop.latitude]);
             }
-            var dstStop = stops.find(s => s.id === edge.idDestination);
+            var dstStop = stops[edge.idDestination];
             if (dstStop) {
                 // add the stop coordinates to the array
-                result.data.coordinates.push([dstStop.latLng[1], dstStop.latLng[0]]);
+                result.data.coordinates.push([dstStop.longitude, dstStop.latitude]);
             }
         } else {
             // this is a bus edge
             edge.stopsId.forEach(function (stopId) {
-                var stop = stops.find(s => s.id === stopId);
+                var stop = stops[stopId];
                 if (stop) {
                     // add the stop coordinates to the array
-                    result.data.coordinates.push([stop.latLng[1], stop.latLng[0]]);
+                    result.data.coordinates.push([stop.longitude, stop.latitude]);
                 }
-            }, this);
+            });
         }
         return result;
     }
 
-    var getEdgeSourceMarker = function (edge) {
-        var srcStop = stops.find(s => s.id === edge.idSource);
+    var getEdgeSourceMarker = function (edge, stops) {
+        var srcStop = stops[edge.idSource];
         var result = {
-            lat: srcStop.latLng[0],
-            lng: srcStop.latLng[1],
+            lat: srcStop.latitude,
+            lng: srcStop.longitude,
             focus: false,
             message: '<h3>' + srcStop.id + ' - ' + srcStop.name + '</h3>'
         }
@@ -92,11 +90,11 @@ app.factory('MinPathProvider', ['DataProvider', 'MongoRestClient', '$q', '$http'
         return result;
     };
 
-    var createEdge = function (src, dst, msg) {
+    var createStraightEdge = function (src, dst, msg) {
         return {
             data: {
                 type: "LineString",
-                coordinates: [[src[1], src[0]], [dst[1], dst[0]]],
+                coordinates: [[src.longitude, src.latitude], [dst.longitude, dst.latitude]],
                 properties: {
                     name: "line",
                     mode: true,
@@ -121,6 +119,32 @@ app.factory('MinPathProvider', ['DataProvider', 'MongoRestClient', '$q', '$http'
         };
     }
 
+    var getAllRequiredBusStops = function (minPath) {
+        var promises = [];
+        var results = {};
+        minPath.edges.forEach((edge) => {
+            if (edge.mode) {
+                // by walk: get the source and destination bus stops
+                promises.push(BusLinesService.getBusStopById(edge.idSource).then((res) => {
+                    results[edge.idSource] = res;
+                }));
+                promises.push(BusLinesService.getBusStopById(edge.idDestination).then((res) => {
+                    results[edge.idDestination] = res;
+                }));
+            } else {
+                // by bus: the stops can be read all together
+                promises.push(BusLinesService.getBusStopsOfLine(edge.lineId).then((res) => {
+                    res.forEach((busStop) => {
+                        results[busStop.id] = busStop;
+                    });
+                }));
+            }
+        });
+        return $q.all(promises).then((promiseResults) => {
+            return results;
+        })
+    }
+
     // do the conversion from MinPath to geoJson
     var getResultFromMinPath = function (minPath, src, dst) {
         var result = {
@@ -129,65 +153,61 @@ app.factory('MinPathProvider', ['DataProvider', 'MongoRestClient', '$q', '$http'
             markers: {},
             latlngs: []
         }
+
+        // what to wait (contain geojson and markers)
+        var promise;
+
         if (minPath) {
             // min path exists
-            var firstStop = stops.find(s => s.id === minPath.idSource);
-            var lastStop = stops.find(s => s.id === minPath.idDestination);
+            promise = getAllRequiredBusStops(minPath).then((busStops) => {
+                // build the edges with the required informations
+                // busStops is a map id -> busStop
+                var edges = [];
+                var markers = {};
 
-            // add the first edge
-            result.geojson.push(createEdge([src.lat, src.lng], firstStop.latLng, 'walk from the selected location to the stop ' + firstStop.id));
-            minPath.edges.forEach(function (edge) {
-                var edgeFeature = getEdgeFeature(edge);
-                // nested geojson for the edge
-                result.geojson.push(edgeFeature);
-                // get a marker for the source of the edge
-                var edgeSourceMarker = getEdgeSourceMarker(edge);
-                result.markers[edge.idSource] = edgeSourceMarker;
-            }, this);
-            // add the last edge
-            result.geojson.push(createEdge(lastStop.latLng, [dst.lat, dst.lng], 'walk from stop ' + lastStop.id + ' to your destination'));
-            // add three more markers (one for source, one for destination and one for penultimate)
-            // those three markers are not built in the for loop because they are not source of an edge represented in the MinPath
-            result.markers['penultimate'] = createMarker(lastStop.latLng, '<h3>' + lastStop.id + ' - ' + lastStop.name + '</h3>by walk');
+                var firstStop = busStops[minPath.idSource];
+                var lastStop = busStops[minPath.idDestination];
+                // add the first edge from the clicked point to the source of MinPath
+                edges.push(createStraightEdge({ latitude: src.lat, longitude: src.lng }, firstStop, 'walk from the selected location to the stop ' + firstStop.id));
+                minPath.edges.forEach(edge => {
+                    // add the edge
+                    var edgeFeature = getEdgeFeature(edge, busStops);
+                    edges.push(edgeFeature);
+                    // and the marker
+                    var edgeSourceMarker = getEdgeSourceMarker(edge, busStops);
+                    markers[edge.idSource] = edgeSourceMarker;
+                });
+                // add the last edge
+                edges.push(createStraightEdge(lastStop, { latitude: dst.lat, longitude: dst.lng }, 'walk from stop ' + lastStop.id + ' to your destination'));
+                // add one more markers for penultimate
+                markers['penultimate'] = createMarker([lastStop.latitude, lastStop.longitude], '<h3>' + lastStop.id + ' - ' + lastStop.name + '</h3>by walk');
+
+                return {
+                    geojson: edges,
+                    markers: markers
+                }
+            })
         } else {
-            // minPath does not exist because srcStopId ad dstStopId are the same
-            result.geojson.push(createEdge([src.lat, src.lng], [dst.lat, dst.lng], 'walk from the source to the destination'));
+            // provide a shortcut from src to dst
+            edge = createStraightEdge({ latitude: src.lat, longitude: src.lng }, { latitude: dst.lat, longitude: dst.lng }, 'walk from the source to the destination');
+            promise = $q.resolve({ geojson: [edge], markers: {} });
         }
-        result.markers['source'] = createMarker([src.lat, src.lng], 'Walk away');
-        result.markers['destination'] = createMarker([dst.lat, dst.lng], 'destination reached');
-        // fill an array of latlng for centering the map
-        result.geojson.forEach(function (feature) {
-            feature.data.coordinates.forEach(function (coordinate) {
-                // transform [x,y] to {lat, lng}
-                result.latlngs.push(L.GeoJSON.coordsToLatLng(coordinate));
+        // final part for the final result, adding beginning and end markers and computing the boundary
+        return promise.then((subresults) => {
+            result.geojson = subresults.geojson;
+            result.markers = subresults.markers;
+            // always add the marker for the clicked source and the clicked destination
+            result.markers['source'] = createMarker([src.lat, src.lng], 'Walk away');
+            result.markers['destination'] = createMarker([dst.lat, dst.lng], 'destination reached');
+            // fill an array of latlng for centering the map
+            result.geojson.forEach(function (feature) {
+                feature.data.coordinates.forEach(function (coordinate) {
+                    // transform [x,y] to {lat, lng}
+                    result.latlngs.push(L.GeoJSON.coordsToLatLng(coordinate));
+                });
             });
+            return result;
         });
-        return result;
-    }
-
-    // returns the nearest bus stop to the provided point
-    var findNearestStop = function (point) {
-        var minDistSq = Infinity;
-        var bestStop = null;
-        stops.forEach(function (stop) {
-            var distSq = Math.pow(point.lat - stop.latLng[0], 2) + Math.pow(point.lng - stop.latLng[1], 2);
-            if (distSq < minDistSq) {
-                bestStop = stop;
-                minDistSq = distSq;
-            }
-        }, this);
-        return bestStop;
-    }
-
-    // returns an array with bus stops nearest to the provided point
-    var findNearestStops = function (point) {
-        var deferred = $q.defer();
-        $http.get(endpoint + 'findBusStops', { params: { lat: point.lat, lng: point.lng } }).then(function (result) {
-            deferred.resolve(result.data);
-        }, function (result) {
-            deferred.reject(result);
-        });
-        return deferred.promise;
     }
 
     function sendError(message) {
@@ -196,57 +216,29 @@ app.factory('MinPathProvider', ['DataProvider', 'MongoRestClient', '$q', '$http'
 
     return {
         // src and dst are objects {lat,lng}
-        // useRealMinPath true means that a connection to MongoRest will be done to get a MinPath
-        getMinPathBetween: function (src, dst, useRealMinPath = false) {
+        getMinPathBetween: function (src, dst) {
             var path = null;
-            var nearestSrc = findNearestStop(src).id;
-            var nearestDst = findNearestStop(dst).id;
-            // check if user needs to take some buses
-            if (nearestSrc === nearestDst) {
-                // don't go to the nearest stop just to go to the destination, better to go directly to destination since no bus is taken
-                var deferred = $q.defer();
-                deferred.resolve(getResultFromMinPath(null, src, dst));
-                return deferred.promise;
-            }
-            return $q.all([findNearestStops(src), findNearestStops(dst)]).then((srcDstResults) => {
-                // we now have an array of two promises corresponding to requests to find stops in the src and dst radius
-                // from the search results (IDs od the stops) we must get the paths between any src,dst
-                var minPathResultPromises = [];
-                // srcDstResults[0] contains the result of the src promise
-                srcDstResults[0].forEach(function (src) {
-                    // srcDstResults[1] contains the result of the dst promise
-                    srcDstResults[1].forEach(function (dst) {
-                        if (src !== dst) {
-                            // add the promise to the array
-                            minPathResultPromises.push(MongoRestClient.getMinPath(src, dst));
-                        }
-                    });
-                });
-                if (srcDstResults[0].length == 0 || srcDstResults[1].length == 0) {
-                    // shortcut to error
-                    return $q.reject('no paths found between the selected positions')
+            return $q.all([BusLinesService.findNearestStop(src), BusLinesService.findNearestStop(dst)]).then((results) => {
+                var nearestSrc = results[0];
+                var nearestDst = results[1];
+                // check if user needs to take some buses
+                if (nearestSrc === nearestDst) {
+                    // don't go to the nearest stop just to go to the destination, better to go directly to destination since no bus is taken
+                    var deferred = $q.defer();
+                    deferred.resolve(getResultFromMinPath(null, src, dst));
+                    return deferred.promise;
                 }
-                // return a promise that will be fulfilled when all the promises in the array will succeed
-                return $q.all(minPathResultPromises);
-            }).then(function (results) {
-                // after getting the minpath for all the src,dst, find the best one
-                var bestPath = null;
-                var bestPathCost = Infinity;
-                results.forEach(result => {
-                    if (result.totalCost < bestPathCost) {
-                        bestPathCost = result.totalCost;
-                        bestPath = result;
-                    }
+                return MongoRestClient.getMinPathBetweenPositions(src.lat, src.lng, dst.lat, dst.lng).then((minPath) => {
+                    // transform MinPath to GeoJson
+                    return getResultFromMinPath(minPath, src, dst);
                 });
-                return bestPath;
-            }).then((minPath) => {
-                // transform MinPath to GeoJson
-                return getResultFromMinPath(minPath, src, dst);
             }).catch((error) => {
                 // notify about the error
                 sendError(error);
                 return $q.reject(error);
             });
+
+
 
         }
     }

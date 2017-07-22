@@ -8,6 +8,14 @@ public class Key implements Serializable {
 	private static final long serialVersionUID = 2083961456275171567L;
 	private String src;
 	private String dst;
+	
+	public Key() {
+	}
+	
+	public Key(String src, String dst) {
+		this.src = src;
+		this.dst = dst;
+	}
 
 	public String getSrc() {
 		return src;
