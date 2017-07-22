@@ -196,8 +196,7 @@ app.factory('MinPathProvider', ['DataProvider', 'MongoRestClient', '$q', '$http'
 
     return {
         // src and dst are objects {lat,lng}
-        // useRealMinPath true means that a connection to MongoRest will be done to get a MinPath
-        getMinPathBetween: function (src, dst, useRealMinPath = false) {
+        getMinPathBetween: function (src, dst) {
             var path = null;
             var nearestSrc = findNearestStop(src).id;
             var nearestDst = findNearestStop(dst).id;
@@ -208,38 +207,7 @@ app.factory('MinPathProvider', ['DataProvider', 'MongoRestClient', '$q', '$http'
                 deferred.resolve(getResultFromMinPath(null, src, dst));
                 return deferred.promise;
             }
-            return $q.all([findNearestStops(src), findNearestStops(dst)]).then((srcDstResults) => {
-                // we now have an array of two promises corresponding to requests to find stops in the src and dst radius
-                // from the search results (IDs od the stops) we must get the paths between any src,dst
-                var minPathResultPromises = [];
-                // srcDstResults[0] contains the result of the src promise
-                srcDstResults[0].forEach(function (src) {
-                    // srcDstResults[1] contains the result of the dst promise
-                    srcDstResults[1].forEach(function (dst) {
-                        if (src !== dst) {
-                            // add the promise to the array
-                            minPathResultPromises.push(MongoRestClient.getMinPath(src, dst));
-                        }
-                    });
-                });
-                if (srcDstResults[0].length == 0 || srcDstResults[1].length == 0) {
-                    // shortcut to error
-                    return $q.reject('no paths found between the selected positions')
-                }
-                // return a promise that will be fulfilled when all the promises in the array will succeed
-                return $q.all(minPathResultPromises);
-            }).then(function (results) {
-                // after getting the minpath for all the src,dst, find the best one
-                var bestPath = null;
-                var bestPathCost = Infinity;
-                results.forEach(result => {
-                    if (result.totalCost < bestPathCost) {
-                        bestPathCost = result.totalCost;
-                        bestPath = result;
-                    }
-                });
-                return bestPath;
-            }).then((minPath) => {
+            return MongoRestClient.getMinPathBetweenPositions(src.lat, src.lng, dst.lat, dst.lng).then((minPath) => {
                 // transform MinPath to GeoJson
                 return getResultFromMinPath(minPath, src, dst);
             }).catch((error) => {
