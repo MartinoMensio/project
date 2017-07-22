@@ -42,6 +42,6 @@ services:
     environment:
       - POSTGIS_HOST=postgis
       - POSTGIS_PORT=5432
-      - MONGO_HOST=mongodb
+      - MONGO_HOST=${MONGO_HOST:-mongodb}
     command: java -jar /app/app.jar
     #command: tail -f /dev/null
