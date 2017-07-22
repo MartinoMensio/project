@@ -44,7 +44,10 @@ public class MinPathFinder {
 			for (BusStopGeographic destination : stopsNearDst) {
 				Key key = new Key(source.getId(), destination.getId());
 				MinPath minPath = minPathsRepository.findOne(key);
-				minPaths.add(minPath);
+				if (minPath != null) {
+					// for some reasons no MinPath between this pair
+					minPaths.add(minPath);
+				}
 			}
 		}
 		

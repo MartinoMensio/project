@@ -94,6 +94,16 @@ app.factory('BusLinesService', ['$http', '$q', 'DataProvider', function ($http, 
             });
             return deferred.promise;
         },
+        
+        getBusStopById: function(stopId) {
+            var deferred = $q.defer();
+            $http.get(endpoint + 'busStops/' + stopId).then(function (response) {
+                deferred.resolve(response.data);
+            }, function (error) {
+                deferred.reject(error);
+            });
+            return deferred.promise;
+        },
 
         /*
          * Returns the bus line associated to the lineId
