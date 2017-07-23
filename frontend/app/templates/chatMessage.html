@@ -11,7 +11,6 @@
         </div>
         <div>
             <p ng-if="!alert" class="{{pull}}">{{text}}</p>
-            <!-- TODO for now this calls a function from the containing controller, but should be better to use a ui-sref?? -->
             <a ng-if="alert" class="{{pull}}" ng-click="onAlertClicked({alertId: alert.id})">{{text}}</a>
             <img alt="" http-src="{{imageUrl}}" style="max-width: 140px; max-height: 140px;">
         </div>

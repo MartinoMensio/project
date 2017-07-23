@@ -15,7 +15,7 @@ public class Main {
 		// parsing Json file to Java objects
 		JsonFileReader.readJson();
 		
-		// TODO ask to JsonFileReader all the data
+		// ask to JsonFileReader all the data
 		Set<BusLine> busLines = JsonFileReader.busLines;
 		Set<BusStop> busStops = JsonFileReader.busStops;
 		
