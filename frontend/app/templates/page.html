@@ -73,9 +73,9 @@
 
 	</nav>
 
-	<div ng-if="global.message" class="alert" ng-class="global.message.class" style="position:fixed;z-index:5000;width:100%">
+	<div ng-if="global.message" class="alert" ng-class="global.message.class" style="position:fixed;z-index:5000;width:100%; margin-top:12px;">
 		<strong>{{global.message.value}}</strong>
-		<button ng-click="global.hideMessage()" class="btn btn-warn">X</button>
+		<span class="glyphicon glyphicon-remove pull-right" ng-click="global.hideMessage()"></span>
 	</div>
 
 	<!-- Page Content -->
