@@ -1,8 +1,8 @@
 var app = angular.module('App');
 
-app.factory('BusLinesService', ['$http', '$q', function ($http, $q) {
+app.factory('BusLinesService', ['$http', '$q', '__env', function ($http, $q, __env) {
 
-    var endpoint = 'http://localhost:9999/';
+    var endpoint = __env.geoservices;
 
     // this function returns the points [[x,y]] from a line
     var getLinePoints = function (busStops) {

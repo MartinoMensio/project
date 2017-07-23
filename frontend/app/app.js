@@ -8,7 +8,13 @@ var app = angular.module('App', ['ngRoute',
                                 'ui.bootstrap',
                                 'ui.router.state.events',
                                 'angular.img',
-                                'angular-input-stars'])
+                                'angular-input-stars']);
+
+var env = {};
+if (window) {
+    Object.assign(env, window.__env);
+}
+app.constant('__env', env);
 
 app.config(['$locationProvider', '$urlRouterProvider', '$stateProvider', '$httpProvider', function ($locationProvider, $urlRouterProvider, $stateProvider, $httpProvider) {
     // If the URL does not correspond to anything then redirect to '/'

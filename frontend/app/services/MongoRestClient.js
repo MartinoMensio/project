@@ -1,14 +1,13 @@
 var app = angular.module('App');
 
-app.factory('MongoRestClient', ['$http', '$q', function ($http, $q) {
+app.factory('MongoRestClient', ['$http', '$q', '__env', function ($http, $q, __env) {
 
-    var host = 'http://localhost';
-    var port = '9999';
+    var endpoint = __env.geoservices;
 
     return {
         getMinPath: function (srcId, dstId) {
             var deferred = $q.defer();
-            $http.get(host + ':' + port + '/min_paths/' + srcId + '_' + dstId).then(function (result) {
+            $http.get(endpoint + 'min_paths/' + srcId + '_' + dstId).then(function (result) {
                 deferred.resolve(result.data);
             }, function (result) {
                 deferred.reject(result);
@@ -17,7 +16,7 @@ app.factory('MongoRestClient', ['$http', '$q', function ($http, $q) {
         },
         getMinPathBetweenPositions: function (srcLat, srcLng, dstLat, dstLng) {
             var deferred = $q.defer();
-            $http.get(host + ':' + port + '/getMinPathBetweenPositions', {params: {srcLat: srcLat, srcLng: srcLng, dstLat: dstLat, dstLng: dstLng}}).then(function (result) {
+            $http.get(endpoint + 'getMinPathBetweenPositions', {params: {srcLat: srcLat, srcLng: srcLng, dstLat: dstLat, dstLng: dstLng}}).then(function (result) {
                 if (!result.data) {
                     deferred.reject('Minimum path not found between the selected positions');
                 } else {

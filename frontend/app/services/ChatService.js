@@ -9,12 +9,12 @@
 
 var app = angular.module('App');
 
-app.factory('ChatService', ['$http', '$q', '$localStorage', '$stomp', '$log', function ($http, $q, $localStorage, $stomp, $log) {
-    var webEndpoint = "http://localhost:8888/";
+app.factory('ChatService', ['$http', '$q', '$localStorage', '$stomp', '$log', '__env', function ($http, $q, $localStorage, $stomp, $log, __env) {
+    var webEndpoint = __env.backend;
 
     var connectHeaders = {};
-    var chatEndpoint = "http://localhost:8888/chat";
-    var roomEndpoint = "/app/";
+    var chatEndpoint = webEndpoint + 'chat';
+    var roomEndpoint = '/app/';
 
     // Configuring the WebSocket for console logging
     $stomp.setDebug(function (args) {

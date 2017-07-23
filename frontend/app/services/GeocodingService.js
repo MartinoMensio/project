@@ -1,8 +1,8 @@
 var app = angular.module('App');
 
-app.factory('GeocodingService', ['$http', '$q', function ($http, $q) {
+app.factory('GeocodingService', ['$http', '$q', '__env', function ($http, $q, __env) {
 
-    var endpoint = 'http://localhost:9999/';
+    var endpoint = __env.geoservices;
 
     return {
         // look at res.geometry.location for latlng

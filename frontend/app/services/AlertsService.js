@@ -1,8 +1,8 @@
 var app = angular.module('App');
 
-app.factory('AlertsService', ['$http', '$q', function ($http, $q) {
+app.factory('AlertsService', ['$http', '$q', '__env', function ($http, $q, __env) {
 
-    var endpoint = 'http://localhost:8888/api/';
+    var endpoint = __env.backend + 'api/';
 
     return {
         getAlertTypes: function () {

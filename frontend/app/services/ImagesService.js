@@ -1,8 +1,8 @@
 var app = angular.module('App');
 
-app.factory('ImagesService', ['$q', '$http', function ($q, $http) {
+app.factory('ImagesService', ['$q', '$http', '__env', function ($q, $http, __env) {
 
-    var endpoint = 'http://localhost:8888/api';
+    var endpoint = __env.backend + 'api';
 
     function previewFile(file) {
         var deferred = $q.defer();
