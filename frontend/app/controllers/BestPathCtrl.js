@@ -35,7 +35,7 @@ app.controller('BestPathCtrl', ['$rootScope', '$scope', "leafletData", '$routePa
             // check how many markers are there on the map
             if (Object.keys(this.markers).length < 2) {
                 // decide if this is the source (first marker) or the destination (second marker)
-                var key = Object.keys(this.markers).length == 0 ? 'source' : 'destination';
+                var key = this.markers['source'] == undefined ? 'source' : 'destination';
                 var leafEvent = args.leafletEvent;
                 // build the marker
                 this.markers[key] = {
