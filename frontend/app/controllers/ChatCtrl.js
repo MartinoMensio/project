@@ -102,10 +102,19 @@ app.controller('ChatCtrl', ['$scope', '$uibModal', '$stateParams', '$localStorag
                     + '</h5><h5>Address: ' + marker.address
                     + '</h5><h5>Added by: ' + marker.userNickname
                     + '</h5> <h5>Vote Here</h5> <input-stars ng-model="ctrl.markers[' + index + '].newRating" max="5"></input-stars>'
-                    + '</br> <h5>Average</h5> <input-stars max="5" ng-model="ctrl.markers[' + index + '].rating" readonly="true" allow-half ></input-stars>';
+                    + '<br /> <h5>Average</h5> <input-stars max="5" ng-model="ctrl.markers[' + index + '].rating" readonly="true" allow-half ></input-stars>'
+                    + '<br /><button ng-click="ctrl.referAlert(' + index + ')" class="btn btn-secondary">refer</button>';
             });
         });
 
+    }
+
+    this.referAlert = (index) => {
+        alert = this.markers[index];
+        // set the text
+        this.msg.content += '#' + alert.hashtag;
+        // and link the alert
+        this.alertClicked(alert);
     }
 
     // Define the callback that is called when a new message is received
