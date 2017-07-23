@@ -17,6 +17,8 @@ app.factory('AuthenticationInterceptor', ['$q', '$state', '$localStorage', '$inj
         'responseError': function (response) {
             $rootScope.$emit('error', response.data || {message: "Communication error while contacting " + response.config.url});
             if (response.status === 401 || response.status === 403) {
+                // save the wanted state
+                $rootScope.wantedState = $state.current.name;
                 $state.go('page.login');
             }
             return $q.reject(response);
