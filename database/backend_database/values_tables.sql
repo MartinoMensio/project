@@ -1,31 +1,31 @@
 INSERT INTO education_levels (id, value) values
-    (1, 'LICENZA ELEMENTARE'),
-    (2, 'LICENZA MEDIA'),
-    (3, 'DIPLOMA DI ISTRUZIONE SECONDARIA SUPERIORE'),
-    (4, 'LAUREA DI PRIMO LIVELLO'),
-    (5, 'LAUREA SPECIALISTICA'),
-    (6, 'MASTER UNIVERSITARIO DI PRIMO LIVELLO');
+    (1, 'ELEMENTARY SCHOOL DIPLOMA'),
+    (2, 'MIDDLE SCHOOL DIPLOMA'),
+    (3, 'HIGH SCHOOL DIPLOMA'),
+    (4, 'UNDERGRADUATE DEGREE'),
+    (5, 'POSTGRADUATE DEGREE'),
+    (6, 'MASTER DEGREE');
 INSERT INTO employments (id, value) values
-    (1, 'STUDENTE'),
-    (2, 'DISOCCUPATO'),
-    (3, 'OCCUPATO AUTONOMO'),
-    (4, 'OCCUPATO PERMANENTE'),
-    (5, 'OCCUPATO TEMPORANEO'),
-    (6, 'PENSIONATO');
+    (1, 'STUDENT'),
+    (2, 'UNEMPLOYED'),
+    (3, 'SELF EMPLOYED'),
+    (4, 'PERMANENT EMPLOYEE'),
+    (5, 'TEMPORARY EMPLOYEE'),
+    (6, 'PENSIONER');
 INSERT INTO fuels (id, value) values
-    (1, 'BENZINA'),
+    (1, 'FUEL'),
     (2, 'DIESEL'),
-    (3, 'GPL'),
-    (4, 'IBRIDA'),
-    (5, 'METANO'),
-    (6, 'AUTO ELETTRICA');
+    (3, 'LPG'),
+    (4, 'HYBRID'),
+    (5, 'METHANE'),
+    (6, 'ELECTRIC CAR');
 INSERT INTO car_sharing_services (id, name) values
     (1, 'ENJOY'),
     (2, 'CAR2GO'),
     (3, 'BLUETORINO');
 INSERT INTO travel_documents (id, name, cost) values
-    (1, 'GIORNALIERO', 5.00),
-    (2, 'CORSA SINGOLA', 1.50),
+    (1, 'DAILY TICKET', 5.00),
+    (2, 'SINGLE RUN', 1.50),
     (3, 'CARNET 5', 6.50),
     (4, 'CARNET 15', 17.50);
 INSERT INTO status (id, value) values
