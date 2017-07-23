@@ -261,8 +261,8 @@ app {
 
 #container-registration-success{
 	margin-top: 40px;
-	width:50%;
-	padding-bottom:470px;
+	/*margin-bottom:400px;*/
+	min-height: 695px;
 }
 
 #container-editprofile {

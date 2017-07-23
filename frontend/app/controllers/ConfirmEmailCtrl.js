@@ -7,9 +7,8 @@ app.controller('ConfirmEmailCtrl', ['$stateParams', 'UserService', function($sta
     this.status = 'Your email address is being verified';
 
     UserService.confirmEmail(this.email, this.token).then((result) => {
-        this.status = 'Verified. You can now log in!';
-        this.showLogin = true;
+        this.verificationOK = true;
     }, (error) => {
-        this.status = 'Verification failed';
+        this.verificationOK = false;
     })
 }]);
