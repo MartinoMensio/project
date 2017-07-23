@@ -20,7 +20,6 @@ public class CompleteProfileInterceptor implements HandlerInterceptor {
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object arg2) throws Exception {
-		// TODO define better strategy to deny user using some API if incomplete profile
 		// now denying doing requests different than GET/OPTIONS or calls to /api/profile
 		// look at WebMvcConfig also
 		if (!request.getMethod().equals(RequestMethod.GET.name()) && !request.getMethod().equals(RequestMethod.OPTIONS.name())) {
