@@ -16,5 +16,12 @@ LABEL "it.polito.ai.organization"="Politecnico di Torino" "it.polito.ai.maintain
 #la cartella che conterrà i dati del db.
 ENV POSTGRES_USER="postgres" POSTGRES_PASSWORD="ai-user-password" POSTGRES_DB="trasporti" PGDATA="/datadb"
 
+ENV DEBIAN_FRONTEND noninteractive
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ssl-cert \
+    && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+ADD docker-entrypoint-initdb.d /docker-entrypoint-initdb.d
+
 #File che definisce lo schema del database da utilizzare per l'esercitazione
 COPY schema.sql /docker-entrypoint-initdb.d/schema.sql
