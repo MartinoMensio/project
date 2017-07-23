@@ -1,6 +1,6 @@
 var app = angular.module('App');
 
-app.controller('ChatCtrl', ['$scope', '$uibModal', '$stateParams', '$localStorage', 'ChatService', 'AlertsService', 'topic', 'messages', function ($scope, $uibModal, $stateParams, $localStorage, ChatService, AlertsService, topic, messages) {
+app.controller('ChatCtrl', ['$scope', '$uibModal', '$stateParams', '$localStorage', 'leafletData', 'ChatService', 'AlertsService', 'topic', 'messages', function ($scope, $uibModal, $stateParams, $localStorage, leafletData, ChatService, AlertsService, topic, messages) {
     this.template = "templates/popovers/popoverTemplate.html";
     var topicId = $stateParams.topicId; // get the topic id from the app state
     this.topic = topic;
@@ -9,33 +9,33 @@ app.controller('ChatCtrl', ['$scope', '$uibModal', '$stateParams', '$localStorag
     var local_icons = {
         generic_alert_icon: {
             iconUrl: 'icons/alert.png',
-            iconSize:     [50, 50], // size of the icon
-            iconAnchor:   [30, 30], // point of the icon which will correspond to marker's location
-            popupAnchor:  [0, 0] // point from which the popup should open relative to the iconAnchor
+            iconSize: [50, 50], // size of the icon
+            iconAnchor: [30, 30], // point of the icon which will correspond to marker's location
+            popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
         },
         traffic_icon: {
             iconUrl: 'icons/traffic.png',
-            iconSize:     [50, 50], // size of the icon
-            iconAnchor:   [30, 30], // point of the icon which will correspond to marker's location
-            popupAnchor:  [0, 0] // point from which the popup should open relative to the iconAnchor
+            iconSize: [50, 50], // size of the icon
+            iconAnchor: [30, 30], // point of the icon which will correspond to marker's location
+            popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
         },
         broken_bus_icon: {
             iconUrl: 'icons/broken-bus.png',
-            iconSize:     [50, 50], // size of the icon
-            iconAnchor:   [30, 30], // point of the icon which will correspond to marker's location
-            popupAnchor:  [0, 0] // point from which the popup should open relative to the iconAnchor
+            iconSize: [50, 50], // size of the icon
+            iconAnchor: [30, 30], // point of the icon which will correspond to marker's location
+            popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
         },
         accident_icon: {
             iconUrl: 'icons/accident.png',
-            iconSize:     [50, 50], // size of the icon
-            iconAnchor:   [30, 30], // point of the icon which will correspond to marker's location
-            popupAnchor:  [0, 0] // point from which the popup should open relative to the iconAnchor
+            iconSize: [50, 50], // size of the icon
+            iconAnchor: [30, 30], // point of the icon which will correspond to marker's location
+            popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
         },
         road_works_icon: {
             iconUrl: 'icons/work_in_progress.png',
-            iconSize:     [50, 50], // size of the icon
-            iconAnchor:   [30, 30], // point of the icon which will correspond to marker's location
-            popupAnchor:  [0, 0] // point from which the popup should open relative to the iconAnchor
+            iconSize: [50, 50], // size of the icon
+            iconAnchor: [30, 30], // point of the icon which will correspond to marker's location
+            popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
         },
     };
 
@@ -60,65 +60,71 @@ app.controller('ChatCtrl', ['$scope', '$uibModal', '$stateParams', '$localStorag
         alertId: null
     }
 
+    this.updateAlerts = () => {
+        // get the list of all teh alerts
+        return AlertsService.getAlerts().then((result) => {
+            this.alerts = result; // show the alert list
+
+            this.markers = result; // show the markers on the map
+
+            // each marker display the 5 star for rating the alert
+            this.markers.forEach((marker, index) => {
+                marker.getMessageScope = () => { return $scope; }
+                marker.newRating = -1;
+                // watch added to check if a new rate is inserted by the user
+                $scope.$watch("ctrl.alerts[" + index + "].newRating", (newValue, oldValue) => {
+                    if (marker.artificialChange === true || newValue <= 0 || newValue === oldValue || marker.newRating <= 0) {
+                        // don't vote
+                    } else {
+                        this.vote(marker);
+                    }
+                    // enable the watch for future changes by user
+                    marker.artificialChange = false;
+                });
+                // 5 starts used by the user for rating the signalization and 5 stars readonly for the rating avg
+                if (this.alerts[index].alertType.name === "Traffic") {
+                    marker.icon = local_icons.traffic_icon;
+                }
+                else if (this.alerts[index].alertType.name === "Broken bus") {
+                    marker.icon = local_icons.broken_bus_icon;
+                }
+                else if (this.alerts[index].alertType.name === "Accident") {
+                    marker.icon = local_icons.accident_icon;
+                }
+                else if (this.alerts[index].alertType.name === "Road works") {
+                    marker.icon = local_icons.road_works_icon;
+                } else {
+                    // generic alert
+                    marker.icon = local_icons.generic_alert_icon;
+                }
+                marker.message = '<div style="min-width:160px;"></div><h2>#' + marker.hashtag
+                    + '</h2><h5>Activation Date: {{' + marker.activationDate + ' | date:"HH:mm:ss dd-MM-yyyy"}}'
+                    + '</h5><h5>Address: ' + marker.address
+                    + '</h5><h5>Added by: ' + marker.userNickname
+                    + '</h5> <h5>Vote Here</h5> <input-stars ng-model="ctrl.markers[' + index + '].newRating" max="5"></input-stars>'
+                    + '<br /> <h5>Average</h5> <input-stars max="5" ng-model="ctrl.markers[' + index + '].rating" readonly="true" allow-half ></input-stars>'
+                    + '<br /><button ng-click="ctrl.referAlert(' + index + ')" class="btn btn-secondary">refer</button>';
+            });
+        });
+
+    }
+
+    this.referAlert = (index) => {
+        alert = this.markers[index];
+        // set the text
+        this.msg.content += '#' + alert.hashtag;
+        // and link the alert
+        this.alertClicked(alert);
+    }
 
     // Define the callback that is called when a new message is received
-    var addMessage = (message) => {
-        this.messages.push(message);
-        $scope.$apply();
-        if(this.showMap === true){
-
-            // TODO remove DUPLICATE CODE as below
-            // get the list of all teh alerts
-            AlertsService.getAlerts().then((result) => {
-                this.alerts = result; // show the alert list
-
-                this.hashtag = result.hashtag;
-                this.markers = result; // show the markers on the map
-
-                // each marker display the 5 star for rating the alert
-                this.markers.forEach((marker,index) => {
-                    marker.getMessageScope = ()=> { return $scope; }
-                    marker.watchEnabled = false;
-                    // watch added to check if a new rate is inserted by the user
-                    $scope.$watch("ctrl.alerts["+index+"].newRating", (newValue, oldValue)=> {
-                        if (marker.watchEnabled === false || newValue===0) {
-                            marker.watchEnabled = true;
-                            return;
-                        }
-                        this.vote(marker);
-                    });
-                    // 5 starts used by the user for rating the signalization and 5 stars readonly for the rating avg
-                    if(this.alerts[index].alertType.name === "Traffic"){
-                        marker.icon = local_icons.traffic_icon;
-                        marker.message = '<div style="min-width:160px;"></div><h2>#'+marker.hashtag+'</h2> <h5>Vote Here</h5><input-stars ng-model="ctrl.markers['+index+'].newRating" max="5"></input-stars> </br><h5>Average</h5> <input-stars max="5" ng-model="ctrl.markers['+index+'].rating" readonly="true" allow-half ></input-stars>';
-                    }
-                    else if(this.alerts[index].alertType.name === "Broken bus"){
-                        marker.icon = local_icons.broken_bus_icon;
-                        marker.message = '<div style="min-width:160px;"></div><h2>#'+marker.hashtag+'</h2> <h5>Vote Here</h5><input-stars ng-model="ctrl.markers['+index+'].newRating" max="5"></input-stars> </br><h5>Average</h5> <input-stars max="5" ng-model="ctrl.markers['+index+'].rating" readonly="true" allow-half ></input-stars>';
-                    }
-                    else if(this.alerts[index].alertType.name === "Accident"){
-                        marker.icon = local_icons.accident_icon;
-                        marker.message = '<div style="min-width:160px;"></div><h2>#'+marker.hashtag+'</h2> <h5>Vote Here</h5><input-stars ng-model="ctrl.markers['+index+'].newRating" max="5"></input-stars> </br><h5>Average</h5> <input-stars max="5" ng-model="ctrl.markers['+index+'].rating" readonly="true" allow-half ></input-stars>';
-                    }
-                    else if(this.alerts[index].alertType.name === "Road works"){
-                        marker.icon = local_icons.road_works_icon;
-                        marker.message = '<div style="min-width:160px;"></div><h2>#'+marker.hashtag+'</h2> <h5>Vote Here</h5><input-stars ng-model="ctrl.markers['+index+'].newRating" max="5"></input-stars> </br><h5>Average</h5> <input-stars max="5" ng-model="ctrl.markers['+index+'].rating" readonly="true" allow-half ></input-stars>';
-                    }else{
-                        // generic alert
-                        marker.icon= local_icons.generic_alert_icon;
-                        marker.message = '<div style="min-width:160px;"></div><h2>#'+marker.hashtag+'</h2> <h5>Vote Here</h5><input-stars ng-model="ctrl.markers['+index+'].newRating" max="5"></input-stars> </br><h5>Average</h5> <input-stars max="5" ng-model="ctrl.markers['+index+'].rating" readonly="true" allow-half ></input-stars>';
-                    }
-                }, this);
-            });
-
-             // send the new vote to the database
-            this.vote = function(marker){
-                // send the vote and then modify dynamically the avg value
-                AlertsService.voteAlert(marker.id,marker.newRating).then(result=>{
-                    marker.rating = result.rating;
-                });
+    var addMessage = (messageId) => {
+        ChatService.getMessageById(messageId).then((message) => {
+            this.messages.push(message);
+            if (this.showMap === true) {
+                this.updateAlerts();
             }
-        }
+        });
     }
 
     // Register the topic and the callback
@@ -150,67 +156,25 @@ app.controller('ChatCtrl', ['$scope', '$uibModal', '$stateParams', '$localStorag
         }
     }
 
-    this.mapToggle = () => {
-        this.showMap = !this.showMap;
-        // get the list of all teh alerts
-        AlertsService.getAlerts().then((result) => {
-            this.alerts = result; // show the alert list
-
-            this.hashtag = result.hashtag;
-            this.markers = result; // show the markers on the map
-
-            // each marker display the 5 star for rating the alert
-            this.markers.forEach((marker,index) => {
-                marker.getMessageScope = ()=> { return $scope; }
-                marker.watchEnabled = false;
-                // watch added to check if a new rate is inserted by the user
-                $scope.$watch("ctrl.alerts["+index+"].newRating", (newValue, oldValue)=> {
-                    if (marker.watchEnabled === false || newValue===0) {
-                        marker.watchEnabled = true;
-                        return;
-                    }
-                    this.vote(marker);
-                });
-                // 5 starts used by the user for rating the signalization and 5 stars readonly for the rating avg
-                if(this.alerts[index].alertType.name === "Traffic"){
-                    marker.icon = local_icons.traffic_icon;
-                    marker.message = '<div style="min-width:160px;"></div><h2>#'+marker.hashtag+'</h2> <h5>Vote Here</h5><input-stars ng-model="ctrl.markers['+index+'].newRating" max="5"></input-stars> </br><h5>Average</h5> <input-stars max="5" ng-model="ctrl.markers['+index+'].rating" readonly="true" allow-half ></input-stars>';
-                }
-                else if(this.alerts[index].alertType.name === "Broken bus"){
-                    marker.icon = local_icons.broken_bus_icon;
-                    marker.message = '<div style="min-width:160px;"></div><h2>#'+marker.hashtag+'</h2> <h5>Vote Here</h5><input-stars ng-model="ctrl.markers['+index+'].newRating" max="5"></input-stars> </br><h5>Average</h5> <input-stars max="5" ng-model="ctrl.markers['+index+'].rating" readonly="true" allow-half ></input-stars>';
-                }
-                else if(this.alerts[index].alertType.name === "Accident"){
-                    marker.icon = local_icons.accident_icon;
-                    marker.message = '<div style="min-width:160px;"></div><h2>#'+marker.hashtag+'</h2> <h5>Vote Here</h5><input-stars ng-model="ctrl.markers['+index+'].newRating" max="5"></input-stars> </br><h5>Average</h5> <input-stars max="5" ng-model="ctrl.markers['+index+'].rating" readonly="true" allow-half ></input-stars>';
-                }
-                else if(this.alerts[index].alertType.name === "Road works"){
-                    marker.icon = local_icons.road_works_icon;
-                    marker.message = '<div style="min-width:160px;"></div><h2>#'+marker.hashtag+'</h2> <h5>Vote Here</h5><input-stars ng-model="ctrl.markers['+index+'].newRating" max="5"></input-stars> </br><h5>Average</h5> <input-stars max="5" ng-model="ctrl.markers['+index+'].rating" readonly="true" allow-half ></input-stars>';
-                }else{
-                    // generic alert
-                    marker.icon= local_icons.generic_alert_icon;
-                    marker.message = '<div style="min-width:160px;"></div><h2>#'+marker.hashtag+'</h2> <h5>Vote Here</h5><input-stars ng-model="ctrl.markers['+index+'].newRating" max="5"></input-stars> </br><h5>Average</h5> <input-stars max="5" ng-model="ctrl.markers['+index+'].rating" readonly="true" allow-half ></input-stars>';
-                }
-            }, this);
-        });
-
-        // send the new vote to the database
-        this.vote = function(marker){
-            // send the vote and then modify dynamically the avg value
-            AlertsService.voteAlert(marker.id,marker.newRating).then(result=>{
-                marker.rating = result.rating;
-            });
+    this.mapToggle = (forcedValue) => {
+        if (forcedValue === undefined) {
+            this.showMap = !this.showMap;
+        } else {
+            this.showMap = forcedValue;
         }
+
+        // return the promise (thenable)
+        return this.updateAlerts();
     }
 
     $scope.$on('leafletDirectiveMarker.click', (event, args) => {
-		// get the user rating and update last view time
-		AlertsService.getUserRatingToAlert(args.model.id).then((result) => {
-			args.model.watchEnabled = false;
-			args.model.newRating = result.vote;
-		});
-	});
+        // get the user rating and update last view time
+        AlertsService.getUserRatingToAlert(args.model.id).then((result) => {
+            // the change didn't occurr due to interaction
+            args.model.artificialChange = true;
+            args.model.newRating = result.vote;
+        });
+    });
 
     // this function is called every time the message text changes 
     this.msg_text_changed = () => {
@@ -219,12 +183,20 @@ app.controller('ChatCtrl', ['$scope', '$uibModal', '$stateParams', '$localStorag
             const hashtag = AlertsService.findHashtag(this.msg.content);
             if (hashtag) {
                 AlertsService.getAlertsWithHashtag(hashtag).then((result) => {
-                    // TODO display in dropdown
+                    // display in dropdown
                     this.alertsResult = result;
                 })
             }
         }
     };
+
+    // send the new vote to the database
+    this.vote = function (marker) {
+        // send the vote and then modify dynamically the avg value
+        AlertsService.voteAlert(marker.id, marker.newRating).then(result => {
+            marker.rating = result.rating;
+        });
+    }
 
     // this function is called when an alert in the dropdown is clicked
     this.alertClicked = (alert) => {
@@ -297,9 +269,18 @@ app.controller('ChatCtrl', ['$scope', '$uibModal', '$stateParams', '$localStorag
     };
 
     this.selectAlert = (alertId) => {
-        console.log("clicked alert " + alertId);
-        this.showMap = true;
-        // TODO open alert detail
-    }
+        // open the map
+        this.mapToggle(true).then(() => {
+            // show the marker details
+            this.markers.forEach((marker) => {
+                if (marker.id === alertId) {
+                    marker.focus = true;
+                }
+                else {
+                    marker.focus = false;
+                }
+            });
+        })
+    };
 
 }]);

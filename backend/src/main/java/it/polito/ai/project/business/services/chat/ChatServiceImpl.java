@@ -34,6 +34,15 @@ public class ChatServiceImpl implements ChatService {
 		return lastMessagesNewestFirst.stream().sorted(Comparator.comparing(Message::getSendingTime))
 				.map(message -> new ChatMessageImpl(message)).collect(Collectors.toList());
 	}
+	
+	@Override
+	public ChatMessage getMessageById(Long id) {
+		Message message =  messagesRepository.findOne(id);
+		if (message == null) {
+			return null;
+		}
+		return new ChatMessageImpl(message);
+	}
 
 	@Override
 	public Set<Topic> getTopics() {

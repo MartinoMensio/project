@@ -12,22 +12,22 @@
 	</div>
 
 	<div class="hero-unit" style="margin-top:40px; margin-bottom: 60px;">
-		<p class="lead">Hashtags List</p>
+		<p class="lead">Alerts list</p>
 		<table class="table table-bordered">
 			<thead>
 				<tr>
 					<th>Hashtag</th>
-					<th>Value</th>
+					<th>Rating</th>
 					<th>Type</th>
 					<th>Added by</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr ng-repeat="alert in ctrl.alerts">
-					<td ui-sref="page.alerts({alertId: '{{alert.id}}' })">#{{alert.hashtag}} </td>
-					<td> {{alert.rating}}</td>
-					<td> {{alert.alertType.name}}</td>
-					<td> {{alert.userNickname}}</td>
+					<td>#{{alert.hashtag}} </td>
+					<td>{{alert.rating}}</td>
+					<td>{{alert.alertType.name}}</td>
+					<td>{{alert.userNickname}}</td>
 				</tr>
 			</tbody>
 		</table>

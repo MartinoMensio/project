@@ -8,13 +8,19 @@ var app = angular.module('App', ['ngRoute',
                                 'ui.bootstrap',
                                 'ui.router.state.events',
                                 'angular.img',
-                                'angular-input-stars'])
+                                'angular-input-stars']);
+
+var env = {};
+if (window) {
+    Object.assign(env, window.__env);
+}
+app.constant('__env', env);
 
 app.config(['$locationProvider', '$urlRouterProvider', '$stateProvider', '$httpProvider', function ($locationProvider, $urlRouterProvider, $stateProvider, $httpProvider) {
     // If the URL does not correspond to anything then redirect to '/'
     $urlRouterProvider.otherwise('/');
 
-    // TODO this interceptor is only for interaction with a specific server
+    // this interceptor is only for interaction with backend that requires authentication
     $httpProvider.interceptors.push('AuthenticationInterceptor');
 
     // States defintion
@@ -211,15 +217,11 @@ app.run(['$rootScope', '$state', function ($rootScope, $state) {
             case "INCOMPLETE":
                 console.log('incomplete profile');
                 if (toState.name != 'page.editProfile') {
-                    // TODO show warning
+                    // show warning
+                    $rootScope.$emit('error', {message: "Please complete your profile before using this platform"});
                     event.preventDefault();
                     $state.go('page.editProfile');
                 }
-                break;
-            // user needs to confirm email
-            case "NOT_CONFIRMED":
-                // TODO
-                console.log('user not confirmed mail');
                 break;
         }
     });
