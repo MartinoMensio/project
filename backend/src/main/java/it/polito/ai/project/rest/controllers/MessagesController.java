@@ -8,6 +8,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedResources;
 import org.springframework.hateoas.Resource;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -52,5 +53,14 @@ public class MessagesController {
 		} else {
 			throw new NotFoundException();
 		}
+	}
+	
+	@GetMapping("/api/messages/single/{id}")
+	public ChatMessage getMessage(@PathVariable("id") Long id) {
+		ChatMessage message = chatService.getMessageById(id);
+		if (message == null) {
+			throw new NotFoundException();
+		}
+		return message;
 	}
 }

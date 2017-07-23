@@ -2,7 +2,7 @@
 <div class="container" id="container-busLineList">
     <div class="hero-unit">
 	    <div class="page-header">
-	        <h1>Lines</h1>
+	        <h1>{{(ctrl.lineId != null) ? 'Line ' + ctrl.lineId : 'Lines'}}</h1>
 	    </div>
 	    <p class="lead">Here you can see the path of each bus, tram and metro line and its stops</p>
 
@@ -10,7 +10,7 @@
 
     <div class="col-sm-12">
         <div class="input-group" uib-dropdown is-open="ctrl.lines && ctrl.lines.length > 0">
-            <input ng-model="ctrl.searchText" ng-change="ctrl.searchLines()" type="text" class="form-control" placeholder="Type a line number here...">
+            <input ng-model="ctrl.searchText" ng-change="ctrl.searchLines()" ng-model-options="{ debounce: 200 }" type="text" class="form-control" placeholder="Type a line number here...">
             <ul class="autocomplete-dropdown-menu" uib-dropdown-menu aria-labelledby="simple-dropdown" role="menu">
                 <li ng-repeat="line in ctrl.lines">
                     <a ui-sref="page.busLines({id: line.line})">{{line.line}} - {{line.description}}</a>
