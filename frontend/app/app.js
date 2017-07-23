@@ -44,7 +44,7 @@ app.config(['$locationProvider', '$urlRouterProvider', '$stateProvider', '$httpP
         // Home page state
         .state('page.home', {
             url: '/',
-            templateUrl: 'templates/home2.html'
+            templateUrl: 'templates/home.html'
         })
         // About page state
         .state('page.about', {
