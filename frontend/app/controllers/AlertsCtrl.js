@@ -109,7 +109,7 @@ app.controller('AlertsCtrl', ['$scope', 'AlertsService', function ($scope, Alert
 	this.center = {
 		lat: 45.064,
 		lng: 7.651,
-		zoom: 16
+		zoom: 13
 	};
 	this.defaults = {
 		scrollWheelZoom: false
