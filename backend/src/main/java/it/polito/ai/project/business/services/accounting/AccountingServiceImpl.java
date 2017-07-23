@@ -27,9 +27,9 @@ public class AccountingServiceImpl implements AccountingService {
 	private EmailVerificationService emailVerification;
 	
 	@Override
-	public User addNewUser(String mail, String nickname, String password) {
+	public User addNewUser(String mail, String nickname, String password, String url) {
 		usersRepository.saveUserWithEncPwd(nickname, mail, password);
-		emailVerification.sendVerificationMail(mail, nickname);
+		emailVerification.sendVerificationMail(mail, nickname, url);
 		return usersRepository.findByEmail(mail);
 	}
 

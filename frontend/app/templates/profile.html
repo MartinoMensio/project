@@ -1,0 +1,105 @@
+<div class="container"  id="container-profile">
+	<div class="hero-unit">
+		<div class="page-header">
+			<h1>Your Profile</h1>
+		</div>
+		<p class="lead">Here there are listed all the informations about your account</p>
+	</div>
+
+	<div class="row" id="row-profile">
+		<!-- <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-3 col-lg-offset-3 toppad">  -->
+		<div class="panel panel-info" id="panel-info-profile">
+			<div class="panel-heading">
+				<h3 class="panel-title">{{global.user.nickname}}</h3>
+			</div>
+			<div class="panel-body" id="panel-body-profile">
+				<div class="row">
+					<div class="col-md-3 col-lg-3 " align="center">
+
+						<img http-src="{{global.user.imageUrl || global.user.localImageUrl}}" style="max-height: 87px; max-width: 87px" />
+
+						<button class="add_picture_button text" ng-click="ctrl.openAddPictureModal()"><span class="glyphicon glyphicon-plus"></span></button>
+					</div>
+					<div class=" col-md-9 col-lg-9 ">
+						<table class="table table-user-information">
+							<tbody>
+								<tr>
+									<td>Date of Birth:</td>
+									<td>{{global.user.dateOfBirth}}</td>
+								</tr>
+								<tr>
+									<td>Gender:</td>
+									<td>{{global.user.sex}}</td>
+								</tr>
+								<tr>
+									<td>Email:</td>
+									<td>{{global.user.email}}</td>
+								</tr>
+								<tr>
+									<td>Education level:</td>
+									<td>{{global.user.educationLevel.value}}</td>
+								</tr>
+								<tr>
+									<td>Job:</td>
+									<td>{{global.user.employment.value}}</td>
+								</tr>
+								<tr>
+									<td>Private Car Ownership:</td>
+									<td>{{global.user.privateCarOwnership}}</td>
+								</tr>
+								<tr ng-if="global.user.privateCarOwnership">
+									<td>Car Fuel:</td>
+									<td>{{global.user.carFuel.value}}</td>
+								</tr>
+								<tr ng-if="global.user.privateCarOwnership">
+									<td>Car year:</td>
+									<td>{{global.user.carRegistrationYear}}</td>
+								</tr>
+								<tr>
+									<td>Car sharing usage:</td>
+									<td>{{global.user.carSharingUsage}}</td>
+								</tr>
+								<tr ng-if="global.user.carSharingUsage">
+									<td>Car sharing service:</td>
+									<td>{{global.user.carSharingService.name}}</td>
+								</tr>
+								<tr>
+									<td>Public Transport usage:</td>
+									<td>{{global.user.publicTransportUsage}}</td>
+								</tr>
+								<tr ng-if="global.user.publicTransportUsage">
+									<td>Habitual travel document:</td>
+									<td>{{global.user.habitualTravelDocument.name}}</td>
+								</tr>
+								<tr>
+									<td>Bike Usage:</td>
+									<td>{{global.user.bikeUsage}}</td>
+								</tr>
+								<tr ng-if="global.user.bikeUsage">
+									<td>Private Bike Usage:</td>
+									<td>{{global.user.privateBikeUsage}}</td>
+								</tr>
+								<tr ng-if="global.user.bikeUsage">
+									<td>Bike Sharing Usage:</td>
+									<td>{{global.user.bikeSharingUsage}}</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+			<div class="panel-footer" id="panel-footer-profile">
+				<a ui-sref="page.editProfile" data-toggle="tooltip" type="button" class="btn btn-sm btn-info">
+					<i class="glyphicon glyphicon-edit"></i>Edit profile
+				</a>
+				<span class="pull-right">
+					<a ui-sref="page.changePassword" data-toggle="tooltip" type="button" class="btn btn-sm btn-warning">
+						<i class="glyphicon glyphicon-edit"></i>Change password
+					</a>
+				</span>
+			</div>
+		</div>
+	</div>
+
+</div>
+<!-- close container -->

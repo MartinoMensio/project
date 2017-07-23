@@ -9,5 +9,5 @@ Final project of the course "Applicazioni Internet"
 ## Instructions
 
 - Start the backend: this is a spring boot app
-- Start the frontend using `live-server` in its folder
+- Start the frontend using `npm start` in its folder (after doing `npm install`)
 

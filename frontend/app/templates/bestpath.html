@@ -1,0 +1,72 @@
+<!-- This div contains the view of the best path, which will be calculated after the user selects the source and the destination -->
+<div class="container" id="container-bestpath">
+	<div class="hero-unit">
+	    <div class="page-header">
+	        <h1>Compute the path for reaching your destination</h1>
+	    </div>
+	</div>
+
+	<div class="col-sm-12">
+		<div class="row">		
+			<form name="searchForm">
+				<div class="row">
+					<div class="col-md-5">
+						<label for="sourceStr">From</label>
+						<div class="input-group">
+							<span class="input-group-btn">
+								<button class="btn" ng-click="ctrl.geolocate('source')">
+									<span class="glyphicon glyphicon-map-marker"></span>
+								</button>
+							</span>
+							<input ng-model="ctrl.sourceStr" ng-model-options="{ debounce: 500 }" ng-change="ctrl.geocode('source')" class="form-control" id="sourceStr" placeholder="Type here or click on the map where you want to start from..." required />
+						</div>
+					</div>
+					<div class="col-md-5">
+						<label for="destinationStr">To</label>
+						<div class="input-group">
+							<span class="input-group-btn">
+								<button class="btn" ng-click="ctrl.geolocate('destination')">
+									<span class="glyphicon glyphicon-map-marker"></span>
+								</button>
+							</span>
+							<input ng-model="ctrl.destinationStr" ng-model-options="{ debounce: 500 }" ng-change="ctrl.geocode('destination')" class="form-control" id="destinationStr" placeholder="Type here  or click on the map where you want to go..." required />
+						</div>
+					</div>
+
+					<div class="col-md-2">
+						<label for="buttons">&nbsp</label>
+						<div>
+							<button type="submit" class="btn btn-success" ng-click="ctrl.findPath()" ng-disabled="searchForm.$invalid">Search</button>
+							<button type="button" class="btn btn-default" ng-click="ctrl.removeMarkers()" >Clear</button>
+						</div>
+						</span>
+					</div>
+				<div>
+			</form>
+		</div>
+	</div>
+
+	<div style="margin-top:40px;">
+		<leaflet geojson-nested="true" geojson="ctrl.geojson" markers="ctrl.markers" center="ctrl.center" event-broadcast="ctrl.events" legend="ctrl.legend" tiles="ctrl.tiles" height="480px"></leaflet>
+	</div>
+
+	<div style="margin-top:40px;">
+		<p class="lead">List of stops along the path</p>
+		<table class="table">
+			<thead>
+				<td>Line</td>
+				<td>Description</td>
+			</thead>
+			<tbody>
+				<!-- Here should be filled with the values of all the stops of the path selected -->
+				<tbody>
+					<tr ng-repeat="edge in ctrl.geojson">
+						<td>{{edge.data.properties.lineId ? edge.data.properties.lineId : 'by walk'}}</td>
+						<td>{{edge.data.properties.msg}}</td>
+					</tr>
+				</tbody>
+			</tbody>
+		</table>
+	</div>
+
+</div>

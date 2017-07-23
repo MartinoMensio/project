@@ -41,7 +41,7 @@ public class ChatController {
 	AlertsService alertsService;
 
 	@MessageMapping("/{topicId}")
-	public void handleMessage(SimpMessageHeaderAccessor hs, @DestinationVariable String topicId, WebSocketMessage webSocketMessage) throws Exception {
+	public void handleMessage(SimpMessageHeaderAccessor hs, @DestinationVariable Long topicId, WebSocketMessage webSocketMessage) throws Exception {
 		User sender = currentUserService.getCurrentUser();
 		if (sender != null) {
 			Topic topic = chatService.getTopicById(topicId);
@@ -58,10 +58,8 @@ public class ChatController {
 				Message messageEntity = new Message(sender, webSocketMessage.getContent(), Calendar.getInstance(), topic, image, alert);
 				// save the message in the service (that saves in the repository
 				chatService.saveMessage(messageEntity);
-				// create an object to be shown to the client
-				ChatMessage chatMessage = new ChatMessageImpl(messageEntity);
-				// send the message to the topic
-				messagingTemplate.convertAndSend("/topic/" + topic.getId(), chatMessage);
+				// send the message id to the topic
+				messagingTemplate.convertAndSend("/topic/" + topic.getId(), messageEntity.getId());
 			} else {
 				// inexistent topic
 				System.err.println("Inexistent topic " + topicId);

@@ -1,0 +1,24 @@
+<div class="container" id="container-registration-success">
+    
+    <div class="hero-unit" style="text-align:center">
+		<div class="page-header" >
+			<h1>E-mail verification</h1>
+		</div>
+		<div ng-if="ctrl.verificationOK" class="alert alert-success" role="alert">
+		    Verification of email <strong>{{ctrl.email}}</strong> succeded correctly.
+		</div>
+		<div ng-if="ctrl.verificationOK" class="container-signup">
+			<p>Click the button below to login now</p>
+            <div>
+                <a class="btn btn-success" ui-sref="page.login">Login</a>
+            </div>
+		</div>
+
+        <div ng-if="!ctrl.verificationOK" class="hero-unit" style="text-align:center">
+            <div class="alert alert-danger" role="alert">
+                Verification of email <strong>{{ctrl.email}}</strong> has encountered a problem.
+                Please check that your e-mail is valid.
+            </div>
+        </div>
+	</div>
+</div>

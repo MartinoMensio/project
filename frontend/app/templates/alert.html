@@ -1,0 +1,37 @@
+<div class="container" id="container-alert">
+
+	<div class="hero-unit">
+		<div class="page-header">
+			<h1>Alerts</h1>
+		</div>
+		<p class="lead">Here are shown all the current active alerts</p>
+	</div>
+
+	<div style="margin-top:40px;">
+		<leaflet geojson-nested="true" geojson="ctrl.geojson" markers="ctrl.markers" center="ctrl.center" event-broadcast="ctrl.events" tiles="ctrl.tiles" height="480px"></leaflet>
+	</div>
+
+	<div class="hero-unit" style="margin-top:40px; margin-bottom: 60px;">
+		<p class="lead">Alerts list</p>
+		<table class="table table-bordered">
+			<thead>
+				<tr>
+					<th>Hashtag</th>
+					<th>Rating</th>
+					<th>Type</th>
+					<th>Added by</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="alert in ctrl.alerts">
+					<td>#{{alert.hashtag}} </td>
+					<td>{{alert.rating}}</td>
+					<td>{{alert.alertType.name}}</td>
+					<td>{{alert.userNickname}}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+
+</div>

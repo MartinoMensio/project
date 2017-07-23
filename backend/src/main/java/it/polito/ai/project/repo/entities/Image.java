@@ -5,11 +5,16 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.mvc.ControllerLinkBuilder;
+
+import it.polito.ai.project.rest.controllers.ImagesController;
+
 @Entity(name = "images")
 public class Image {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private byte[] value;
 
@@ -19,7 +24,7 @@ public class Image {
 	public Image(byte[] value) {
 		this.value = value;
 	}
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -35,21 +40,18 @@ public class Image {
 	public void setValue(byte[] value) {
 		this.value = value;
 	}
-	
+
 	public String getUrl() {
 		if (id != null) {
-			// TODO find dynamic way of building this link
-			return "https://localhost:8888/images/" + id + "/raw";
-			/* this works only inside web context, not when this function is called by the websocket controller
 			Link selfLink = ControllerLinkBuilder
-					.linkTo(ControllerLinkBuilder.methodOn(ImagesController.class).getImageResource(id))
-					.withSelfRel();
+					.linkTo(ControllerLinkBuilder.methodOn(ImagesController.class).getImageResource(id)).withSelfRel();
 			Link rawLink = new Link(selfLink.getHref() + "/raw", "raw");
-			return rawLink.getHref();*/
+			return rawLink.getHref();
+
 		} else {
 			return null;
 		}
-		
+
 	}
 
 }

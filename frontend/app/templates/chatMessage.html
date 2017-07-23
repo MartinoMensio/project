@@ -1,0 +1,19 @@
+<li class="clearfix {{li_pos}}">
+    <span class="chat-img {{pull}}">
+        <img http-src="{{userImageUrl ? userImageUrl : 'images/user-neutral.png'}}" alt="User Avatar" class="img-circle" width="50px"/>
+    </span>
+    <div class="message">
+        <div>
+            <strong class="primary-font {{username_pos}}">{{username}}</strong>
+            <small class="text-muted {{timestamp_pos}}">
+                <span class="glyphicon glyphicon-time"></span>{{timestamp | date:'yyyy-MM-dd HH:mm:ss'}}
+            </small>
+        </div>
+        <div>
+            <p ng-if="!alert" class="{{pull}}">{{text}}</p>
+            <!-- TODO for now this calls a function from the containing controller, but should be better to use a ui-sref?? -->
+            <a ng-if="alert" class="{{pull}}" ng-click="onAlertClicked({alertId: alert.id})">{{text}}</a>
+            <img alt="" http-src="{{imageUrl}}" style="max-width: 140px; max-height: 140px;">
+        </div>
+    </div>
+</li>

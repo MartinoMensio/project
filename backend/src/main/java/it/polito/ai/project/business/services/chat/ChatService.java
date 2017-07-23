@@ -21,12 +21,17 @@ public interface ChatService {
 	public List<ChatMessage> getLastMessages(Topic topic, Integer lastMessages);
 	
 	/**
+	 * 
+	 */
+	public ChatMessage getMessageById(Long id);
+	
+	/**
 	 * Return the set of topics
 	 * @return
 	 */
 	public Set<Topic> getTopics();
 	
-	public Topic getTopicById(String id);
+	public Topic getTopicById(Long id);
 	
 	public void saveMessage(Message message);
 	

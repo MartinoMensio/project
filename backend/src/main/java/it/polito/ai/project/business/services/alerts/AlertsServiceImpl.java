@@ -16,6 +16,7 @@ import it.polito.ai.project.repo.entities.User;
 import it.polito.ai.project.repo.entities.alerts.Alert;
 import it.polito.ai.project.repo.entities.alerts.AlertType;
 import it.polito.ai.project.repo.entities.alerts.Rating;
+import it.polito.ai.project.repo.entities.alerts.RatingKey;
 
 @Service
 @Transactional
@@ -110,6 +111,15 @@ public class AlertsServiceImpl implements AlertsService {
 		ratingsRepository.save(newRating);
 		
 		return alert;
+	}
+	
+	public Rating getAlertRatingForUser(Long alertId, User user) {
+		Alert alert = alertsRepository.findOne(alertId);
+		if (alert == null) {
+			return null;
+		}
+		RatingKey ratingKey = new RatingKey(user, alert);
+		return ratingsRepository.findOne(ratingKey);
 	}
 	
 	private Date getCurrentTimeMinusMaxAlertDuration() {

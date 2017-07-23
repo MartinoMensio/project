@@ -33,5 +33,24 @@ public class BusLine {
 	public List<BusStop> getStops() {
 		return stops;
 	}
+	
+	@Override
+    public int hashCode() {
+        return (line != null ? line.hashCode() : 0);
+    }
+	
+	@Override
+    public boolean equals(Object object) {
+        if (object == null || !(object instanceof BusLine)) {
+            return false;
+        }
+
+        final BusLine other = (BusLine) object;
+        if (this.line == null || other.line == null) {
+            return false;
+        }
+
+        return this.line.equals(other.line);
+    }
 
 }
