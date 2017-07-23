@@ -5,6 +5,7 @@ Final project of the course "Applicazioni Internet"
 
 - frontend: this is the angular webapp client
 - backend: the main REST backend for the application (responsible for users/chat/warnings)
+- GeoServices: the secondary web service for geographical stuff
 
 ## Requirements
 
@@ -36,3 +37,17 @@ For running the webservices and frontend outside the container while the databas
 After that you can run webservices in your IDE/CLI that will connect to containers.
 
 `backend` and `GeoServices` can be run using their `run.sh` script files, while the frontend can be run using `live-server`.
+
+## Self-signed certificates
+
+The browser will reject to connect to the three components by default.
+
+You need to manually go to the following URLs:
+
+- https://localhost:8888/ 
+- https://localhost:9999/
+- https://localhost:8080/
+
+and explicitly add security exceptions for them.
+
+The frontend application is reachable at https://localhost:8080/
