@@ -21,7 +21,7 @@ import it.polito.ai.project.repo.entities.alerts.RatingKey;
 @Service
 @Transactional
 public class AlertsServiceImpl implements AlertsService {
-	private final static int maxAlertDuration = 5000;
+	private final static int maxAlertDuration = 5;
 	
 	@Autowired
 	private AlertTypesRepository alertTypesRepository;
