@@ -218,7 +218,7 @@ app {
 #container-login {
 	margin-top: 40px;
 	width: 50%;
-	padding-bottom: 300px;
+	padding-bottom: 310px;
 }
 
 #container-bestpath {
@@ -228,7 +228,7 @@ app {
 
 #container-busLineList {
 	margin-top: 40px;
-	margin-bottom: 40px;
+	margin-bottom: 70px;
 }
 
 #container-chat {
@@ -240,7 +240,7 @@ app {
 #container-chat-topics {
 	margin-top: 40px;
 	width: 80%;
-	padding-bottom: 10px;
+	padding-bottom: 80px;
 }
 
 #container-chat-messages {
