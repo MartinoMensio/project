@@ -12,6 +12,8 @@ public interface AlertsRepository extends CrudRepository<Alert, Long> {
 	
 	public List<Alert> findAll();
 	
+	public Alert findOneByIdAndLastViewTimeAfter(Long id, Date date);
+	
 	/**
 	 * Returns the list of active alerts. An active alert is the one that has lastViewTime less than maxAlertDuration.
 	 * 

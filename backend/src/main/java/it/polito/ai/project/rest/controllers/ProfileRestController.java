@@ -29,6 +29,7 @@ import it.polito.ai.project.rest.controllers.reqbody.UpdateProfileRequest;
 import it.polito.ai.project.rest.resources.ProfileResource;
 import it.polito.ai.project.rest.resources.ResultInfoResource;
 import it.polito.ai.project.web.exceptions.ClientErrorException;
+import it.polito.ai.project.web.exceptions.NotFoundException;
 
 @RestController
 public class ProfileRestController {
@@ -47,7 +48,10 @@ public class ProfileRestController {
 	@GetMapping("/api/profile")
 	public ProfileResource getProfile() {
 		User currentUser = currentUserService.getCurrentUser();
-		// TODO consider if token was ok, but database deleted user so currentUser is null??
+		// if token was ok, but database deleted user so currentUser is null??
+		if (currentUser == null) {
+			throw new NotFoundException();
+		}
 		return new ProfileResource(currentUser);
 	}
 
@@ -121,7 +125,6 @@ public class ProfileRestController {
 			long attempts = wrongTrials.get(email).incrementAndGet();
 			try {
 				// sleep quadratically in the number of attempts
-				// TODO evaluate if this is needed
 				Thread.sleep(attempts * attempts * 1000);
 			} catch (InterruptedException e) {
 				Thread.currentThread().interrupt();

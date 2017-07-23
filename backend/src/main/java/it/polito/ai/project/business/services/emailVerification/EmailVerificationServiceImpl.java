@@ -57,7 +57,7 @@ public class EmailVerificationServiceImpl implements EmailVerificationService {
 		String token = new BigInteger(130, new SecureRandom()).toString(32);
 		String link = generateLink(email, token, url);
 		
-		EmailRequest request = new EmailRequest(email, nickname, link, "project@ai.polito.it");
+		EmailRequest request = new EmailRequest(email, nickname, link, "tomove@ai.polito.it");
 		HttpEntity<EmailRequest> entity = new HttpEntity<EmailRequest>(request, headers);
 		
 		try {
