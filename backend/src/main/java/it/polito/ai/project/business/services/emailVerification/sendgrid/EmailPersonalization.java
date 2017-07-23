@@ -12,8 +12,8 @@ public class EmailPersonalization {
 	EmailPersonalization(String destinationEmail, String nickname, String activation_link) {
 		to = new ArrayList<>();
 		to.add(new EmailAddress(destinationEmail));
-		subject = "email verification";
-		substitutions = new EmailValues(nickname, activation_link);
+		subject = "ToMove - email verification";
+		substitutions = new EmailValues(nickname, activation_link, destinationEmail);
 	}
 
 	public List<EmailAddress> getTo() {
