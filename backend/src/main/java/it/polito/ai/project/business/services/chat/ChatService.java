@@ -21,6 +21,11 @@ public interface ChatService {
 	public List<ChatMessage> getLastMessages(Topic topic, Integer lastMessages);
 	
 	/**
+	 * 
+	 */
+	public ChatMessage getMessageById(Long id);
+	
+	/**
 	 * Return the set of topics
 	 * @return
 	 */

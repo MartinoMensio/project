@@ -118,14 +118,13 @@ app.controller('ChatCtrl', ['$scope', '$uibModal', '$stateParams', '$localStorag
     }
 
     // Define the callback that is called when a new message is received
-    var addMessage = (message) => {
-        this.messages.push(message);
-        $scope.$apply();
-        if (this.showMap === true) {
-
-            this.updateAlerts();
-
-        }
+    var addMessage = (messageId) => {
+        ChatService.getMessageById(messageId).then((message) => {
+            this.messages.push(message);
+            if (this.showMap === true) {
+                this.updateAlerts();
+            }
+        });
     }
 
     // Register the topic and the callback

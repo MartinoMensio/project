@@ -34,7 +34,7 @@ app.factory('ChatService', ['$http', '$q', '$localStorage', '$stomp', '$log', '_
             var deferred = $q.defer();
 
             $http.get(webEndpoint + 'api/open/topics').then(function (result) {
-                // get secceded
+                // get succeded
                 deferred.resolve(result.data);
             }, function (error) {
                 // get failed
@@ -54,7 +54,7 @@ app.factory('ChatService', ['$http', '$q', '$localStorage', '$stomp', '$log', '_
             var deferred = $q.defer();
 
             $http.get(webEndpoint + 'api/open/topics/' + id).then(function (result) {
-                // get secceded
+                // get succeded
                 deferred.resolve(result.data);
             }, function (error) {
                 // get failed
@@ -74,8 +74,22 @@ app.factory('ChatService', ['$http', '$q', '$localStorage', '$stomp', '$log', '_
             var deferred = $q.defer();
 
             $http.get(webEndpoint + 'api/messages/' + topicId).then(function (result) {
-                // get secceded
+                // get succeded
                 deferred.resolve(result.data.content);
+            }, function (error) {
+                // get failed
+                deferred.reject(error);
+            });
+
+            return deferred.promise;
+        },
+
+        getMessageById: function(messageId) {
+            var deferred = $q.defer();
+
+            $http.get(webEndpoint + 'api/messages/single/' + messageId).then(function (result) {
+                // get succeded
+                deferred.resolve(result.data);
             }, function (error) {
                 // get failed
                 deferred.reject(error);
