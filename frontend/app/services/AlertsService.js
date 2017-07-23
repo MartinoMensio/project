@@ -90,7 +90,7 @@ app.factory('AlertsService', ['$http', '$q', '__env', function ($http, $q, __env
                 // return the first hashtag (skipping the # char)
                 return text.replace(result[0], `#${hashtag}`);
             } else {
-                return null;
+                return text;
             }
         }
     }
