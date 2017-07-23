@@ -186,6 +186,8 @@ app.controller('ChatCtrl', ['$scope', '$uibModal', '$stateParams', '$localStorag
                     // display in dropdown
                     this.alertsResult = result;
                 })
+            } else {
+                this.alertsResult = null;
             }
         }
     };
