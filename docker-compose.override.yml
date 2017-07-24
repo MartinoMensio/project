@@ -13,6 +13,8 @@ services:
     volumes:
       - ./frontend/app:/usr/src/app
       - ./frontend/server.js:/usr/src/server.js
+      - ./server.cert:/usr/server.cert
+      - ./server.key:/usr/server.key
     command: npm start
 
 # web services
@@ -24,12 +26,11 @@ services:
     depends_on:
       - backend_db
     volumes:
-      - ./backend/target/backend-0.0.1-SNAPSHOT.jar:/app/app.jar
+      - ./backend/target/backend-0.0.1-SNAPSHOT.jar:/usr/app/app.jar
+      - ./keystore.p12:/usr/keystore.p12
     environment:
       - POSTGRES_HOST=backend_db
-      # self-knowledge (taken from outer environment and passed to container)
-      - BACKEND_HOST
-    command: java -jar /app/app.jar
+    command: bash -c "cd /usr/app && java -jar app.jar"
   geoservices:
     image: openjdk:latest
     ports:
@@ -38,10 +39,10 @@ services:
       - postgis
       - mongodb
     volumes:
-      - ./GeoServices/target/GeoServices-0.0.1-SNAPSHOT.jar:/app/app.jar
+      - ./GeoServices/target/GeoServices-0.0.1-SNAPSHOT.jar:/usr/app/app.jar
+      - ./keystore.p12:/usr/keystore.p12
     environment:
       - POSTGIS_HOST=postgis
       - POSTGIS_PORT=5432
       - MONGO_HOST=${MONGO_HOST:-mongodb}
-    command: java -jar /app/app.jar
-    #command: tail -f /dev/null
+    command: bash -c "cd /usr/app && java -jar app.jar"
