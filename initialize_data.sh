@@ -4,13 +4,13 @@ echo "this script sets up the databases for docker-compose"
 
 # compile the jars for creating the data
 pushd database/GeoServices_database/postgis/JsonToDB/
-mvn clean install || exit 1
+mvn install || exit 1
 popd
 pushd database/GeoServices_database/postgis/PostGisDBCreator/
-mvn clean install || exit 1
+mvn install || exit 1
 popd
 pushd database/GeoServices_database/mongo/MinPathCalc/
-mvn clean install || exit 1
+mvn install || exit 1
 popd
 
 # create the postgres database for the backend
