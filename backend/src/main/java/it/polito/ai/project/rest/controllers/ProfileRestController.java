@@ -72,7 +72,7 @@ public class ProfileRestController {
 		if (res == ResultInfo.PASSWORD_CHANGE_OK) {
 			return new ResultInfoResource(200, "password changed");
 		} else {
-			throw new ClientErrorException();
+			throw new ClientErrorException("change password failed");
 		}
 	}
 

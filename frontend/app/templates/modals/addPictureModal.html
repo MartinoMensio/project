@@ -4,9 +4,9 @@
 </div>
 
 <div class="modal-body">
-    <form class="form-inline">
+    <form class="form-inline" name="addPictureForm">
         <div class="form-group">
-            <img ng-if="ctrl.image" ng-src="{{ctrl.image}}" style="max-width: 100%;" />
+            <img ng-if="ctrl.image" ng-src="{{ctrl.image}}" style="width: 200px;" />
             <button class="btn btn-primary" ng-click="ctrl.openFileSelector()">Select a picture</button>
             <input ng-model="ctrl.imageFile" type="file" accept="image/*" style="display:none;" />
         </div>
@@ -15,5 +15,5 @@
 
 <div class="modal-footer">
     <button type="button" class="btn btn-default" ng-click="ctrl.cancel()">Cancel</button>
-    <button type="button" class="btn btn-success" ng-click="ctrl.save()">Add picture</button>
+    <button type="button" class="btn btn-success" ng-click="ctrl.save()" ng-disabled="!ctrl.image">Add picture</button>
 </div>
