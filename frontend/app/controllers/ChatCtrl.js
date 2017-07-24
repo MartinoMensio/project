@@ -71,16 +71,6 @@ app.controller('ChatCtrl', ['$scope', '$uibModal', '$stateParams', '$localStorag
             this.markers.forEach((marker, index) => {
                 marker.getMessageScope = () => { return $scope; }
                 marker.newRating = -1;
-                // watch added to check if a new rate is inserted by the user
-                $scope.$watch("ctrl.alerts[" + index + "].newRating", (newValue, oldValue) => {
-                    if (marker.artificialChange === true || newValue <= 0 || newValue === oldValue || marker.newRating <= 0) {
-                        // don't vote
-                    } else {
-                        this.vote(marker);
-                    }
-                    // enable the watch for future changes by user
-                    marker.artificialChange = false;
-                });
                 // 5 starts used by the user for rating the signalization and 5 stars readonly for the rating avg
                 if (this.alerts[index].alertType.name === "Traffic") {
                     marker.icon = local_icons.traffic_icon;
@@ -101,7 +91,7 @@ app.controller('ChatCtrl', ['$scope', '$uibModal', '$stateParams', '$localStorag
                     + '</h2><h5>Activation Date: {{' + marker.activationDate + ' | date:"HH:mm:ss dd-MM-yyyy"}}'
                     + '</h5><h5>Address: ' + marker.address
                     + '</h5><h5>Added by: ' + marker.userNickname
-                    + '</h5> <h5>Vote Here</h5> <input-stars ng-model="ctrl.markers[' + index + '].newRating" max="5"></input-stars>'
+                    + '</h5> <h5>Vote Here</h5> <input-stars ng-click="ctrl.vote(' + marker.id + ')" ng-model="ctrl.markers[' + index + '].newRating" max="5"></input-stars>'
                     + '<br /> <h5>Average</h5> <input-stars max="5" ng-model="ctrl.markers[' + index + '].rating" readonly="true" allow-half ></input-stars>'
                     + '<br /><button ng-click="ctrl.referAlert(' + index + ')" class="btn btn-secondary">refer</button>';
             });
@@ -170,8 +160,6 @@ app.controller('ChatCtrl', ['$scope', '$uibModal', '$stateParams', '$localStorag
     $scope.$on('leafletDirectiveMarker.click', (event, args) => {
         // get the user rating and update last view time
         AlertsService.getUserRatingToAlert(args.model.id).then((result) => {
-            // the change didn't occurr due to interaction
-            args.model.artificialChange = true;
             args.model.newRating = result.vote;
         });
     });
@@ -193,7 +181,11 @@ app.controller('ChatCtrl', ['$scope', '$uibModal', '$stateParams', '$localStorag
     };
 
     // send the new vote to the database
-    this.vote = function (marker) {
+    this.vote = function (markerId) {
+        const marker = this.markers.find((el) => el.id == markerId);
+        if (marker.newRating < 1 || marker.newRating > 5) {
+            return null;
+        }
         // send the vote and then modify dynamically the avg value
         AlertsService.voteAlert(marker.id, marker.newRating).then(result => {
             marker.rating = result.rating;
@@ -277,6 +269,9 @@ app.controller('ChatCtrl', ['$scope', '$uibModal', '$stateParams', '$localStorag
             this.markers.forEach((marker) => {
                 if (marker.id === alertId) {
                     marker.focus = true;
+                    AlertsService.getUserRatingToAlert(marker.id).then((result) => {
+                        marker.newRating = result.vote;
+                    });
                 }
                 else {
                     marker.focus = false;
