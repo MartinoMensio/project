@@ -1,6 +1,6 @@
 var app = angular.module('App');
 
-app.controller('ChatCtrl', ['$rootScope', '$scope', '$uibModal', '$stateParams', '$localStorage', 'leafletData', 'ChatService', 'AlertsService', 'topic', 'messages', function ($rootScope, $scope, $uibModal, $stateParams, $localStorage, leafletData, ChatService, AlertsService, topic, messages) {
+app.controller('ChatCtrl', ['$rootScope', '$scope', '$uibModal', '$stateParams', '$localStorage', '$timeout', 'leafletData', 'ChatService', 'AlertsService', 'topic', 'messages', function ($rootScope, $scope, $uibModal, $stateParams, $localStorage, $timeout, leafletData, ChatService, AlertsService, topic, messages) {
     this.template = "templates/popovers/popoverTemplate.html";
     var topicId = $stateParams.topicId; // get the topic id from the app state
     this.topic = topic;
@@ -69,7 +69,8 @@ app.controller('ChatCtrl', ['$rootScope', '$scope', '$uibModal', '$stateParams',
 
             // each marker display the 5 star for rating the alert
             this.markers.forEach((marker, index) => {
-                marker.getMessageScope = () => { return $scope; }
+                marker.getMessageScope = () => { return $scope; };
+                marker.compileMessage = true;
                 marker.newRating = -1;
                 // 5 starts used by the user for rating the signalization and 5 stars readonly for the rating avg
                 if (this.alerts[index].alertType.name === "Traffic") {
@@ -267,20 +268,19 @@ app.controller('ChatCtrl', ['$rootScope', '$scope', '$uibModal', '$stateParams',
         this.mapToggle(true).then(() => {
             let found = false;
             // show the marker details
-            this.markers.forEach((marker) => {
+            this.markers.forEach((marker, index) => {
+
                 if (marker.id === alertId) {
-                    marker.focus = true;
                     found = true;
-                    AlertsService.getUserRatingToAlert(marker.id).then((result) => {
-                        marker.newRating = result.vote;
+                    $timeout(() => {
+                        var results = $('.leaflet-marker-icon');
+                        // programmatically fire the event click on the marker
+                        results[index].click();
                     });
-                }
-                else {
-                    marker.focus = false;
                 }
             });
             if (!found) {
-                $rootScope.$emit('error', {message: "The selected alert has expired!"});
+                $rootScope.$emit('error', { message: "The selected alert has expired!" });
             }
         })
     };
