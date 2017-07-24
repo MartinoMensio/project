@@ -170,7 +170,7 @@
 .autocomplete-dropdown-menu
 {
     z-index: 1500;
-    width: 100%;
+    min-width: 100%;
 }
 
 ::-webkit-scrollbar-track
