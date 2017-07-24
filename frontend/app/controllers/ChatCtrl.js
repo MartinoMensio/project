@@ -1,6 +1,6 @@
 var app = angular.module('App');
 
-app.controller('ChatCtrl', ['$scope', '$uibModal', '$stateParams', '$localStorage', 'leafletData', 'ChatService', 'AlertsService', 'topic', 'messages', function ($scope, $uibModal, $stateParams, $localStorage, leafletData, ChatService, AlertsService, topic, messages) {
+app.controller('ChatCtrl', ['$rootScope', '$scope', '$uibModal', '$stateParams', '$localStorage', 'leafletData', 'ChatService', 'AlertsService', 'topic', 'messages', function ($rootScope, $scope, $uibModal, $stateParams, $localStorage, leafletData, ChatService, AlertsService, topic, messages) {
     this.template = "templates/popovers/popoverTemplate.html";
     var topicId = $stateParams.topicId; // get the topic id from the app state
     this.topic = topic;
@@ -265,10 +265,12 @@ app.controller('ChatCtrl', ['$scope', '$uibModal', '$stateParams', '$localStorag
     this.selectAlert = (alertId) => {
         // open the map
         this.mapToggle(true).then(() => {
+            let found = false;
             // show the marker details
             this.markers.forEach((marker) => {
                 if (marker.id === alertId) {
                     marker.focus = true;
+                    found = true;
                     AlertsService.getUserRatingToAlert(marker.id).then((result) => {
                         marker.newRating = result.vote;
                     });
@@ -277,6 +279,9 @@ app.controller('ChatCtrl', ['$scope', '$uibModal', '$stateParams', '$localStorag
                     marker.focus = false;
                 }
             });
+            if (!found) {
+                $rootScope.$emit('error', {message: "The selected alert has expired!"});
+            }
         })
     };
 
