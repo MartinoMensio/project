@@ -1,6 +1,6 @@
 var app = angular.module('App');
 
-app.controller('ProfileCtrl', ['ImagesService', '$uibModal', '$state', function (ImagesService, $uibModal, $state) {
+app.controller('ProfileCtrl', ['ImagesService', '$uibModal', '$state', '$rootScope', function (ImagesService, $uibModal, $state, $rootScope) {
 
     this.openAddPictureModal = function () {
         var modalInstance = $uibModal.open({
@@ -15,11 +15,10 @@ app.controller('ProfileCtrl', ['ImagesService', '$uibModal', '$state', function 
                 console.log('profile picture updated');
                 $state.go('page.profile', null, { reload: true });
             }, function (error) {
-                // TODO display error
-                console.log('error updating profile picture');
+                $rootScope.$emit('error', {message: "error updating profile picture"})
             })
         }, function () {
-            $log.info('Modal dismissed at: ' + new Date());
+            console.log('Modal dismissed at: ' + new Date());
         });
     };
 }]);

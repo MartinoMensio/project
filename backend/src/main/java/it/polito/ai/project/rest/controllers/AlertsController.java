@@ -78,6 +78,7 @@ public class AlertsController {
 	// endpoint for ratings of alerts
 	@PutMapping("/api/alerts/{id}/rate")
 	public Alert voteAlert(@PathVariable(value = "id") Long id, @Valid @RequestBody NewRatingBodyRequest vote) {
+		alertsService.updateAlertLastViewTime(id);
 		return alertsService.voteAlert(currentUserService.getCurrentUser(), id, vote.getValue());
 	}
 	

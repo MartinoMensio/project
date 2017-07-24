@@ -1,6 +1,6 @@
 var app = angular.module('App');
 
-app.controller('ChatCtrl', ['$scope', '$uibModal', '$stateParams', '$localStorage', 'leafletData', 'ChatService', 'AlertsService', 'topic', 'messages', function ($scope, $uibModal, $stateParams, $localStorage, leafletData, ChatService, AlertsService, topic, messages) {
+app.controller('ChatCtrl', ['$rootScope', '$scope', '$uibModal', '$stateParams', '$localStorage', '$timeout', 'leafletData', 'ChatService', 'AlertsService', 'topic', 'messages', function ($rootScope, $scope, $uibModal, $stateParams, $localStorage, $timeout, leafletData, ChatService, AlertsService, topic, messages) {
     this.template = "templates/popovers/popoverTemplate.html";
     var topicId = $stateParams.topicId; // get the topic id from the app state
     this.topic = topic;
@@ -69,18 +69,9 @@ app.controller('ChatCtrl', ['$scope', '$uibModal', '$stateParams', '$localStorag
 
             // each marker display the 5 star for rating the alert
             this.markers.forEach((marker, index) => {
-                marker.getMessageScope = () => { return $scope; }
+                marker.getMessageScope = () => { return $scope; };
+                marker.compileMessage = true;
                 marker.newRating = -1;
-                // watch added to check if a new rate is inserted by the user
-                $scope.$watch("ctrl.alerts[" + index + "].newRating", (newValue, oldValue) => {
-                    if (marker.artificialChange === true || newValue <= 0 || newValue === oldValue || marker.newRating <= 0) {
-                        // don't vote
-                    } else {
-                        this.vote(marker);
-                    }
-                    // enable the watch for future changes by user
-                    marker.artificialChange = false;
-                });
                 // 5 starts used by the user for rating the signalization and 5 stars readonly for the rating avg
                 if (this.alerts[index].alertType.name === "Traffic") {
                     marker.icon = local_icons.traffic_icon;
@@ -101,7 +92,7 @@ app.controller('ChatCtrl', ['$scope', '$uibModal', '$stateParams', '$localStorag
                     + '</h2><h5>Activation Date: {{' + marker.activationDate + ' | date:"HH:mm:ss dd-MM-yyyy"}}'
                     + '</h5><h5>Address: ' + marker.address
                     + '</h5><h5>Added by: ' + marker.userNickname
-                    + '</h5> <h5>Vote Here</h5> <input-stars ng-model="ctrl.markers[' + index + '].newRating" max="5"></input-stars>'
+                    + '</h5> <h5>Vote Here</h5> <input-stars ng-click="ctrl.vote(' + marker.id + ')" ng-model="ctrl.markers[' + index + '].newRating" max="5"></input-stars>'
                     + '<br /> <h5>Average</h5> <input-stars max="5" ng-model="ctrl.markers[' + index + '].rating" readonly="true" allow-half ></input-stars>'
                     + '<br /><button ng-click="ctrl.referAlert(' + index + ')" class="btn btn-secondary">refer</button>';
             });
@@ -170,8 +161,6 @@ app.controller('ChatCtrl', ['$scope', '$uibModal', '$stateParams', '$localStorag
     $scope.$on('leafletDirectiveMarker.click', (event, args) => {
         // get the user rating and update last view time
         AlertsService.getUserRatingToAlert(args.model.id).then((result) => {
-            // the change didn't occurr due to interaction
-            args.model.artificialChange = true;
             args.model.newRating = result.vote;
         });
     });
@@ -193,7 +182,11 @@ app.controller('ChatCtrl', ['$scope', '$uibModal', '$stateParams', '$localStorag
     };
 
     // send the new vote to the database
-    this.vote = function (marker) {
+    this.vote = function (markerId) {
+        const marker = this.markers.find((el) => el.id == markerId);
+        if (marker.newRating < 1 || marker.newRating > 5) {
+            return null;
+        }
         // send the vote and then modify dynamically the avg value
         AlertsService.voteAlert(marker.id, marker.newRating).then(result => {
             marker.rating = result.rating;
@@ -251,7 +244,7 @@ app.controller('ChatCtrl', ['$scope', '$uibModal', '$stateParams', '$localStorag
 
 
         }, function () {
-            $log.info('Modal dismissed at: ' + new Date());
+            console.log('Modal dismissed at: ' + new Date());
         });
     };
 
@@ -266,22 +259,29 @@ app.controller('ChatCtrl', ['$scope', '$uibModal', '$stateParams', '$localStorag
         modalInstance.result.then((imageString) => {
             this.msg.image = imageString;
         }, function () {
-            $log.info('Modal dismissed at: ' + new Date());
+            console.log('Modal dismissed at: ' + new Date());
         });
     };
 
     this.selectAlert = (alertId) => {
         // open the map
         this.mapToggle(true).then(() => {
+            let found = false;
             // show the marker details
-            this.markers.forEach((marker) => {
+            this.markers.forEach((marker, index) => {
+
                 if (marker.id === alertId) {
-                    marker.focus = true;
-                }
-                else {
-                    marker.focus = false;
+                    found = true;
+                    $timeout(() => {
+                        var results = $('.leaflet-marker-icon');
+                        // programmatically fire the event click on the marker
+                        results[index].click();
+                    });
                 }
             });
+            if (!found) {
+                $rootScope.$emit('error', { message: "The selected alert has expired!" });
+            }
         })
     };
 

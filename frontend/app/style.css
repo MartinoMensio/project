@@ -330,7 +330,7 @@ app {
 }
 
 #DIV_ID{
-	font-size: 10px !important;
+	letter-spacing: normal;
 }
 
 .navbar-login-session
