@@ -21,13 +21,6 @@
 			</div>
 			<div class="chat-panel-footer">
 				<div class="bottom_wrapper clearfix">
-					<div ng-if="ctrl.msg.image">
-						<img ng-src="{{ctrl.msg.image}}" style="max-height:200px;max-width:300px;" />
-						<button class="btn" ng-click="ctrl.removeImage()">X</button>
-					</div>
-					<div ng-if="ctrl.alert">
-						#{{ctrl.alert.hashtag}} [{{ctrl.alert.address}}] <button class="btn" ng-click="ctrl.removeAlert()">X</button>
-					</div>
 					<div class="message_input_wrapper" uib-dropdown is-open="ctrl.alertsResult && ctrl.alertsResult.length">
 						<input class="message_input" ng-model="ctrl.msg.content" placeholder="Type your message here..." ng-change="ctrl.msg_text_changed()"
 						ng-keyup="$event.keyCode == 13 ? ctrl.sendMessage() : null" ng-model-options="{ debounce: 200 }"/>
@@ -41,6 +34,15 @@
 					<div class="chat_buttons clearfix">
 						<button class="add_picture_button text" ng-click="ctrl.openAddPictureModal()"><span class="glyphicon glyphicon-picture"></span></button>
 						<button class="send_button text" ng-click="ctrl.sendMessage()"><span class="glyphicon glyphicon-send"></span></button>
+					</div>
+
+					<div ng-if="ctrl.msg.image">
+						<img ng-src="{{ctrl.msg.image}}" style="max-height:50px;max-width:60px;" />
+						<span class="glyphicon glyphicon-remove btn" ng-click="ctrl.removeImage()" style="padding: 0px;"></span>
+					</div>
+					<div ng-if="ctrl.alert">
+						#{{ctrl.alert.hashtag}} [{{ctrl.alert.address}}]
+						<span class="glyphicon glyphicon-remove btn" ng-click="ctrl.removeAlert()" style="padding: 0px;"></span>
 					</div>
 				</div>
 			</div>
