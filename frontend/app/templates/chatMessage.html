@@ -11,7 +11,7 @@
         </div>
         <div>
             <p ng-if="!alert" class="{{pull}}">{{text}}</p>
-            <a ng-if="alert" class="{{pull}}" ng-click="onAlertClicked({alertId: alert.id})">{{text}}</a>
+            <a ng-if="alert" class="{{pull}} btn" style="padding: 0px;" ng-click="onAlertClicked({alertId: alert.id})">{{text}}</a>
             <img alt="" http-src="{{imageUrl}}" style="max-width: 140px; max-height: 140px;">
         </div>
     </div>
