@@ -26,8 +26,13 @@ INSERT INTO car_sharing_services (id, name) values
 INSERT INTO travel_documents (id, name, cost) values
     (1, 'DAILY TICKET', 5.00),
     (2, 'SINGLE RUN', 1.50),
-    (3, 'CARNET 5', 6.50),
-    (4, 'CARNET 15', 17.50);
+    (3, '5 TICKETS CARD', 6.50),
+    (4, '15 TICKETS CARD', 17.50),
+    (5, '1 MONTH SUBSCRIPTION', 32.00),
+    (6, '1 MONTH SUBSCRIPTION - FOR STUDENTS', 21.00),
+    (7, '12 MONTHS SUBSCRIPTION', 310.00),
+    (8, '12 MONTHS SUBSCRIPTION - FOR STUDENTS', 200.00),
+    (9, '10 MONTHS SUBSCRIPTION - FOR STUDENTS', 175.00);
 INSERT INTO status (id, value) values
     (1, 'INCOMPLETE'),
     (2, 'COMPLETE'),
