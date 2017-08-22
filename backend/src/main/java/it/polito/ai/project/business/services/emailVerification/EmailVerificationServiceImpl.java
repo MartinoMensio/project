@@ -5,6 +5,7 @@ import java.security.SecureRandom;
 import java.util.Calendar;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.mvc.ControllerLinkBuilder;
 import org.springframework.http.HttpEntity;
@@ -32,7 +33,6 @@ public class EmailVerificationServiceImpl implements EmailVerificationService {
 	
 	private RestTemplate restTemplate = new RestTemplate();
 	private static String sendgrid_endpoint = "https://api.sendgrid.com/v3/mail/send";
-	private static String sendgrid_token = "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";
 	
 	@Autowired
 	private UsersRepository users;
@@ -43,6 +43,9 @@ public class EmailVerificationServiceImpl implements EmailVerificationService {
 	@Autowired
 	private VerificationTokensRepository tokens;
 	
+	@Autowired
+	Environment environment;
+	
 	@Override
 	public void sendVerificationMail(String email, String nickname, String url) {
 		User user = users.findByEmail(email);
@@ -51,6 +54,7 @@ public class EmailVerificationServiceImpl implements EmailVerificationService {
 		}
 		
 		HttpHeaders headers = new HttpHeaders();
+		String sendgrid_token = environment.getProperty("spring.sendgrid.api-key");
 		headers.set("Authorization", "Bearer " + sendgrid_token);
 		
 		// create activation link with random token
