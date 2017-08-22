@@ -24,7 +24,10 @@ public class OpenUsersController {
 	@Autowired
 	private UsersService usersService;
 
-	@RequestMapping(value = "/api/open/users", method = RequestMethod.GET, headers = "Accept=application/json")
+	/**
+	 * We don't give open access to user data
+	 */
+	//@RequestMapping(value = "/api/open/users", method = RequestMethod.GET, headers = "Accept=application/json")
 	public PagedResources<Resource<AnonymizedUser>> getOpenUsers(Pageable pageable,
 			PagedResourcesAssembler<AnonymizedUser> assembler) {
 		Page<AnonymizedUser> anonimizedUsers = usersService

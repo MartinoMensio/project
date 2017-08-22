@@ -185,6 +185,11 @@ app.config(['$locationProvider', '$urlRouterProvider', '$stateProvider', '$httpP
                     return $q.all(promises);
                 }]
             }
+        })
+        // privacy policy
+        .state('page.privacy', {
+            url: '/privacy',
+            templateUrl: 'templates/privacy.html'
         });
 
     // configure html5 to get links working on jsfiddle

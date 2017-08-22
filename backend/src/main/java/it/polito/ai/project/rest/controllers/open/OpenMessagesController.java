@@ -27,7 +27,10 @@ public class OpenMessagesController {
 	@Autowired
 	private ChatService chatService;
 
-	@RequestMapping(value = "/api/open/messages/{topicId}", method = RequestMethod.GET, headers = "Accept=application/json")
+	/**
+	 * We don't give open access to messages
+	 */
+	//@RequestMapping(value = "/api/open/messages/{topicId}", method = RequestMethod.GET, headers = "Accept=application/json")
 	public PagedResources<Resource<ChatMessageResource>> getOpenMessages(@PathVariable("topicId") Long topicId,
 			Pageable pageable, PagedResourcesAssembler<ChatMessageResource> assembler) {
 		// get the topic by id
