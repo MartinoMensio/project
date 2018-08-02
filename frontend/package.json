@@ -12,5 +12,7 @@
     "devDependencies": {
         "live-server": "^1.2.0"
     },
-    "dependencies": {}
+    "dependencies": {
+        "mime": "^1.6.0"
+    }
 }
